@@ -81,7 +81,7 @@ Hooks.once("init", () => {
 
     game.settings.register("warlock", "activeSystem", {
         name: game.i18n.localize("WARLOCK.Active System"),
-        hint: game.i18n.localize("WARLOCK.Active System Hint."),
+        hint: game.i18n.localize("WARLOCK.Active System Hint"),
         scope: "world",
         config: true,
         type: String,
