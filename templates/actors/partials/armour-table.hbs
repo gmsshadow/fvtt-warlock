@@ -1,0 +1,47 @@
+<div class="armour table">
+    <div class="armour__header table__header">
+        <span class="armour__header-field table__header-field">{{localize "WARLOCK.Armour"}}</span>
+        <span class="armour__header-field table__header-field">{{localize "WARLOCK.Type"}}</span>
+        <span class="armour__header-field table__header-field">{{localize "WARLOCK.Reduction"}}</span>
+        <span class="armour__header-field table__header-field">{{localize "WARLOCK.Equipped"}}</span>
+        <span class="armour__header-field table__header-field">
+            <a class="create-item" data-item-type="Armour">
+                <i class="fas fa-plus"></i>
+            </a>
+        </span>
+    </div>
+    <div class="armour__body table__body">
+        {{#each data.data.gear.armour}}
+        <div class="armour__entry table__entry" data-id="{{id}}">
+            <span class="armour__entry-field table__entry-field">{{name}}</span>
+            <span class="armour__entry-field table__entry-field">{{data.data.type.value}}</span>
+            <span class="armour__entry-field table__entry-field">
+                <a class="table__rollable-entry-field roll-armour">
+                    {{data.data.reductionRoll}}
+                    <i class="rollable-icon rollable-icon fas fa-dice"></i>
+                </a>
+            </span>
+            <span class="armour__entry-field table__entry-field">
+                <a class="equip-item">
+                    {{#if data.data.isEquipped}}
+                    <i class="far fa-check-square"></i>
+                    {{else}}
+                    <i class="far fa-square"></i>
+                    {{/if}}
+                </a>
+            </span>
+            <span class="armour__entry-field table__entry-field">
+                <a class="chat-item">
+                    <i class="fas fa-comment"></i>
+                </a>
+                <a class="edit-item">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a class="delete-item">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+        {{/each}}
+    </div>
+</div>

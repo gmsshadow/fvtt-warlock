@@ -1,0 +1,24 @@
+{
+    "name": "warlock",
+    "title": "Warlock/Warpstar (Unofficial)",
+    "description": "A system for playing Warlock and Warpstar in Foundry VTT.",
+    "author": "Azarvel",
+    "version": "0.1.0",
+
+    "esmodules": [
+        "module/warlock.mjs"
+    ],
+    "styles": [
+        "styles/warlock.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+
+    "minimumCoreVersion": "0.8.9",
+    "compatibleCoreVersion": "0.8.9"
+}

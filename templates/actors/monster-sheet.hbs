@@ -1,0 +1,63 @@
+<form class="{{cssClass}} document" autocomplete="off">
+    <div class="header">
+        <img class="header__image" src="{{actor.img}}" data-edit="img">
+        <div class="header__body">
+            <div class="header__row">
+                <input class="header__name field field--bold field--center" type="text" name="name" value="{{actor.name}}">
+            </div>
+            <div class="header__row">
+                <input class="header__type field field--center" type="text" name="data.type" value="{{data.data.type}}" placeholder="{{localize "WARLOCK.Type"}}">
+                <input class="header__notes field field--center field--wide" type="text" name="data.notes" value="{{data.data.notes}}" placeholder="{{localize "WARLOCK.Notes"}}">
+            </div>
+            <div class="header__row header__row--align-end">
+                <div class="resource">
+                    <label class="resource__name">{{localize "WARLOCK.Stamina"}}</label>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.stamina.value" value="{{data.data.stamina.value}}">
+                        <span class="resource__separator">/</span>
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.stamina.max" value="{{data.data.stamina.max}}">
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">{{localize "WARLOCK.Actions per Round"}}</label>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.actionsPerRound" value="{{data.data.actionsPerRound}}">
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">
+                        <a class="test-weapon-skill">
+                            {{localize "WARLOCK.Weapon Skill"}}
+                            <i class="rollable-icon fas fa-dice-d20"></i>
+                        </a>
+                    </label>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.weaponSkill" value="{{data.data.weaponSkill}}">
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">
+                        <a class="test-adventuring-skills">
+                            {{localize "WARLOCK.Adventuring Skills"}}
+                            <i class="rollable-icon fas fa-dice-d20"></i>
+                        </a>
+                    </label>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.adventuringSkills" value="{{data.data.adventuringSkills}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="flex flex--column">
+            {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
+            {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
+            <div class="flex flex--column flex--no-gap">
+                <h1>{{localize "WARLOCK.Description"}}</h1>
+                {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+            </div>
+        </div>
+    </div>
+</form>

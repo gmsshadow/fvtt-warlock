@@ -1,0 +1,563 @@
+/* This is my solution to "disabling" initiative since I couldn't find a native
+   way to do so. At a certain point, I'll implement a custom combat tracker that
+   has these buttons removed. */
+.combat-control[data-control="rollAll"],
+.combat-control[data-control="rollNPC"],
+.combat-control[data-control="resetAll"],
+.token-initiative {
+    visibility: hidden;
+}
+
+.warlock {
+    --accent-color: #ff0000;
+    --background-color: rgba(0, 0, 0, 0.05);
+    --border-color: #7a7971;
+    --table-entry-background-color: rgba(0, 0, 0, 0.1);
+    --text-failure-color: #b31414;
+    --text-success-color: #1c883c;
+}
+
+.warlock h1 {
+    border-bottom: 1px solid var(--border-color);
+
+    font-size: 1.5em;
+}
+
+.warlock .document {
+    display: flex;
+    flex-direction: column;
+}
+
+.warlock .field {
+    background: var(--background-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+
+    flex: 1;
+    height: 26px;
+    width: 100%;
+    min-width: 0;
+}
+
+.warlock .field:focus {
+    box-shadow: none;
+}
+
+.warlock .field--bold {
+    font-weight: bold;
+}
+
+.warlock .field--center {
+    text-align: center;
+}
+
+.warlock .field--no-decoration {
+    background: none;
+    border: 0;
+}
+
+.warlock .field--wide {
+    flex-grow: 2;
+}
+
+.warlock .rollable-icon {
+    font-size: 12px;
+
+    display: none;
+}
+
+.warlock .resource__name:hover .rollable-icon,
+.warlock .table__rollable-entry-field:hover .rollable-icon {
+    display: inline-block;
+}
+
+.warlock .resource {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1 1 10em;
+
+    position: relative;
+
+    min-width: 0;
+}
+
+.warlock .resource__name {
+    font-weight: bold;
+
+    text-align: center;
+
+    position: relative;
+}
+
+.warlock .resource__name--active {
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+.warlock .resource__body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    background: var(--background-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+}
+
+.warlock .resource__body--column {
+    flex-direction: column;
+}
+
+.warlock .resource__value--hidden {
+    display: none;
+}
+
+.warlock .resource__horizontal-rule {
+    border: none;
+    border-top: 1px solid var(--border-color);
+
+    margin: 0 4px;
+}
+
+.warlock .resource__expand {
+    position: absolute;
+    left: calc(100% - 15px);
+
+    visibility: hidden;
+}
+
+.warlock .resource:hover .resource__expand {
+    visibility: visible;
+}
+
+.warlock .table:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.warlock .table__header,
+.warlock .table__entry {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}
+
+.warlock .table__header {
+    border-bottom: 1px solid var(--border-color);
+    font-size: larger;
+}
+
+.warlock .table__entry {
+    height: 26px;
+}
+
+.warlock .table__entry:nth-child(2n) {
+    background: var(--table-entry-background-color);
+}
+
+.warlock .table__header-field:not(:first-child),
+.warlock .table__entry-field:not(:first-child) {
+    text-align: center;
+}
+
+.warlock .table__entry-field:last-child {
+    font-size: 12px;
+
+    visibility: hidden;
+}
+
+.warlock .table__entry:hover .table__entry-field:last-child {
+    visibility: visible;
+}
+
+.warlock .table__rollable-entry-field {
+    position: relative;
+}
+
+.warlock .grid {
+    display: grid;
+    gap: 10px;
+
+    height: 100%;
+}
+
+.warlock .grid--flow-row {
+    grid-auto-flow: row;
+}
+
+.warlock .grid--flow-column {
+    grid-auto-flow: column;
+}
+
+.warlock .grid--two-columns {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.warlock .flex {
+    display: flex;
+    gap: 10px;
+
+    flex: 1;
+
+    height: 100%;
+}
+
+.warlock .flex--row {
+    flex-direction: row;
+}
+
+.warlock .flex--column {
+    flex-direction: column;
+}
+
+.warlock .flex--no-gap {
+    gap: 0;
+}
+
+.warlock .header {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+
+    flex: 0;
+
+    margin-bottom: 10px;
+}
+
+.warlock .header__image {
+    height: 150px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+}
+
+.warlock .header__image--small {
+    height: 75px;
+}
+
+.warlock .header__body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    min-width: 0;
+    width: 100%;
+}
+
+.warlock .header__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 10px;
+
+    flex: 1;
+}
+
+.warlock .header__row--align-end {
+    align-items: flex-end;
+}
+
+.warlock .header__name {
+    height: 50px;
+    line-height: 50px;
+    font-size: 40px;
+}
+
+.warlock .header__name--small {
+    height: 25px;
+    line-height: 25px;
+    font-size: 20px;
+}
+
+.warlock .tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+
+    background: var(--background-color);
+
+    font-size: 16px;
+}
+
+.warlock .tabs__item {
+    text-align: center;
+}
+
+.warlock .tabs__item.active {
+    text-shadow: 0 0 10px var(--accent-color);
+    font-weight: bold;
+}
+
+.warlock .body,
+.warlock .tab {
+    height: 100%;
+}
+
+.warlock .careers__header,
+.warlock .careers__entry {
+    grid-template-columns: 3fr repeat(3, 1fr);
+}
+
+.warlock .skills__header,
+.warlock .career-skills__header {
+    grid-template-columns: 3fr repeat(2, 1fr) 3fr repeat(2, 1fr);
+}
+
+.warlock .skills__header-field:nth-child(4),
+.warlock .career-skills__header-field:nth-child(4) {
+    text-align: left;
+}
+
+.warlock .skills__body,
+.warlock .career-skills__body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    grid-auto-flow: column;
+}
+
+.warlock .skills__entry,
+.warlock .career-skills__entry {
+    grid-template-columns: 3fr repeat(2, 1fr);
+}
+
+.warlock .skills__entry-field:last-child,
+.warlock .career-skills__entry-field:last-child {
+    font-size: 14px;
+
+    visibility: visible;
+}
+
+.warlock .money__header,
+.warlock .money__entry {
+    grid-template-columns: 7fr 2fr 1fr;
+}
+
+.warlock .weapons__header,
+.warlock .weapons__entry {
+    grid-template-columns: 3fr repeat(3, 2fr) 1fr;
+}
+
+.warlock .armour__header,
+.warlock .armour__entry {
+    grid-template-columns: 3fr repeat(3, 2fr) 1fr;
+}
+
+.warlock .equipment__header,
+.warlock .equipment__entry {
+    grid-template-columns: 7fr 2fr 1fr;
+}
+
+.warlock .spells__header,
+.warlock .spells__entry {
+    grid-template-columns: 7fr 2fr 1fr;
+}
+
+.warlock .glyphs__header,
+.warlock .glyphs__entry {
+    grid-template-columns: 5fr repeat(2, 2fr) 1fr;
+}
+
+
+.warlock .editor {
+    background: var(--background-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+
+    height: 100%;
+
+    word-break: break-word;
+}
+
+.warlock .editor-content {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.warlock .tox.tox-tinymce {
+    /* It's necessary to use !important here since the element has a hard-coded
+       height of 17px for some reason. */
+    height: 100% !important;
+}
+
+.warlock .dice-roll {
+    display: flex;
+    flex-direction: row;
+}
+
+.warlock .dice-roll__flavor {
+    font-size: 12px;
+}
+
+.warlock .dice-roll__result {
+    flex: 0 0 100%;
+}
+
+.warlock .dice-roll__formula {
+    margin-bottom: 5px;
+}
+
+.warlock .dice-roll__total {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.warlock .dice-roll__formula,
+.warlock .dice-roll__total {
+    flex: 0 0 100%;
+
+    position: relative;
+
+    line-height: 24px;
+
+    background: var(--background-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+
+    text-align: center;
+    word-break: break-all;
+}
+
+.warlock .dice-roll__flag {
+    font-size: 18px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.warlock .dice-roll__flag--success {
+    color: var(--text-success-color);
+}
+
+.warlock .dice-roll__flag--failure {
+    color: var(--text-failure-color);
+}
+
+.warlock .dice-roll__name {
+    font-size: 16px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.warlock .dice-roll__stamina-cost {
+    font-size: 12px;
+}
+
+.warlock .dice-tooltip {
+    display: none;
+
+    flex: 0 0 100%;
+}
+
+.warlock .dice-tooltip__part-header {
+    display: flex;
+    flex-direction: row;
+
+    margin: 0;
+
+    line-height: 26px;
+
+    border-bottom: 1px solid var(--border-color);
+
+}
+
+.warlock .dice-tooltip__part-formula {
+    flex: 1;
+
+    font-weight: bold;
+}
+
+.warlock .dice-tooltip__part-total {
+    flex: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 5px;
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+}
+
+.warlock .dice-tooltip__rolls {
+    list-style: none;
+    margin: 5px 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.warlock .dice-tooltip__roll {
+    position: relative;
+    width: 26px;
+    line-height: 26px;
+    float: left;
+    margin-right: 1px;
+    background-image: url("../../../icons/svg/d6-grey.svg");
+    background-repeat: no-repeat;
+    background-size: 26px 26px;
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+}
+
+.warlock .dice-tooltip__roll.d4 {
+background-image: url("../../../icons/svg/d4-grey.svg");
+}
+
+.warlock .dice-tooltip__roll.d6 {
+background-image: url("../../../icons/svg/d6-grey.svg");
+}
+
+.warlock .dice-tooltip__roll.d8 {
+background-image: url("../../../icons/svg/d8-grey.svg");
+}
+
+.warlock .dice-tooltip__roll.d10 {
+background-image: url("../../../icons/svg/d10-grey.svg");
+}
+
+.warlock .dice-tooltip__roll.d12 {
+background-image: url("../../../icons/svg/d12-grey.svg");
+}
+
+.warlock .dice-tooltip__roll.d20 {
+background-image: url("../../../icons/svg/d20-grey.svg");
+}
+
+.warlock .dice-tooltip__roll.min {
+color: #aa0200;
+filter: sepia(0.5) hue-rotate(-60deg);
+}
+
+.warlock .dice-tooltip__roll.max {
+color: #18520b;
+filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.warlock .chat-card__name {
+    font-size: 16px;
+
+    text-align: center;
+}
+
+.warlock .chat-card__details {
+    display: flex;
+    flex-direction: column;
+}
+
+.warlock .chat-card__details-field {
+    font-size: 12px;
+}

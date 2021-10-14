@@ -1,0 +1,33 @@
+<form class="{{cssClass}} document" autocomplete="off">
+    <header class="header">
+        <img class="header__image header__image--small" src="{{item.img}}" data-edit="img">
+        <div class="header__body">
+            <div class="header__row">
+                <input class="header__name header__name--small field field--bold field--center" type="text" name="name" value="{{item.name}}">
+            </div>
+            <div class="header__row">
+                <div class="resource">
+                    <label class="resource__name">{{localize "WARLOCK.Type"}}</label>
+                    <div class="resource__body">
+                        <select class="field field--no-decoration" name="data.type.value">
+                            {{selectOptions data.data.type.choices selected=data.data.type.value localize=true}}
+                        </select>
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">{{localize "WARLOCK.Reduction Roll"}}</label>
+                    <div class="resource__body">
+                        <input class="field field--center field--no-decoration" type="text" name="data.reductionRoll" value="{{data.data.reductionRoll}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="body">
+        <div class="flex flex--column flex--no-gap">
+            <h1>{{localize "WARLOCK.Description"}}</h1>
+            {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+        </div>
+    </section>
+</form>

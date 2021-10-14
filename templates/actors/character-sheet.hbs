@@ -1,0 +1,338 @@
+<form class="{{cssClass}} document" autocomplete="off">
+    <header class="header">
+        <img class="header__image" src="{{actor.img}}" data-edit="img">
+        <div class="header__body">
+            <div class="header__row">
+                <input class="header__name field field--bold field--center" type="text" name="name" value="{{actor.name}}">
+            </div>
+            <div class="header__row">
+                <input class="header__community field field--center" type="text" name="data.biography.community" value="{{data.data.biography.community}}" placeholder="{{localize "WARLOCK.Community"}}">
+                <input class="header__traits field field--center field--wide" type="text" name="data.biography.traits" value="{{data.data.biography.traits}}" placeholder="{{localize "WARLOCK.Traits"}}">
+            </div>
+            <div class="header__row header__row--align-end">
+                <div class="resource">
+                    <label class="resource__name">{{localize "WARLOCK.Stamina"}}</label>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.stamina.value" value="{{data.data.resources.stamina.value}}">
+                        <span class="resource__separator">/</span>
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.stamina.max" value="{{data.data.resources.stamina.max}}">
+                    </div>
+                </div>
+                <div class="resource">
+                    <a class="resource__name test-luck">
+                        {{localize "WARLOCK.Luck"}}
+                        <i class="rollable-icon fas fa-dice-d20"></i>
+                    </a>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.luck.value" value="{{data.data.resources.luck.value}}">
+                        <span class="resource__separator">/</span>
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.luck.max" value="{{data.data.resources.luck.max}}">
+                    </div>
+                </div>
+                {{#if data.data.resources.pluck.enabled}}
+                <div class="resource">
+                    <a class="resource__name test-pluck">
+                        {{localize "WARLOCK.Pluck"}}
+                        <i class="rollable-icon fas fa-dice-d20"></i>
+                    </a>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.pluck.value" value="{{data.data.resources.pluck.value}}">
+                    </div>
+                </div>
+                {{/if}}
+                {{#if data.data.resources.reputation.enabled}}
+                <div class="resource">
+                    <a class="resource__name test-reputation">
+                        {{localize "WARLOCK.Reputation"}}
+                        <i class="rollable-icon fas fa-dice-d20"></i>
+                    </a>
+                    </a>
+                    <div class="resource__body resource__body--column">
+                        <div>
+                            <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.reputation.value" value="{{data.data.resources.reputation.value}}" title="{{data.data.resources.reputation.description}}">
+                            <a class="resource__expand toggle-reputation-description">
+                                <i class="fas fa-chevron-down"></i>
+                            </a>
+                        </div>
+                        <div class="resource__value resource__value--hideable resource__value--hidden">
+                            <hr class="resource__horizontal-rule">
+                            <input class="field field--center field--no-decoration" type="text" name="data.resources.reputation.description" value="{{data.data.resources.reputation.description}}" placeholder="{{localize "WARLOCK.Description"}}">
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                <div class="resource">
+                    <label class="resource__name">{{localize "WARLOCK.Advances"}}</label>
+                    <div class="resource__body">
+                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.resources.advances" value="{{data.data.resources.advances}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tabs" data-group="primary">
+        <a class="tabs__item" data-tab="main">{{localize "WARLOCK.Main"}}</a>
+        <a class="tabs__item" data-tab="gear">{{localize "WARLOCK.Gear"}}</a>
+        <a class="tabs__item" data-tab="spells">
+            {{#if (eq data.data.activeSystem "warlock")}}
+            {{localize "WARLOCK.Spells"}}
+            {{else}}
+            {{localize "WARLOCK.Glyphs"}}
+            {{/if}}
+        </a>
+        <a class="tabs__item" data-tab="notes">{{localize "WARLOCK.Notes"}}</a>
+    </nav>
+
+    <section class="body">
+        <div class="tab main-tab" data-group="primary" data-tab="main">
+            <div class="careers table">
+                <div class="careers__header table__header">
+                    <span class="careers__header-field table__header-field">{{localize "WARLOCK.Career"}}</span>
+                    <span class="careers__header-field table__header-field">{{localize "WARLOCK.Level"}}</span>
+                    <span class="careers__header-field table__header-field">{{localize "WARLOCK.Current"}}</span>
+                    <span class="careers__header-field table__header-field">
+                        <a class="create-item" data-item-type="Career">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="careers__body table__body">
+                    {{#each data.data.careers}}
+                    <div class="careers__entry table__entry" data-id="{{id}}">
+                        <span class="careers__entry-field table__entry-field">
+                            <a class="table__rollable-entry-field test-career">
+                                {{name}}
+                                <i class="rollable-icon rollable-icon fas fa-dice-d20"></i>
+                            </a>
+                        </span>
+                        <span class="careers__entry-field table__entry-field">{{data.data.currentLevel}}</span>
+                        <span class="careers__entry-field table__entry-field">
+                            {{#if data.data.isActive}}
+                            <i class="far fa-check-circle"></i>
+                            {{else}}
+                            <a class="activate-career">
+                                <i class="far fa-circle"></i>
+                            </a>
+                            {{/if}}
+                        </span>
+                        <span class="careers__entry-field table__entry-field">
+                            <a class="chat-item">
+                                <i class="fas fa-comment"></i>
+                            </a>
+                            <a class="edit-item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="delete-item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="skills table">
+                <div class="skills__header table__header">
+                    <span class="skills__header-field table__header-field">{{localize "WARLOCK.Skill"}}</span>
+                    <span class="skills__header-field table__header-field">{{localize "WARLOCK.Level"}}</span>
+                    <span class="skills__header-field table__header-field">{{localize "WARLOCK.Max"}}</span>
+                    <!-- The header entries are duplicated since it's a two-column grid. -->
+                    <span class="skills__header-field table__header-field">{{localize "WARLOCK.Skill"}}</span>
+                    <span class="skills__header-field table__header-field">{{localize "WARLOCK.Level"}}</span>
+                    <span class="skills__header-field table__header-field">{{localize "WARLOCK.Max"}}</span>
+                </div>
+                <div class="skills__body table__body">
+                    {{#each (lookup data.data.adventuringSkills data.data.activeSystem) as |level skill|}}
+                    <div class="skills__entry table__entry" data-skill="{{skill}}">
+                        <span class="skills__entry-field table__entry-field">
+                            <a class="table__rollable-entry-field test-skill">
+                                {{skill}}
+                                <i class="rollable-icon rollable-icon fas fa-dice-d20"></i>
+                            </a>
+                        </span>
+                        <input class="skills__entry-field table__entry-field field field--no-decoration skill-level" type="number" value="{{level}}">
+                        {{#with (getSkill ../data.data.careers skill)}}
+                        {{#if isCareerSkill}}
+                        <span class="skills__entry-field table__entry-field">{{maximumLevel}}</span>
+                        {{else}}
+                        <span class="skills__entry-field table__entry-field">—</span>
+                        {{/if}}
+                        {{/with}}
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="tab gear-tab" data-group="primary" data-tab="gear">
+            <div class="money table">
+                <div class="money__header table__header">
+                    <span class="money__header-field table__header-field">{{localize "WARLOCK.Money"}}</span>
+                    <span class="money__header-field table__header-field">{{localize "WARLOCK.Amount"}}</span>
+                    <span class="money__header-field table__header-field">
+                        <a class="consolidate-money" title="{{localize "WARLOCK.Consolidate Money"}}">
+                            <i class="fas fa-coins"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="money__body table__body">
+                    <div class="money__entry table__entry">
+                        <span class="money__entry-field table__entry-field">
+                            {{#if (eq data.data.activeSystem "warlock")}}
+                            {{localize "WARLOCK.Gold"}}
+                            {{else}}
+                            {{localize "WARLOCK.Jades"}}
+                            {{/if}}
+                        </span>
+                        <input class="money__entry-field table__entry-field field field--no-decoration" type="number" name="data.gear.money.gold" value="{{data.data.gear.money.gold}}">
+                        <span class="money__entry-field table__entry-field"></span>
+                    </div>
+                    <div class="money__entry table__entry">
+                        <span class="money__entry-field table__entry-field">
+                            {{#if (eq data.data.activeSystem "warlock")}}
+                            {{localize "WARLOCK.Silver"}}
+                            {{else}}
+                            {{localize "WARLOCK.Shards"}}
+                            {{/if}}
+                        </span>
+                        <input class="money__entry-field table__entry-field field field--no-decoration" type="number" name="data.gear.money.silver" value="{{data.data.gear.money.silver}}">
+                        <span class="money__entry-field table__entry-field"></span>
+                    </div>
+                    <div class="money__entry table__entry">
+                        <span class="money__entry-field table__entry-field">
+                            {{#if (eq data.data.activeSystem "warlock")}}
+                            {{localize "WARLOCK.Pennies"}}
+                            {{else}}
+                            {{localize "WARLOCK.Frags"}}
+                            {{/if}}
+                        </span>
+                        <input class="money__entry-field table__entry-field field field--no-decoration" type="number" name="data.gear.money.pennies" value="{{data.data.gear.money.pennies}}">
+                        <span class="money__entry-field table__entry-field"></span>
+                    </div>
+                </div>
+            </div>
+            {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
+            {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
+            <div class="equipment table">
+                <div class="equipment__header table__header">
+                    <span class="equipment__header-field table__header-field">{{localize "WARLOCK.Equipment"}}</span>
+                    <span class="equipment__header-field table__header-field">{{localize "WARLOCK.Quantity"}}</span>
+                    <span class="equipment__header-field table__header-field">
+                        <a class="create-item" data-item-type="Equipment">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="equipment__body table__body">
+                    {{#each data.data.gear.equipment}}
+                    <div class="equipment__entry table__entry" data-id="{{id}}">
+                        <span class="equipment__entry-field table__entry-field">{{name}}</span>
+                        <input class="edit-quantity equipment__entry-field table__entry-field field field--no-decoration" value="{{data.data.quantity}}">
+                        <span class="equipment__entry-field table__entry-field">
+                            <a class="chat-item">
+                                <i class="fas fa-comment"></i>
+                            </a>
+                            <a class="edit-item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="delete-item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="tab spells-tab" data-group="primary" data-tab="spells">
+            {{#if (eq data.data.activeSystem "warlock")}}
+            <div class="spells table">
+                <div class="spells__header table__header">
+                    <span class="spells__header-field table__header-field">{{localize "WARLOCK.Spell"}}</span>
+                    <span class="spells__header-field table__header-field">{{localize "WARLOCK.Stamina Cost"}}</span>
+                    <span class="spells__header-field table__header-field">
+                        <a class="create-item" data-item-type="Spell">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="spells__body table__body">
+                    {{#each data.data.spells}}
+                    <div class="spells__entry table__entry" data-id="{{id}}">
+                        <span class="spells__entry-field table__entry-field">{{name}}</span>
+                        <span class="spells__entry-field table__entry-field">{{data.data.staminaCost}}</span>
+                        <span class="spells__entry-field table__entry-field">
+                            <a class="chat-item">
+                                <i class="fas fa-comment"></i>
+                            </a>
+                            <a class="edit-item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="delete-item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{else}}
+            <div class="glyphs table">
+                <div class="glyphs__header table__header">
+                    <span class="glyphs__header-field table__header-field">{{localize "WARLOCK.Glyph"}}</span>
+                    <span class="glyphs__header-field table__header-field">{{localize "WARLOCK.Test"}}</span>
+                    <span class="glyphs__header-field table__header-field">{{localize "WARLOCK.Stamina Cost"}}</span>
+                    <span class="glyphs__header-field table__header-field">
+                        <a class="create-item" data-item-type="Glyph">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="glyphs__body table__body">
+                    {{#each data.data.glyphs}}
+                    <div class="glyphs__entry table__entry" data-id="{{id}}">
+                        <span class="glyphs__entry-field table__entry-field">{{name}}</span>
+                        <span class="glyphs__entry-field table__entry-field">{{data.data.test.value}}</span>
+                        <span class="glyphs__entry-field table__entry-field">{{data.data.staminaCost}}</span>
+                        <span class="glyphs__entry-field table__entry-field">
+                            <a class="chat-item">
+                                <i class="fas fa-comment"></i>
+                            </a>
+                            <a class="edit-item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="delete-item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+        </div>
+        <div class="tab notes-tab" data-group="primary" data-tab="notes">
+            <div class="grid grid--flow-row grid--two-columns">
+                <div class="flex flex--column">
+                    <div class="flex flex--column flex--no-gap">
+                        <h1>{{localize "WARLOCK.Biography"}}</h1>
+                        {{editor content=data.data.biography.description target="data.biography.description" button=true owner=owner editable=editable}}
+                    </div>
+                    {{#if data.data.biography.talent.enabled}}
+                    <div class="flex flex--column flex--no-gap">
+                        <h1>{{localize "WARLOCK.Talent"}}</h1>
+                        <div class="flex flex--column">
+                            <input class="field field--bold field--center" type="text" name="data.biography.talent.name" value="{{data.data.biography.talent.name}}" placeholder="{{localize "WARLOCK.Name"}}">
+                            {{editor content=data.data.biography.talent.description target="data.biography.talent.description" button=true owner=owner editable=editable}}
+                        </div>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="flex flex--column flex--no-gap">
+                    <h1>{{localize "WARLOCK.Notes"}}</h1>
+                    {{editor content=data.data.biography.notes target="data.biography.notes" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
