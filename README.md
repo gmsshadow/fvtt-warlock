@@ -25,5 +25,5 @@ contact me through the official Foundry VTT Discord server in the
 
 The [dnd5e](https://gitlab.com/foundrynet/dnd5e) system by Atropos,
 [wfrp4e](https://github.com/moo-man/WFRP4e-FoundryVTT) system by Moo Man, and
-the [cyphersystem] system by mrkwnzl were invaluable as working examples of
-implemented systems.
+the [cyphersystem](https://github.com/mrkwnzl/cyphersystem-foundryvtt) system by
+mrkwnzl were invaluable as working examples of implemented systems.
