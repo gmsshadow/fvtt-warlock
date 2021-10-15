@@ -12,7 +12,7 @@ way.
 1. Open Foundry VTT.
 2. Click the Game System tab.
 3. Click Install System.
-4. Enter the following URL in the Manifest URL field:
+4. Enter the following URL in the Manifest URL field and click Install:
    https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json
 
 ## Reporting Issues, Errors, and Suggestions
