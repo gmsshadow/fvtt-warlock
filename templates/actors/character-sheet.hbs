@@ -136,7 +136,7 @@
                     <span class="skills__header-field table__header-field">{{localize "WARLOCK.Skill"}}</span>
                     <span class="skills__header-field table__header-field">{{localize "WARLOCK.Level"}}</span>
                     <span class="skills__header-field table__header-field">{{localize "WARLOCK.Max"}}</span>
-                    <!-- The header entries are duplicated since it's a two-column grid. -->
+                    <!-- The header entries are duplicated since the body is a two-column grid. -->
                     <span class="skills__header-field table__header-field">{{localize "WARLOCK.Skill"}}</span>
                     <span class="skills__header-field table__header-field">{{localize "WARLOCK.Level"}}</span>
                     <span class="skills__header-field table__header-field">{{localize "WARLOCK.Max"}}</span>
@@ -147,7 +147,7 @@
                         <span class="skills__entry-field table__entry-field">
                             <a class="table__rollable-entry-field test-skill">
                                 {{skill}}
-                                <i class="rollable-icon rollable-icon fas fa-dice-d20"></i>
+                                <i class="rollable-icon fas fa-dice-d20"></i>
                             </a>
                         </span>
                         <input class="skills__entry-field table__entry-field field field--no-decoration skill-level" type="number" name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}" value="{{level}}" data-skill="{{skill}}">
