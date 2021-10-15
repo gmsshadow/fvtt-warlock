@@ -41,7 +41,7 @@
 }
 
 .warlock .field:focus {
-    box-shadow: none;
+    box-shadow: 0 0 10px var(--accent-color);
 }
 
 .warlock .field--bold {
