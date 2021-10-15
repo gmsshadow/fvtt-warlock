@@ -150,7 +150,7 @@
                                 <i class="rollable-icon rollable-icon fas fa-dice-d20"></i>
                             </a>
                         </span>
-                        <input class="skills__entry-field table__entry-field field field--no-decoration skill-level" type="number" value="{{level}}">
+                        <input class="skills__entry-field table__entry-field field field--no-decoration skill-level" type="number" name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}" value="{{level}}" data-skill="{{skill}}">
                         {{#with (getSkill ../data.data.careers skill)}}
                         {{#if isCareerSkill}}
                         <span class="skills__entry-field table__entry-field">{{maximumLevel}}</span>
@@ -227,7 +227,7 @@
                     {{#each data.data.gear.equipment}}
                     <div class="equipment__entry table__entry" data-id="{{id}}">
                         <span class="equipment__entry-field table__entry-field">{{name}}</span>
-                        <input class="edit-quantity equipment__entry-field table__entry-field field field--no-decoration" value="{{data.data.quantity}}">
+                        <span class="equipment__entry-field table__entry-field">{{data.data.quantity}}</span>
                         <span class="equipment__entry-field table__entry-field">
                             <a class="chat-item">
                                 <i class="fas fa-comment"></i>

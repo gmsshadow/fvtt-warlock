@@ -21,19 +21,44 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         };
     }
 
+    render(force=false, options={}) {
+        super.render(force, options);
+
+        // Refocus the last selected skill level input field when the sheet is
+        // rendered. This situation occurs if an input is focused, changed, and
+        // another input field is focused. The sheet renders at least twice,
+        // once for the character data update and one or more times for the
+        // career level update(s). The renders after the first cause the
+        // latter-focused input field to blur which makes it very annoying to
+        // modify multiple skill levels at once, like in character creation.
+        //
+        // This idea was graciously adapted from Moo Man's WFRP 4th Edition
+        // system.
+        if (this.saveFocus) {
+            const element = $(`input[data-skill=${this.saveFocus}]`)[0];
+            if (element) {
+                element.focus();
+            }
+        }
+    }
+
     activateListeners(html) {
         super.activateListeners(html);
 
         html.find(".activate-career").click(this._onActivateCareer.bind(this));
         html.find(".consolidate-money").click(this._onConsolidateMoney.bind(this));
-        html.find(".edit-quantity").change(this._onEditQuantity.bind(this));
-        html.find(".skill-level").change(this._onSkillLevelChange.bind(this));
         html.find(".test-career").click(this._onTestCareer.bind(this));
         html.find(".test-luck").click(this._onTestLuck.bind(this));
         html.find(".test-pluck").click(this._onTestPluck.bind(this));
         html.find(".test-reputation").click(this._onTestReputation.bind(this));
         html.find(".test-skill").click(this._onTestSkill.bind(this));
         html.find(".toggle-reputation-description").click(this._onToggleReputationDescription.bind(this));
+
+        // Set up the event listener to save the last focused skill level input
+        // element.
+        html.find(".skill-level").focusin((event) => {
+            this.saveFocus = event.currentTarget.dataset.skill;
+        });
     }
 
     getData() {
@@ -53,6 +78,20 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         context.data.data.resources.reputation.enabled = game.settings.get("warlock", "reputationEnabled");
         context.data.data.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
         context.data.data.resources.pluck.enabled = game.settings.get("warlock", "pluckEnabled");
+
+        // Update the career skill levels when the sheet renders. The reason
+        // that this is placed here instead of being in an event listener on the
+        // skill level input element is almost purely cosmetic -- the skill
+        // level will flash back to the old value for a split second when
+        // another skill level input element is focused if this is placed in an
+        // event listener.
+        this.actor.items
+            .filter((item) => {
+                return item.type === "Career";
+            })
+            .forEach(async (career) => {
+                await career.updateCareerSkillLevel();
+            });
 
         return context;
     }
@@ -121,40 +160,6 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 },
             },
         });
-    }
-
-    async _onEditQuantity(event) {
-        const itemId = event.currentTarget.closest(".table__entry").dataset.id;
-        const item = this.actor.items.get(itemId);
-
-        await item.update({
-            data: {
-                quantity: event.currentTarget.value,
-            },
-        });
-    }
-
-    async _onSkillLevelChange(event) {
-        const skill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        await this.actor.update({
-            data: {
-                adventuringSkills: {
-                    [activeSystem]: {
-                        [skill]: parseInt(event.currentTarget.value, 10),
-                    },
-                },
-            },
-        });
-
-        this.actor.items
-            .filter((item) => {
-                return item.type === "Career";
-            })
-            .forEach(async (career) => {
-                await career.updateCareerSkillLevel();
-            });
     }
 
     async _onTestCareer(event) {
