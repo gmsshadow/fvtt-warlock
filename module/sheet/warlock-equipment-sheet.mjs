@@ -1,4 +1,6 @@
-export default class WarlockEquipmentSheet extends ItemSheet {
+import WarlockItemSheet from "./warlock-item-sheet.mjs"
+
+export default class WarlockEquipmentSheet extends WarlockItemSheet {
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
