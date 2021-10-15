@@ -20,7 +20,7 @@ export default class WarlockCareerSheet extends ItemSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
-
+        html.find(".edit-career-skill-level").change(this._onEditCareerSkillLevel.bind(this));
         html.find(".toggle-career-skill").click(this._onToggleCareerSkill.bind(this));
     }
 
@@ -30,6 +30,29 @@ export default class WarlockCareerSheet extends ItemSheet {
         context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
 
         return context;
+    }
+
+    async _onEditCareerSkillLevel(event) {
+        if (!this.isEditable) {
+            return;
+        }
+
+        const skillName = event.currentTarget.closest(".table__entry").dataset.skill;
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+
+        await this.item.update({
+            data: {
+                adventuringSkills: {
+                    [activeSystem]: {
+                        [skillName]: {
+                            maximumLevel: event.currentTarget.value,
+                        },
+                    },
+                },
+            },
+        });
+
+        await this.item.updateCareerSkills();
     }
 
     async _onToggleCareerSkill(event) {
