@@ -20,3 +20,10 @@ way.
 File a new issue [here](https://gitlab.com/azarvel/fvtt-warlock/-/issues) or
 contact me through the official Foundry VTT Discord server in the
 `#other-game-systems` channel (`Azarvel#6970`).
+
+## Acknowledgments
+
+The [dnd5e](https://gitlab.com/foundrynet/dnd5e) system by Atropos,
+[wfrp4e](https://github.com/moo-man/WFRP4e-FoundryVTT) system by Moo Man, and
+the [cyphersystem] system by mrkwnzl were invaluable as working examples of
+implemented systems.
