@@ -31,6 +31,8 @@ export default class WarlockActorSheet extends ActorSheet {
     }
 
     async _onChatItem(event) {
+        event.preventDefault();
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.id;
         const item = this.actor.items.get(itemId);
 
@@ -41,6 +43,8 @@ export default class WarlockActorSheet extends ActorSheet {
         if (!this.isEditable) {
             return;
         }
+
+        event.preventDefault();
 
         const itemType = event.currentTarget.dataset.itemType;
         let itemName = "";
@@ -102,6 +106,8 @@ export default class WarlockActorSheet extends ActorSheet {
             return;
         }
 
+        event.preventDefault();
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.id;
         const item = this.actor.items.get(itemId);
 
@@ -123,12 +129,20 @@ export default class WarlockActorSheet extends ActorSheet {
     }
 
     _onEditItem(event) {
+        event.preventDefault();
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.id;
         const item = this.actor.items.get(itemId);
         item.sheet.render(true);
     }
 
     async _onEquipItem(event) {
+        if (!this.isEditable) {
+            return;
+        }
+
+        event.preventDefault();
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.id;
         const item = this.actor.items.get(itemId);
 
@@ -144,12 +158,16 @@ export default class WarlockActorSheet extends ActorSheet {
     }
 
     async _onRollArmour(event) {
+        event.preventDefault();
+
         const armourId = event.currentTarget.closest(".table__entry").dataset.id;
         const armour = this.actor.items.get(armourId);
         Roll.rollArmour(armour);
     }
 
     async _onRollWeapon(event) {
+        event.preventDefault();
+
         const weaponId = event.currentTarget.closest(".table__entry").dataset.id;
         const weapon = this.actor.items.get(weaponId);
         Roll.rollWeapon(weapon);

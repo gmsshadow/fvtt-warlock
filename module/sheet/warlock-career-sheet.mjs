@@ -37,6 +37,8 @@ export default class WarlockCareerSheet extends ItemSheet {
             return;
         }
 
+        event.preventDefault();
+
         const skillName = event.currentTarget.closest(".table__entry").dataset.skill;
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
@@ -59,6 +61,8 @@ export default class WarlockCareerSheet extends ItemSheet {
         if (!this.isEditable) {
             return;
         }
+
+        event.preventDefault();
 
         const skillName = event.currentTarget.closest(".table__entry").dataset.skill;
         const activeSystem = game.settings.get("warlock", "activeSystem");

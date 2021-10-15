@@ -62,6 +62,8 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
             return;
         }
 
+        event.preventDefault();
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.id;
         const careerData = this.actor.items
             .filter((item) => {
@@ -97,6 +99,8 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     }
 
     async _onConsolidateMoney(event) {
+        event.preventDefault();
+
         let gold = this.actor.data.data.gear.money.gold;
         let silver = this.actor.data.data.gear.money.silver;
         let pennies = this.actor.data.data.gear.money.pennies;
@@ -154,6 +158,8 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     }
 
     async _onTestCareer(event) {
+        event.preventDefault();
+
         const careerId = event.currentTarget.closest(".table__entry").dataset.id;
         const career = this.actor.items.get(careerId);
 
@@ -161,18 +167,26 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     }
 
     async _onTestLuck(event) {
+        event.preventDefault();
+
         await Roll.rollSkillTest("Luck", this.actor.data.data.resources.luck.value);
     }
 
     async _onTestPluck(event) {
+        event.preventDefault();
+
         await Roll.rollSkillTest("Pluck", this.actor.data.data.resources.pluck.value);
     }
 
     async _onTestReputation(event) {
+        event.preventDefault();
+
         await Roll.rollSkillTest(`Reputation (${this.actor.data.data.resources.reputation.description})`, this.actor.data.data.resources.reputation.value);
     }
 
     async _onTestSkill(event) {
+        event.preventDefault();
+
         const activeSystem = game.settings.get("warlock", "activeSystem");
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = this.actor.data.data.adventuringSkills[activeSystem][skill];
@@ -181,6 +195,8 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     }
 
     _onToggleReputationDescription(event) {
+        event.preventDefault();
+
         $(event.currentTarget).toggleClass("resource__name--active");
         $(event.currentTarget).closest(".resource__body").children(".resource__value--hideable").toggleClass("resource__value--hidden");
     }

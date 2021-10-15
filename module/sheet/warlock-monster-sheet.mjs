@@ -22,10 +22,14 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     }
 
     async _onTestAdventuringSkills(event) {
+        event.preventDefault();
+
         await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills);
     }
 
     async _onTestWeaponSkill(event) {
+        event.preventDefault();
+
         await Roll.rollSkillTest("Weapon Skill", this.actor.data.data.weaponSkill);
     }
 }
