@@ -1,20 +1,36 @@
 <div class="weapons table">
     <div class="weapons__header table__header">
-        <span class="weapons__header-field table__header-field">{{localize "WARLOCK.Weapon"}}</span>
-        <span class="weapons__header-field table__header-field">{{localize "WARLOCK.Type"}}</span>
-        <span class="weapons__header-field table__header-field">{{localize "WARLOCK.Damage"}}</span>
-        <span class="weapons__header-field table__header-field">{{localize "WARLOCK.Equipped"}}</span>
         <span class="weapons__header-field table__header-field">
-            <a class="create-item" data-item-type="Weapon">
+            {{localize "WARLOCK.Weapon"}}
+        </span>
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Type"}}
+        </span>
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Damage"}}
+        </span>
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Equipped"}}
+        </span>
+        <span class="weapons__header-field table__header-field">
+            <a
+                class="create-item"
+                data-item-type="Weapon">
                 <i class="fas fa-plus"></i>
             </a>
         </span>
     </div>
     <div class="weapons__body table__body">
         {{#each data.data.gear.weapons}}
-        <div class="weapons__entry table__entry" data-id="{{id}}">
-            <span class="weapons__entry-field table__entry-field">{{name}}</span>
-            <span class="weapons__entry-field table__entry-field">{{data.data.type.value}}</span>
+        <div
+            class="weapons__entry table__entry"
+            data-id="{{id}}">
+            <span class="weapons__entry-field table__entry-field">
+                {{name}}
+            </span>
+            <span class="weapons__entry-field table__entry-field">
+                {{data.data.type.value}}
+            </span>
             <span class="weapons__entry-field table__entry-field">
                 <a class="table__rollable-entry-field roll-weapon">
                     {{data.data.damage.roll}} {{data.data.damage.type.value}}

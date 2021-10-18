@@ -1,49 +1,98 @@
 <form class="{{cssClass}} document" autocomplete="off">
     <div class="header">
-        <img class="header__image" src="{{actor.img}}" data-edit="img">
+        <img
+            class="header__image"
+            src="{{actor.img}}"
+            data-edit="img">
         <div class="header__body">
             <div class="header__row">
-                <input class="header__name field field--bold field--center" type="text" name="name" value="{{actor.name}}">
+                <input
+                    class="header__name field field--bold field--center"
+                    type="text"
+                    name="name"
+                    value="{{actor.name}}">
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
-                    <label class="resource__name">{{localize "WARLOCK.Structure"}}</label>
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Structure"}}
+                    </label>
                     <div class="resource__body">
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.structure.value" value="{{data.data.structure.value}}">
-                        <span class="resource__separator">/</span>
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.structure.max" value="{{data.data.structure.max}}">
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.structure.value"
+                            value="{{data.data.structure.value}}">
+                        <span class="resource__separator">
+                            /
+                        </span>
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.structure.max"
+                            value="{{data.data.structure.max}}">
                     </div>
                 </div>
                 <div class="resource">
-                    <label class="resource__name">{{localize "WARLOCK.Ship Gun"}}</label>
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Ship Gun"}}
+                    </label>
                     <div class="resource__body">
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.capabilities.shipGun" value="{{data.data.capabilities.shipGun}}">
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.capabilities.shipGun"
+                            value="{{data.data.capabilities.shipGun}}">
                     </div>
                 </div>
                 <div class="resource">
-                    <label class="resource__name">{{localize "WARLOCK.Anti-Personnel Gun"}}</label>
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Anti-Personnel Gun"}}
+                    </label>
                     <div class="resource__body">
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.capabilities.antiPersonnelGun" value="{{data.data.capabilities.antiPersonnelGun}}">
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.capabilities.antiPersonnelGun"
+                            value="{{data.data.capabilities.antiPersonnelGun}}">
                     </div>
                 </div>
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
-                    <label class="resource__name">{{localize "WARLOCK.Manoeuvrability"}}</label>
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Manoeuvrability"}}
+                    </label>
                     <div class="resource__body">
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.capabilities.manoeuvrability" value="{{data.data.capabilities.manoeuvrability}}">
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.capabilities.manoeuvrability"
+                            value="{{data.data.capabilities.manoeuvrability}}">
                     </div>
                 </div>
                 <div class="resource">
-                    <label class="resource__name">{{localize "WARLOCK.Scanners"}}</label>
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Scanners"}}
+                    </label>
                     <div class="resource__body">
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.capabilities.scanners" value="{{data.data.capabilities.scanners}}">
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.capabilities.scanners"
+                            value="{{data.data.capabilities.scanners}}">
                     </div>
                 </div>
                 <div class="resource">
-                    <label class="resource__name">{{localize "WARLOCK.Astronav"}}</label>
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Astronav"}}
+                    </label>
                     <div class="resource__body">
-                        <input class="resource__value field field--center field--no-decoration" type="number" name="data.capabilities.astronav" value="{{data.data.capabilities.astronav}}">
+                        <input
+                            class="resource__value field field--center field--no-decoration"
+                            type="number"
+                            name="data.capabilities.astronav"
+                            value="{{data.data.capabilities.astronav}}">
                     </div>
                 </div>
             </div>
@@ -55,8 +104,15 @@
             {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
             {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
             <div class="flex flex--column flex--no-gap">
-                <h1>{{localize "WARLOCK.Description"}}</h1>
-                {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+                <h1>
+                    {{localize "WARLOCK.Description"}}
+                </h1>
+                {{editor
+                    content=data.data.description
+                    target="data.description"
+                    button=true
+                    owner=owner
+                    editable=editable}}
             </div>
         </div>
     </div>
