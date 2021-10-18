@@ -6,9 +6,6 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         return {
             ...super.defaultOptions,
             template: "systems/warlock/templates/actors/vehicle-sheet.hbs",
-            classes: [
-                "warlock",
-            ],
             width: 575,
             height: 550,
         }

@@ -5,9 +5,6 @@ export default class WarlockGlyphSheet extends WarlockItemSheet {
         return {
             ...super.defaultOptions,
             template: "systems/warlock/templates/items/glyph-sheet.hbs",
-            classes: [
-                "warlock",
-            ],
             width: 340,
             height: 325,
         }

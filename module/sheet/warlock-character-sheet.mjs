@@ -6,9 +6,6 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         return {
             ...super.defaultOptions,
             template: "systems/warlock/templates/actors/character-sheet.hbs",
-            classes: [
-                "warlock",
-            ],
             width: 620,
             height: 745,
             tabs: [
@@ -65,15 +62,27 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     getData() {
         const context = super.getData();
 
-        context.data.data.careers = context.actor.items.filter((item) => {
-            return item.type === "Career";
-        });
-        context.data.data.spells = context.actor.items.filter((item) => {
-            return item.type === "Spell";
-        });
-        context.data.data.glyphs = context.actor.items.filter((item) => {
-            return item.type === "Glyph";
-        });
+        context.data.data.careers = context.actor.items
+            .filter((item) => {
+                return item.type === "Career";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
+        context.data.data.spells = context.actor.items
+            .filter((item) => {
+                return item.type === "Spell";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
+        context.data.data.glyphs = context.actor.items
+            .filter((item) => {
+                return item.type === "Glyph";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
 
         context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
         context.data.data.resources.reputation.enabled = game.settings.get("warlock", "reputationEnabled");
@@ -104,7 +113,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         event.preventDefault();
 
-        const itemId = event.currentTarget.closest(".table__entry").dataset.id;
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const careerData = this.actor.items
             .filter((item) => {
                 return item.type === "Career";
@@ -132,8 +141,6 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 }
             }
         ].concat(careerData));
-
-        await this.actor.items.get(itemId).updateCareerSkill();
 
         this.render(true);
     }
@@ -215,7 +222,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestCareer(event) {
         event.preventDefault();
 
-        const careerId = event.currentTarget.closest(".table__entry").dataset.id;
+        const careerId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const career = this.actor.items.get(careerId);
 
         await Roll.rollSkillTest(career.name, career.data.data.currentLevel);

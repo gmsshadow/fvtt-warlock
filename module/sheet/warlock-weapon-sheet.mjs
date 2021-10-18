@@ -5,9 +5,6 @@ export default class WarlockWeaponSheet extends WarlockItemSheet {
         return {
             ...super.defaultOptions,
             template: "systems/warlock/templates/items/weapon-sheet.hbs",
-            classes: [
-                "warlock",
-            ],
             width: 475,
             height: 275,
         }

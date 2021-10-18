@@ -5,9 +5,6 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         return {
             ...super.defaultOptions,
             template: "systems/warlock/templates/items/career-sheet.hbs",
-            classes: [
-                "warlock",
-            ],
             width: 600,
             height: 615,
             tabs: [
