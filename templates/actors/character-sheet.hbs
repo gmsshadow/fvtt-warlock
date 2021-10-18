@@ -5,6 +5,7 @@
         <img
             class="header__image"
             src="{{actor.img}}"
+            title="{{actor.name}}"
             data-edit="img">
         <div class="header__body">
             <div class="header__row">
@@ -12,7 +13,8 @@
                     class="header__name field field--bold field--center"
                     type="text"
                     name="name"
-                    value="{{actor.name}}">
+                    value="{{actor.name}}"
+                    title="{{localize "WARLOCK.Name"}}">
             </div>
             <div class="header__row">
                 <input
@@ -20,13 +22,15 @@
                     type="text"
                     name="data.biography.community"
                     value="{{data.data.biography.community}}"
-                    placeholder="{{localize "WARLOCK.Community"}}">
+                    placeholder="{{localize "WARLOCK.Community"}}"
+                    title="{{localize "WARLOCK.Community"}}">
                 <input
                     class="header__traits field field--center field--wide"
                     type="text"
                     name="data.biography.traits"
                     value="{{data.data.biography.traits}}"
-                    placeholder="{{localize "WARLOCK.Traits"}}">
+                    placeholder="{{localize "WARLOCK.Traits"}}"
+                    title="{{localize "WARLOCK.Traits"}}">
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
@@ -38,7 +42,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.resources.stamina.value"
-                            value="{{data.data.resources.stamina.value}}">
+                            value="{{data.data.resources.stamina.value}}"
+                            title="{{localize "WARLOCK.CurrentStamina"}}">
                         <span class="resource__separator">
                             /
                         </span>
@@ -46,7 +51,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.resources.stamina.max"
-                            value="{{data.data.resources.stamina.max}}">
+                            value="{{data.data.resources.stamina.max}}"
+                            title="{{localize "WARLOCK.MaximumStamina"}}">
                     </div>
                 </div>
                 <div class="resource">
@@ -59,7 +65,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.resources.luck.value"
-                            value="{{data.data.resources.luck.value}}">
+                            value="{{data.data.resources.luck.value}}"
+                            title="{{localize "WARLOCK.CurrentLuck"}}">
                         <span class="resource__separator">
                             /
                         </span>
@@ -67,7 +74,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.resources.luck.max"
-                            value="{{data.data.resources.luck.max}}">
+                            value="{{data.data.resources.luck.max}}"
+                            title="{{localize "WARLOCK.MaximumLuck"}}">
                     </div>
                 </div>
                 {{#if data.data.resources.pluck.enabled}}
@@ -81,7 +89,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.resources.pluck.value"
-                            value="{{data.data.resources.pluck.value}}">
+                            value="{{data.data.resources.pluck.value}}"
+                            title="{{localize "WARLOCK.Pluck"}}">
                     </div>
                 </div>
                 {{/if}}
@@ -99,7 +108,7 @@
                                 type="number"
                                 name="data.resources.reputation.value"
                                 value="{{data.data.resources.reputation.value}}"
-                                title="{{data.data.resources.reputation.description}}">
+                                title="{{localize "WARLOCK.Reputation"}}: {{data.data.resources.reputation.description}}">
                             <a class="resource__expand toggle-reputation-description">
                                 <i class="fas fa-chevron-down"></i>
                             </a>
@@ -111,7 +120,8 @@
                                 type="text"
                                 name="data.resources.reputation.description"
                                 value="{{data.data.resources.reputation.description}}"
-                                placeholder="{{localize "WARLOCK.Description"}}">
+                                placeholder="{{localize "WARLOCK.Description"}}"
+                                title="{{localize "WARLOCK.ReputationDescription"}}">
                         </div>
                     </div>
                 </div>
@@ -125,7 +135,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.resources.advances"
-                            value="{{data.data.resources.advances}}">
+                            value="{{data.data.resources.advances}}"
+                            title="{{localize "WARLOCK.Advances"}}">
                     </div>
                 </div>
             </div>
@@ -137,16 +148,23 @@
         data-group="primary">
         <a
             class="tabs__item"
+            title="{{localize "WARLOCK.Main"}}"
             data-tab="main">
             {{localize "WARLOCK.Main"}}
         </a>
         <a
             class="tabs__item"
+            title="{{localize "WARLOCK.Gear"}}"
             data-tab="gear">
             {{localize "WARLOCK.Gear"}}
         </a>
         <a
             class="tabs__item"
+            {{#if (eq data.data.activeSystem "warlock")}}
+            title="{{localize "WARLOCK.Spells"}}"
+            {{else}}
+            title="{{localize "WARLOCK.Glyphs"}}"
+            {{/if}}
             data-tab="spells">
             {{#if (eq data.data.activeSystem "warlock")}}
             {{localize "WARLOCK.Spells"}}
@@ -156,6 +174,7 @@
         </a>
         <a
             class="tabs__item"
+            title="{{localize "WARLOCK.Notes"}}"
             data-tab="notes">
             {{localize "WARLOCK.Notes"}}
         </a>
@@ -190,16 +209,22 @@
                     <div
                         class="careers__entry table__entry"
                         data-item-id="{{id}}">
-                        <span class="careers__entry-field table__entry-field">
+                        <span
+                            class="careers__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.TestCareer"}}">
                             <a class="table__rollable-entry-field test-career">
                                 {{name}}
                                 <i class="rollable-icon rollable-icon fas fa-dice-d20"></i>
                             </a>
                         </span>
-                        <span class="careers__entry-field table__entry-field">
+                        <span
+                            class="careers__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.CurrentLevel"}}">
                             {{data.data.currentLevel}}
                         </span>
-                        <span class="careers__entry-field table__entry-field">
+                        <span
+                            class="careers__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.IsActiveCareer"}}">
                             {{#if data.data.isActive}}
                             <i class="far fa-check-circle"></i>
                             {{else}}
@@ -208,14 +233,21 @@
                             </a>
                             {{/if}}
                         </span>
-                        <span class="careers__entry-field table__entry-field">
-                            <a class="chat-item">
+                        <span
+                            class="careers__entry-field table__entry-field">
+                            <a
+                                class="chat-item"
+                                title="{{localize "WARLOCK.ChatCareer"}}">
                                 <i class="fas fa-comment"></i>
                             </a>
-                            <a class="edit-item">
+                            <a
+                                class="edit-item"
+                                title="{{localize "WARLOCK.EditCareer"}}">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a class="delete-item">
+                            <a
+                                class="delete-item"
+                                title="{{localize "WARLOCK.DeleteCareer"}}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </span>
@@ -252,11 +284,15 @@
                         data-skill="{{skill}}">
                         <span class="skills__entry-field table__entry-field">
                             {{#if (gt ../data.data.resources.advances 0)}}
-                            <a class="increment-skill-level skills__increment-button">
+                            <a
+                                class="increment-skill-level skills__increment-button"
+                                title="{{localize "WARLOCK.IncrementSkillLevel"}}">
                                 +
                             </a>
                             {{/if}}
-                            <a class="table__rollable-entry-field test-skill">
+                            <a
+                                class="table__rollable-entry-field test-skill"
+                                title="{{localize "WARLOCK.TestSkill"}}">
                                 {{skill}}
                                 <i class="rollable-icon fas fa-dice-d20"></i>
                             </a>
@@ -266,14 +302,19 @@
                             type="number"
                             name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}"
                             value="{{level}}"
+                            title="{{localize "WARLOCK.SkillLevel"}}"
                             data-skill="{{skill}}">
                         {{#with (getSkill ../data.data.careers skill)}}
                         {{#if isCareerSkill}}
-                        <span class="skills__entry-field table__entry-field">
+                        <span
+                            class="skills__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.MaximumLevel"}}">
                             {{maximumLevel}}
                         </span>
                         {{else}}
-                        <span class="skills__entry-field table__entry-field">
+                        <span
+                            class="skills__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.MaximumLevel"}}">
                             —
                         </span>
                         {{/if}}
@@ -299,7 +340,7 @@
                     <span class="money__header-field table__header-field">
                         <a
                             class="consolidate-money"
-                            title="{{localize "WARLOCK.Consolidate Money"}}">
+                            title="{{localize "WARLOCK.ConsolidateMoneyHint"}}">
                             <i class="fas fa-coins"></i>
                         </a>
                     </span>
@@ -317,7 +358,12 @@
                             class="money__entry-field table__entry-field field field--no-decoration"
                             type="number"
                             name="data.gear.money.gold"
-                            value="{{data.data.gear.money.gold}}">
+                            value="{{data.data.gear.money.gold}}"
+                            {{#if (eq data.data.activeSystem "warlock")}}
+                            title="{{localize "WARLOCK.Gold"}}">
+                            {{else}}
+                            title="{{localize "WARLOCK.Jades"}}">
+                            {{/if}}
                         <span class="money__entry-field table__entry-field"></span>
                     </div>
                     <div class="money__entry table__entry">
@@ -332,7 +378,12 @@
                             class="money__entry-field table__entry-field field field--no-decoration"
                             type="number"
                             name="data.gear.money.silver"
-                            value="{{data.data.gear.money.silver}}">
+                            value="{{data.data.gear.money.silver}}"
+                            {{#if (eq data.data.activeSystem "warlock")}}
+                            title="{{localize "WARLOCK.Silver"}}">
+                            {{else}}
+                            title="{{localize "WARLOCK.Shards"}}">
+                            {{/if}}
                         <span class="money__entry-field table__entry-field"></span>
                     </div>
                     <div class="money__entry table__entry">
@@ -347,7 +398,12 @@
                             class="money__entry-field table__entry-field field field--no-decoration"
                             type="number"
                             name="data.gear.money.pennies"
-                            value="{{data.data.gear.money.pennies}}">
+                            value="{{data.data.gear.money.pennies}}"
+                            {{#if (eq data.data.activeSystem "warlock")}}
+                            title="{{localize "WARLOCK.Pennies"}}">
+                            {{else}}
+                            title="{{localize "WARLOCK.Frags"}}">
+                            {{/if}}
                         <span class="money__entry-field table__entry-field"></span>
                     </div>
                 </div>
@@ -375,20 +431,30 @@
                     <div
                         class="equipment__entry table__entry"
                         data-item-id="{{id}}">
-                        <span class="equipment__entry-field table__entry-field">
+                        <span
+                            class="equipment__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.Equipment"}}">
                             {{name}}
                         </span>
-                        <span class="equipment__entry-field table__entry-field">
+                        <span
+                            class="equipment__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.Quantity"}}">
                             {{data.data.quantity}}
                         </span>
                         <span class="equipment__entry-field table__entry-field">
-                            <a class="chat-item">
+                            <a
+                                class="chat-item"
+                                title="{{localize "WARLOCK.ChatEquipment"}}">
                                 <i class="fas fa-comment"></i>
                             </a>
-                            <a class="edit-item">
+                            <a
+                                class="edit-item"
+                                title="{{localize "WARLOCK.EditEquipment"}}">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a class="delete-item">
+                            <a
+                                class="delete-item"
+                                title="{{localize "WARLOCK.DeleteEquipment"}}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </span>
@@ -408,7 +474,7 @@
                         {{localize "WARLOCK.Spell"}}
                     </span>
                     <span class="spells__header-field table__header-field">
-                        {{localize "WARLOCK.Stamina Cost"}}
+                        {{localize "WARLOCK.StaminaCost"}}
                     </span>
                     <span class="spells__header-field table__header-field">
                         <a
@@ -423,20 +489,31 @@
                     <div
                         class="spells__entry table__entry"
                         data-item-id="{{id}}">
-                        <span class="spells__entry-field table__entry-field">
+                        <span
+                            class="spells__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.Spell"}}">
                             {{name}}
                         </span>
-                        <span class="spells__entry-field table__entry-field">
+                        <span
+                            class="spells__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.StaminaCost"}}">
                             {{data.data.staminaCost}}
                         </span>
-                        <span class="spells__entry-field table__entry-field">
-                            <a class="chat-item">
+                        <span
+                            class="spells__entry-field table__entry-field">
+                            <a
+                                class="chat-item"
+                                title="{{localize "WARLOCK.ChatSpell"}}">
                                 <i class="fas fa-comment"></i>
                             </a>
-                            <a class="edit-item">
+                            <a
+                                class="edit-item"
+                                title="{{localize "WARLOCK.EditSpell"}}">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a class="delete-item">
+                            <a
+                                class="delete-item"
+                                title="{{localize "WARLOCK.DeleteSpell"}}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </span>
@@ -454,7 +531,7 @@
                         {{localize "WARLOCK.Test"}}
                     </span>
                     <span class="glyphs__header-field table__header-field">
-                        {{localize "WARLOCK.Stamina Cost"}}
+                        {{localize "WARLOCK.StaminaCost"}}
                     </span>
                     <span class="glyphs__header-field table__header-field">
                         <a
@@ -469,23 +546,36 @@
                     <div
                         class="glyphs__entry table__entry"
                         data-item-id="{{id}}">
-                        <span class="glyphs__entry-field table__entry-field">
+                        <span
+                            class="glyphs__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.Glyph"}}">
                             {{name}}
                         </span>
-                        <span class="glyphs__entry-field table__entry-field">
+                        <span
+                            class="glyphs__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.Test"}}">
                             {{data.data.test.value}}
                         </span>
-                        <span class="glyphs__entry-field table__entry-field">
+                        <span
+                            class="glyphs__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.StaminaCost"}}">
                             {{data.data.staminaCost}}
                         </span>
-                        <span class="glyphs__entry-field table__entry-field">
-                            <a class="chat-item">
+                        <span
+                            class="glyphs__entry-field table__entry-field">
+                            <a
+                                class="chat-item"
+                                title="{{localize "WARLOCK.ChatGlyph"}}">
                                 <i class="fas fa-comment"></i>
                             </a>
-                            <a class="edit-item">
+                            <a
+                                class="edit-item"
+                                title="{{localize "WARLOCK.EditGlyph"}}">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a class="delete-item">
+                            <a
+                                class="delete-item"
+                                title="{{localize "WARLOCK.DeleteGlyph"}}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </span>
@@ -523,7 +613,8 @@
                                 type="text"
                                 name="data.biography.talent.name"
                                 value="{{data.data.biography.talent.name}}"
-                                placeholder="{{localize "WARLOCK.Name"}}">
+                                placeholder="{{localize "WARLOCK.Name"}}"
+                                title="{{localize "WARLOCK.TalentName"}}">
                             {{editor
                                 content=data.data.biography.talent.description
                                 target="data.biography.talent.description"
