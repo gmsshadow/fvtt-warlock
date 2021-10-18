@@ -56,7 +56,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         // Set up the event listener to save the last focused skill level input
         // element.
-        html.find(".skill-level").focusin((event) => {
+        html.find(".edit-skill-level").focusin((event) => {
             this.saveFocus = event.currentTarget.dataset.skill;
         });
     }
