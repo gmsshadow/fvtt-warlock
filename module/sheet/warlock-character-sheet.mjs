@@ -35,7 +35,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         // This idea was graciously adapted from Moo Man's WFRP 4th Edition
         // system.
         if (this.saveFocus) {
-            const element = $(`input[data-skill=${this.saveFocus}]`)[0];
+            const element = $(`input[data-skill="${this.saveFocus}"]`)[0];
             if (element) {
                 element.focus();
             }
@@ -47,6 +47,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         html.find(".activate-career").click(this._onActivateCareer.bind(this));
         html.find(".consolidate-money").click(this._onConsolidateMoney.bind(this));
+        html.find(".increment-skill-level").click(this._onIncrementSkillLevel.bind(this));
         html.find(".test-career").click(this._onTestCareer.bind(this));
         html.find(".test-luck").click(this._onTestLuck.bind(this));
         html.find(".test-pluck").click(this._onTestPluck.bind(this));
@@ -157,6 +158,55 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                         silver: silver,
                         pennies: pennies,
                     },
+                },
+            },
+        });
+    }
+
+    async _onIncrementSkillLevel(event) {
+        // Increase the skill level.
+        const skill = event.currentTarget.closest(".table__entry").dataset.skill;
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+
+        await this.actor.update({
+            data: {
+                adventuringSkills: {
+                    [activeSystem]: {
+                        [skill]: this.actor.data.data.adventuringSkills[activeSystem][skill] + 1,
+                    },
+                },
+            },
+        });
+
+        // Notify the careers of the level increase.
+        this.actor.items
+            .filter((item) => {
+                return item.type === "Career";
+            })
+            .forEach(async (career) => {
+                let currentLevel = career.data.data.currentLevel;
+                await career.updateCareerSkillLevel();
+
+                // Check if the active career level has changed.
+                if (career.data.data.isActive && (currentLevel < career.data.data.currentLevel)) {
+                    // If it has, add the difference to the maximum stamina.
+                    await this.actor.update({
+                        data: {
+                            resources: {
+                                stamina: {
+                                    max: this.actor.data.data.resources.stamina.max + (career.data.data.currentLevel - currentLevel),
+                                },
+                            },
+                        },
+                    });
+                }
+            });
+
+        // Deduct one advance.
+        await this.actor.update({
+            data: {
+                resources: {
+                    advances: this.actor.data.data.resources.advances - 1,
                 },
             },
         });
