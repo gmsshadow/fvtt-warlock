@@ -3,7 +3,7 @@
     "title": "Warlock/Warpstar (Unofficial)",
     "description": "A system for playing Warlock and Warpstar in Foundry VTT.",
     "author": "Azarvel",
-    "version": "0.1.1",
+    "version": "0.1.2",
 
     "esmodules": [
         "module/warlock.mjs"
@@ -24,5 +24,5 @@
 
     "url": "https://gitlab.com/azarvel/fvtt-warlock",
     "manifest": "https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json",
-    "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v0.1.1/downloads/warlock-v0.1.1.zip"
+    "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v0.1.2/downloads/warlock-v0.1.2.zip"
 }
