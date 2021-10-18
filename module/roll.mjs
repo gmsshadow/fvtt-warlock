@@ -119,7 +119,7 @@ async function _getSkillTestOptions() {
             content: dialogHtml,
             buttons: {
                 opposed: {
-                    label: game.i18n.localize("WARLOCK.Opposed Test"),
+                    label: game.i18n.localize("WARLOCK.OpposedTest"),
                     callback: (html) => resolve(_processSkillTestOptions(html[0].querySelector("form"), true)),
                 },
                 cancel: {
@@ -127,7 +127,7 @@ async function _getSkillTestOptions() {
                     callback: (html) => resolve({cancelled: true}),
                 },
                 basic: {
-                    label: game.i18n.localize("WARLOCK.Basic Test"),
+                    label: game.i18n.localize("WARLOCK.BasicTest"),
                     callback: (html) => resolve(_processSkillTestOptions(html[0].querySelector("form"), false))
                 }
             },

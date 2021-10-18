@@ -80,8 +80,8 @@ Hooks.once("init", () => {
     ]);
 
     game.settings.register("warlock", "activeSystem", {
-        name: game.i18n.localize("WARLOCK.Active System"),
-        hint: game.i18n.localize("WARLOCK.Active System Hint"),
+        name: game.i18n.localize("WARLOCK.ActiveSystem"),
+        hint: game.i18n.localize("WARLOCK.ActiveSystemHint"),
         scope: "world",
         config: true,
         type: String,
@@ -94,7 +94,7 @@ Hooks.once("init", () => {
     });
     game.settings.register("warlock", "reputationEnabled", {
         name: game.i18n.localize("WARLOCK.Reputation"),
-        hint: game.i18n.localize("WARLOCK.Reputation Hint"),
+        hint: game.i18n.localize("WARLOCK.ReputationHint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -103,7 +103,7 @@ Hooks.once("init", () => {
     });
     game.settings.register("warlock", "talentEnabled", {
         name: game.i18n.localize("WARLOCK.Talent"),
-        hint: game.i18n.localize("WARLOCK.Talent Hint"),
+        hint: game.i18n.localize("WARLOCK.TalentHint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -112,7 +112,7 @@ Hooks.once("init", () => {
     });
     game.settings.register("warlock", "pluckEnabled", {
         name: game.i18n.localize("WARLOCK.Pluck"),
-        hint: game.i18n.localize("WARLOCK.Pluck Hint"),
+        hint: game.i18n.localize("WARLOCK.PluckHint"),
         scope: "world",
         config: true,
         type: Boolean,

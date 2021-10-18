@@ -25,19 +25,27 @@
         <div
             class="weapons__entry table__entry"
             data-item-id="{{id}}">
-            <span class="weapons__entry-field table__entry-field">
+            <span
+                class="weapons__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Weapon"}}">
                 {{name}}
             </span>
-            <span class="weapons__entry-field table__entry-field">
+            <span
+                class="weapons__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Type"}}">
                 {{data.data.type.value}}
             </span>
-            <span class="weapons__entry-field table__entry-field">
+            <span
+                class="weapons__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Damage"}}">
                 <a class="table__rollable-entry-field roll-weapon">
                     {{data.data.damage.roll}} {{data.data.damage.type.value}}
                     <i class="rollable-icon rollable-icon fas fa-dice"></i>
                 </a>
             </span>
-            <span class="weapons__entry-field table__entry-field">
+            <span
+                class="weapons__entry-field table__entry-field"
+                title="{{localize "WARLOCK.IsEquipped"}}">
                 <a class="equip-item">
                     {{#if data.data.isEquipped}}
                     <i class="far fa-check-square"></i>
@@ -47,13 +55,19 @@
                 </a>
             </span>
             <span class="weapons__entry-field table__entry-field">
-                <a class="chat-item">
+                <a
+                    class="chat-item"
+                    title="{{localize "WARLOCK.ChatWeapon"}}">
                     <i class="fas fa-comment"></i>
                 </a>
-                <a class="edit-item">
+                <a
+                    class="edit-item"
+                    title="{{localize "WARLOCK.EditWeapon"}}">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a class="delete-item">
+                <a
+                    class="delete-item"
+                    title="{{localize "WARLOCK.DeleteWeapon"}}">
                     <i class="fas fa-trash"></i>
                 </a>
             </span>

@@ -3,6 +3,7 @@
         <img
             class="header__image header__image--small"
             src="{{item.img}}"
+            title="{{item.name}}"
             data-edit="img">
         <div class="header__body">
             <div class="header__row">
@@ -10,7 +11,8 @@
                     class="header__name header__name--small field field--bold field--center"
                     type="text"
                     name="name"
-                    value="{{item.name}}">
+                    value="{{item.name}}"
+                    title="{{localize "WARLOCK.Name"}}">
             </div>
             <div class="header__row">
                 <div class="resource">
@@ -22,7 +24,8 @@
                             class="field field--center field--no-decoration"
                             type="number"
                             name="data.quantity"
-                            value="{{data.data.quantity}}">
+                            value="{{data.data.quantity}}"
+                            title="{{localize "WARLOCK.Quantity"}}">
                     </div>
                 </div>
             </div>

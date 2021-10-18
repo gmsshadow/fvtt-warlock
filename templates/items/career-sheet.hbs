@@ -5,6 +5,7 @@
         <img
             class="header__image header__image--small"
             src="{{item.img}}"
+            title="{{item.name}}"
             data-edit="img">
         <div class="header__body">
             <div class="header__row">
@@ -12,7 +13,8 @@
                     class="header__name header__name--small field field--bold field--center"
                     type="text"
                     name="name"
-                    value="{{item.name}}">
+                    value="{{item.name}}"
+                    title="{{localize "WARLOCK.Name"}}">
             </div>
         </div>
     </header>
@@ -22,11 +24,13 @@
         data-group="primary">
         <a
             class="tabs__item"
+            title="{{localize "WARLOCK.Skills"}}"
             data-tab="skills">
             {{localize "WARLOCK.Skills"}}
         </a>
         <a
             class="tabs__item"
+            title="{{localize "WARLOCK.Description"}}"
             data-tab="description">
             {{localize "WARLOCK.Description"}}
         </a>
@@ -64,10 +68,14 @@
                     <div
                         class="career-skills__entry table__entry"
                         data-skill="{{skill}}">
-                        <span class="career-skills__entry-field table__entry-field">
+                        <span
+                            class="career-skills__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.Skill"}}">
                             {{skill}}
                         </span>
-                        <span class="career-skills__entry-field table__entry-field">
+                        <span
+                            class="career-skills__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.IsCareerSkill"}}">
                             <a class="toggle-career-skill">
                                 {{#if data.isCareerSkill}}
                                 <i class="far fa-check-square"></i>
@@ -82,9 +90,12 @@
                             type="number"
                             name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}.maximumLevel"
                             value="{{maximumLevel}}"
+                            title="{{localize "WARLOCK.MaximumLevel"}}"
                             data-career-skill="{{skill}}">
                         {{else}}
-                        <span class="career-skills__entry-field table__entry-field">
+                        <span
+                            class="career-skills__entry-field table__entry-field"
+                            title="{{localize "WARLOCK.MaximumLevel"}}">
                             —
                         </span>
                         {{/if}}

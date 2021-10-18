@@ -3,6 +3,7 @@
         <img
             class="header__image"
             src="{{actor.img}}"
+            title="{{actor.name}}"
             data-edit="img">
         <div class="header__body">
             <div class="header__row">
@@ -10,7 +11,8 @@
                     class="header__name field field--bold field--center"
                     type="text"
                     name="name"
-                    value="{{actor.name}}">
+                    value="{{actor.name}}"
+                    title="{{localize "WARLOCK.Name"}}">
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
@@ -22,7 +24,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.structure.value"
-                            value="{{data.data.structure.value}}">
+                            value="{{data.data.structure.value}}"
+                            title="{{localize "WARLOCK.CurrentStructure"}}">
                         <span class="resource__separator">
                             /
                         </span>
@@ -30,31 +33,34 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.structure.max"
-                            value="{{data.data.structure.max}}">
+                            value="{{data.data.structure.max}}"
+                            title="{{localize "WARLOCK.MaximumStructure"}}">
                     </div>
                 </div>
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Ship Gun"}}
+                        {{localize "WARLOCK.ShipGun"}}
                     </label>
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.capabilities.shipGun"
-                            value="{{data.data.capabilities.shipGun}}">
+                            value="{{data.data.capabilities.shipGun}}"
+                            title="{{localize "WARLOCK.ShipGun"}}">
                     </div>
                 </div>
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Anti-Personnel Gun"}}
+                        {{localize "WARLOCK.AntiPersonnelGun"}}
                     </label>
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.capabilities.antiPersonnelGun"
-                            value="{{data.data.capabilities.antiPersonnelGun}}">
+                            value="{{data.data.capabilities.antiPersonnelGun}}"
+                            title="{{localize "WARLOCK.AntiPersonnelGun"}}">
                     </div>
                 </div>
             </div>
@@ -68,7 +74,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.capabilities.manoeuvrability"
-                            value="{{data.data.capabilities.manoeuvrability}}">
+                            value="{{data.data.capabilities.manoeuvrability}}"
+                            title="{{localize "WARLOCK.Manoeuvrability"}}">
                     </div>
                 </div>
                 <div class="resource">
@@ -80,7 +87,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.capabilities.scanners"
-                            value="{{data.data.capabilities.scanners}}">
+                            value="{{data.data.capabilities.scanners}}"
+                            title="{{localize "WARLOCK.Scanners"}}">
                     </div>
                 </div>
                 <div class="resource">
@@ -92,7 +100,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.capabilities.astronav"
-                            value="{{data.data.capabilities.astronav}}">
+                            value="{{data.data.capabilities.astronav}}"
+                            title="{{localize "WARLOCK.Astronav"}}">
                     </div>
                 </div>
             </div>

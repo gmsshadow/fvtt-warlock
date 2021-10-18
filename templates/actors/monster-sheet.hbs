@@ -3,6 +3,7 @@
         <img
             class="header__image"
             src="{{actor.img}}"
+            title="{{actor.name}}"
             data-edit="img">
         <div class="header__body">
             <div class="header__row">
@@ -10,7 +11,8 @@
                     class="header__name field field--bold field--center"
                     type="text"
                     name="name"
-                    value="{{actor.name}}">
+                    value="{{actor.name}}"
+                    title="{{localize "WARLOCK.Name"}}">
             </div>
             <div class="header__row">
                 <input
@@ -18,13 +20,15 @@
                     type="text"
                     name="data.type"
                     value="{{data.data.type}}"
-                    placeholder="{{localize "WARLOCK.Type"}}">
+                    placeholder="{{localize "WARLOCK.Type"}}"
+                    title="{{localize "WARLOCK.Type"}}">
                 <input
                     class="header__notes field field--center field--wide"
                     type="text"
                     name="data.notes"
                     value="{{data.data.notes}}"
-                    placeholder="{{localize "WARLOCK.Notes"}}">
+                    placeholder="{{localize "WARLOCK.Notes"}}"
+                    title="{{localize "WARLOCK.Notes"}}">
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
@@ -36,7 +40,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.stamina.value"
-                            value="{{data.data.stamina.value}}">
+                            value="{{data.data.stamina.value}}"
+                            title="{{localize "WARLOCK.CurrentStamina"}}">
                         <span class="resource__separator">
                             /
                         </span>
@@ -44,25 +49,27 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.stamina.max"
-                            value="{{data.data.stamina.max}}">
+                            value="{{data.data.stamina.max}}"
+                            title="{{localize "WARLOCK.MaximumStamina"}}">
                     </div>
                 </div>
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Actions per Round"}}
+                        {{localize "WARLOCK.ActionsPerRound"}}
                     </label>
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.actionsPerRound"
-                            value="{{data.data.actionsPerRound}}">
+                            value="{{data.data.actionsPerRound}}"
+                            title="{{localize "WARLOCK.ActionsPerRound"}}">
                     </div>
                 </div>
                 <div class="resource">
                     <label class="resource__name">
                         <a class="test-weapon-skill">
-                            {{localize "WARLOCK.Weapon Skill"}}
+                            {{localize "WARLOCK.WeaponSkill"}}
                             <i class="rollable-icon fas fa-dice-d20"></i>
                         </a>
                     </label>
@@ -71,13 +78,14 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.weaponSkill"
-                            value="{{data.data.weaponSkill}}">
+                            value="{{data.data.weaponSkill}}"
+                            title="{{localize "WARLOCK.WeaponSkill"}}">
                     </div>
                 </div>
                 <div class="resource">
                     <label class="resource__name">
                         <a class="test-adventuring-skills">
-                            {{localize "WARLOCK.Adventuring Skills"}}
+                            {{localize "WARLOCK.AdventuringSkills"}}
                             <i class="rollable-icon fas fa-dice-d20"></i>
                         </a>
                     </label>
@@ -86,7 +94,8 @@
                             class="resource__value field field--center field--no-decoration"
                             type="number"
                             name="data.adventuringSkills"
-                            value="{{data.data.adventuringSkills}}">
+                            value="{{data.data.adventuringSkills}}"
+                            title="{{localize "WARLOCK.AdventuringSkills"}}">
                     </div>
                 </div>
             </div>

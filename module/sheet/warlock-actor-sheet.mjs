@@ -92,22 +92,22 @@ export default class WarlockActorSheet extends ActorSheet {
 
         switch (itemType) {
             case "Armour":
-                itemName = game.i18n.localize("WARLOCK.New Armour");
+                itemName = game.i18n.localize("WARLOCK.NewArmour");
                 break;
             case "Career":
-                itemName = game.i18n.localize("WARLOCK.New Career");
+                itemName = game.i18n.localize("WARLOCK.NewCareer");
                 break;
             case "Equipment":
-                itemName = game.i18n.localize("WARLOCK.New Equipment");
+                itemName = game.i18n.localize("WARLOCK.NewEquipment");
                 break;
             case "Glyph":
-                itemName = game.i18n.localize("WARLOCK.New Glyph");
+                itemName = game.i18n.localize("WARLOCK.NewGlyph");
                 break;
             case "Spell":
-                itemName = game.i18n.localize("WARLOCK.New Spell");
+                itemName = game.i18n.localize("WARLOCK.NewSpell");
                 break;
             case "Weapon":
-                itemName = game.i18n.localize("WARLOCK.New Weapon");
+                itemName = game.i18n.localize("WARLOCK.NewWeapon");
                 break;
             default:
                 break;
