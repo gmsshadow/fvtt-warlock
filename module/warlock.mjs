@@ -90,6 +90,7 @@ Hooks.once("init", () => {
             "warpstar": "Warpstar",
         },
         default: "warlock",
+        onChange: _ => window.location.reload(),
     });
     game.settings.register("warlock", "reputationEnabled", {
         name: game.i18n.localize("WARLOCK.Reputation"),
@@ -98,6 +99,7 @@ Hooks.once("init", () => {
         config: true,
         type: Boolean,
         default: false,
+        onChange: _ => window.location.reload(),
     });
     game.settings.register("warlock", "talentEnabled", {
         name: game.i18n.localize("WARLOCK.Talent"),
@@ -106,6 +108,7 @@ Hooks.once("init", () => {
         config: true,
         type: Boolean,
         default: false,
+        onChange: _ => window.location.reload(),
     });
     game.settings.register("warlock", "pluckEnabled", {
         name: game.i18n.localize("WARLOCK.Pluck"),
@@ -114,6 +117,7 @@ Hooks.once("init", () => {
         config: true,
         type: Boolean,
         default: false,
+        onChange: _ => window.location.reload(),
     });
 
     Handlebars.registerHelper("getSkill", (careers, skillName) => {
