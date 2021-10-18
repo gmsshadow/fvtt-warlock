@@ -34,7 +34,7 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         // This idea was graciously adapted from Moo Man's WFRP 4th Edition
         // system.
         if (this.saveFocus) {
-            const element = $(`input[data-career-skill=${this.saveFocus}]`)[0];
+            const element = $(`input[data-career-skill="${this.saveFocus}]`)[0];
             if (element) {
                 element.focus();
             }

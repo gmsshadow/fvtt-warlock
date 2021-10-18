@@ -145,6 +145,9 @@
                     {{#each (lookup data.data.adventuringSkills data.data.activeSystem) as |level skill|}}
                     <div class="skills__entry table__entry" data-skill="{{skill}}">
                         <span class="skills__entry-field table__entry-field">
+                            {{#if (gt ../data.data.resources.advances 0)}}
+                            <a class="increment-skill-level skills__increment-button">+</a>
+                            {{/if}}
                             <a class="table__rollable-entry-field test-skill">
                                 {{skill}}
                                 <i class="rollable-icon fas fa-dice-d20"></i>
