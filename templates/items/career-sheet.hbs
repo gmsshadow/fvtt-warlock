@@ -1,34 +1,72 @@
-<form class="{{cssClass}} document" autocomplete="off">
-    <header class="header">
-        <img class="header__image header__image--small" src="{{item.img}}" data-edit="img">
+<form
+    class="{{cssClass}} document"
+    autocomplete="off">
+    <header class="header header--small">
+        <img
+            class="header__image header__image--small"
+            src="{{item.img}}"
+            data-edit="img">
         <div class="header__body">
             <div class="header__row">
-                <input class="header__name header__name--small field field--bold field--center" type="text" name="name" value="{{item.name}}">
+                <input
+                    class="header__name header__name--small field field--bold field--center"
+                    type="text"
+                    name="name"
+                    value="{{item.name}}">
             </div>
         </div>
     </header>
 
-    <nav class="tabs" data-group="primary">
-        <a class="tabs__item" data-tab="skills">{{localize "WARLOCK.Skills"}}</a>
-        <a class="tabs__item" data-tab="description">{{localize "WARLOCK.Description"}}</a>
+    <nav
+        class="tabs"
+        data-group="primary">
+        <a
+            class="tabs__item"
+            data-tab="skills">
+            {{localize "WARLOCK.Skills"}}
+        </a>
+        <a
+            class="tabs__item"
+            data-tab="description">
+            {{localize "WARLOCK.Description"}}
+        </a>
     </nav>
 
     <section class="body">
-        <div class="tab skills-tab" data-group="primary" data-tab="skills">
+        <div
+            class="tab skills-tab"
+            data-group="primary"
+            data-tab="skills">
             <div class="career-skills table">
                 <div class="career-skills__header table__header">
-                    <span class="career-skills__header-field table__header-field">{{localize "WARLOCK.Skill"}}</span>
-                    <span class="career-skills__header-field table__header-field">{{localize "WARLOCK.Current"}}</span>
-                    <span class="career-skills__header-field table__header-field">{{localize "WARLOCK.Max"}}</span>
-                    <!-- The header entries are duplicated since it's a two-column grid. -->
-                    <span class="career-skills__header-field table__header-field">{{localize "WARLOCK.Skill"}}</span>
-                    <span class="career-skills__header-field table__header-field">{{localize "WARLOCK.Current"}}</span>
-                    <span class="career-skills__header-field table__header-field">{{localize "WARLOCK.Max"}}</span>
+                    <span class="career-skills__header-field table__header-field">
+                        {{localize "WARLOCK.Skill"}}
+                    </span>
+                    <span class="career-skills__header-field table__header-field">
+                        {{localize "WARLOCK.Current"}}
+                    </span>
+                    <span class="career-skills__header-field table__header-field">
+                        {{localize "WARLOCK.Max"}}
+                    </span>
+                    <!-- The header entries are duplicated since the body is a two-column grid. -->
+                    <span class="career-skills__header-field table__header-field">
+                        {{localize "WARLOCK.Skill"}}
+                    </span>
+                    <span class="career-skills__header-field table__header-field">
+                        {{localize "WARLOCK.Current"}}
+                    </span>
+                    <span class="career-skills__header-field table__header-field">
+                        {{localize "WARLOCK.Max"}}
+                    </span>
                 </div>
                 <div class="career-skills__body table__body">
                     {{#each (lookup data.data.adventuringSkills data.data.activeSystem) as |data skill|}}
-                    <div class="career-skills__entry table__entry" data-skill="{{skill}}">
-                        <span class="career-skills__entry-field table__entry-field">{{skill}}</span>
+                    <div
+                        class="career-skills__entry table__entry"
+                        data-skill="{{skill}}">
+                        <span class="career-skills__entry-field table__entry-field">
+                            {{skill}}
+                        </span>
                         <span class="career-skills__entry-field table__entry-field">
                             <a class="toggle-career-skill">
                                 {{#if data.isCareerSkill}}
@@ -39,19 +77,36 @@
                             </a>
                         </span>
                         {{#if data.isCareerSkill}}
-                        <input class="edit-career-skill-level career-skills__entry-field table__entry-field field field--no-decoration" type="number" name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}.maximumLevel" value="{{maximumLevel}}" data-career-skill="{{skill}}">
+                        <input
+                            class="edit-career-skill-level career-skills__entry-field table__entry-field field field--no-decoration"
+                            type="number"
+                            name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}.maximumLevel"
+                            value="{{maximumLevel}}"
+                            data-career-skill="{{skill}}">
                         {{else}}
-                        <span class="career-skills__entry-field table__entry-field">—</span>
+                        <span class="career-skills__entry-field table__entry-field">
+                            —
+                        </span>
                         {{/if}}
                     </div>
                     {{/each}}
                 </div>
             </div>
         </div>
-        <div class="tab notes-tab" data-group="primary" data-tab="description">
+        <div
+            class="tab notes-tab"
+            data-group="primary"
+            data-tab="description">
             <div class="flex flex--column flex--no-gap">
-                <h1>{{localize "WARLOCK.Description"}}</h1>
-                {{editor content=data.data.description target="data.description" button=true owner=owner editable=editable}}
+                <h1>
+                    {{localize "WARLOCK.Description"}}
+                </h1>
+                {{editor
+                    content=data.data.description
+                    target="data.description"
+                    button=true
+                    owner=owner
+                    editable=editable}}
             </div>
         </div>
     </section>
