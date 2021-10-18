@@ -223,18 +223,24 @@
 
     flex: 0;
 
+    height: 160px;
+
     margin-bottom: 10px;
 }
 
+.warlock .header--small {
+    height: 80px;
+}
+
 .warlock .header__image {
-    height: 150px;
+    height: 160px;
 
     border: 1px solid var(--border-color);
     border-radius: 3px;
 }
 
 .warlock .header__image--small {
-    height: 75px;
+    height: 80px;
 }
 
 .warlock .header__body {
