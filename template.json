@@ -476,7 +476,7 @@
             "test": {
                 "value": "Basic",
                 "choices": {
-                    "Simple": "Basic",
+                    "Basic": "Basic",
                     "Opposed": "Opposed"
                 }
             }
