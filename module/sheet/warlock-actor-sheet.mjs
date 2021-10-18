@@ -2,6 +2,35 @@ import * as Chat from "../chat.mjs";
 import * as Roll from "../roll.mjs";
 
 export default class WarlockActorSheet extends ActorSheet {
+    static get defaultOptions() {
+        return {
+            ...super.defaultOptions,
+            classes: [
+                "warlock",
+            ],
+            dragDrop: [
+                {
+                    dragSelector: ".careers__entry",
+                },
+                {
+                    dragSelector: ".weapons__entry",
+                },
+                {
+                    dragSelector: ".armour__entry",
+                },
+                {
+                    dragSelector: ".equipment__entry",
+                },
+                {
+                    dragSelector: ".spells__entry",
+                },
+                {
+                    dragSelector: ".glyphs__entry",
+                },
+            ],
+        }
+    }
+
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -17,15 +46,27 @@ export default class WarlockActorSheet extends ActorSheet {
     getData() {
         const context = super.getData();
 
-        context.data.data.gear.weapons = context.actor.items.filter((item) => {
-            return item.type === "Weapon";
-        });
-        context.data.data.gear.armour = context.actor.items.filter((item) => {
-            return item.type === "Armour";
-        });
-        context.data.data.gear.equipment = context.actor.items.filter((item) => {
-            return item.type === "Equipment";
-        });
+        context.data.data.gear.weapons = context.actor.items
+            .filter((item) => {
+                return item.type === "Weapon";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
+        context.data.data.gear.armour = context.actor.items
+            .filter((item) => {
+                return item.type === "Armour";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
+        context.data.data.gear.equipment = context.actor.items
+            .filter((item) => {
+                return item.type === "Equipment";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
 
         return context;
     }
@@ -33,7 +74,7 @@ export default class WarlockActorSheet extends ActorSheet {
     async _onChatItem(event) {
         event.preventDefault();
 
-        const itemId = event.currentTarget.closest(".table__entry").dataset.id;
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         await Chat.createItemChatMessage(item);
@@ -108,7 +149,7 @@ export default class WarlockActorSheet extends ActorSheet {
 
         event.preventDefault();
 
-        const itemId = event.currentTarget.closest(".table__entry").dataset.id;
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         await item.delete();
@@ -131,7 +172,7 @@ export default class WarlockActorSheet extends ActorSheet {
     _onEditItem(event) {
         event.preventDefault();
 
-        const itemId = event.currentTarget.closest(".table__entry").dataset.id;
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
         item.sheet.render(true);
     }
@@ -143,7 +184,7 @@ export default class WarlockActorSheet extends ActorSheet {
 
         event.preventDefault();
 
-        const itemId = event.currentTarget.closest(".table__entry").dataset.id;
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         if (item.data.type !== "Armour" && item.data.type !== "Weapon") {
@@ -160,7 +201,7 @@ export default class WarlockActorSheet extends ActorSheet {
     async _onRollArmour(event) {
         event.preventDefault();
 
-        const armourId = event.currentTarget.closest(".table__entry").dataset.id;
+        const armourId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const armour = this.actor.items.get(armourId);
         Roll.rollArmour(armour);
     }
@@ -168,7 +209,7 @@ export default class WarlockActorSheet extends ActorSheet {
     async _onRollWeapon(event) {
         event.preventDefault();
 
-        const weaponId = event.currentTarget.closest(".table__entry").dataset.id;
+        const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const weapon = this.actor.items.get(weaponId);
         Roll.rollWeapon(weapon);
     }
