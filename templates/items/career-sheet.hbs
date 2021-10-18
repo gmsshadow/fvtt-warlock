@@ -39,7 +39,7 @@
                             </a>
                         </span>
                         {{#if data.isCareerSkill}}
-                        <input class="edit-career-skill-level career-skills__entry-field table__entry-field field field--no-decoration" type="number" value="{{maximumLevel}}">
+                        <input class="edit-career-skill-level career-skills__entry-field table__entry-field field field--no-decoration" type="number" name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}.maximumLevel" value="{{maximumLevel}}" data-career-skill="{{skill}}">
                         {{else}}
                         <span class="career-skills__entry-field table__entry-field">—</span>
                         {{/if}}
