@@ -1,4 +1,25 @@
 export default class WarlockItem extends Item {
+    prepareDerivedData() {
+        if (this.type === "Career") {
+            const activeSystem = game.settings.get("warlock", "activeSystem");
+
+            let careerSkills = "";
+
+            Object.entries(this.data.data.adventuringSkills[activeSystem])
+                .forEach(([key, value]) => {
+                    if (value.isCareerSkill) {
+                        if (careerSkills.length !== 0) {
+                            careerSkills += ", "
+                        }
+
+                        careerSkills += `${key} ${value.maximumLevel}`;
+                    }
+                });
+
+            this.data.data.careerSkills = careerSkills;
+        }
+    }
+
     async updateCareerSkillLevel() {
         if (!this.type === "Career" || !this.isEmbedded) {
             return;
@@ -27,33 +48,6 @@ export default class WarlockItem extends Item {
         await this.update({
             data: {
                 currentLevel: careerLevel,
-            },
-        });
-    }
-
-    async updateCareerSkills() {
-        if (!this.type === "Career") {
-            return;
-        }
-
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        let careerSkills = "";
-
-        Object.entries(this.data.data.adventuringSkills[activeSystem])
-            .forEach(([key, value]) => {
-                if (value.isCareerSkill) {
-                    if (careerSkills.length !== 0) {
-                        careerSkills += ", "
-                    }
-
-                    careerSkills += `${key} ${value.maximumLevel}`;
-                }
-            });
-
-        await this.update({
-            data: {
-                careerSkills: careerSkills,
             },
         });
     }
