@@ -44,6 +44,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         html.find(".activate-career").click(this._onActivateCareer.bind(this));
         html.find(".consolidate-money").click(this._onConsolidateMoney.bind(this));
+        html.find(".edit-skill-level").change(this._onEditSkillLevel.bind(this));
         html.find(".increment-skill-level").click(this._onIncrementSkillLevel.bind(this));
         html.find(".test-career").click(this._onTestCareer.bind(this));
         html.find(".test-luck").click(this._onTestLuck.bind(this));
@@ -89,20 +90,6 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         context.data.data.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
         context.data.data.resources.pluck.enabled = game.settings.get("warlock", "pluckEnabled");
 
-        // Update the career skill levels when the sheet renders. The reason
-        // that this is placed here instead of being in an event listener on the
-        // skill level input element is almost purely cosmetic -- the skill
-        // level will flash back to the old value for a split second when
-        // another skill level input element is focused if this is placed in an
-        // event listener.
-        this.actor.items
-            .filter((item) => {
-                return item.type === "Career";
-            })
-            .forEach(async (career) => {
-                await career.updateCareerSkillLevel();
-            });
-
         return context;
     }
 
@@ -141,8 +128,6 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 }
             }
         ].concat(careerData));
-
-        this.render(true);
     }
 
     async _onConsolidateMoney(event) {
@@ -168,6 +153,16 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 },
             },
         });
+    }
+
+    async _onEditSkillLevel(event) {
+        this.actor.items
+            .filter((item) => {
+                return item.type === "Career";
+            })
+            .forEach(async (career) => {
+                await career.updateCareerSkillLevel();
+            });
     }
 
     async _onIncrementSkillLevel(event) {

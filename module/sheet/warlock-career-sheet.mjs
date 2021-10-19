@@ -55,13 +55,6 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
 
         context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
 
-        // This is placed here so that an event listener does not need to be
-        // attached to the maximum skill level input element. The career skills
-        // are not properly updated when the "change" event is fired on the
-        // input elements, presumably because the internal database has not been
-        // updated yet and that is where the item is referencing.
-        await this.item.updateCareerSkills();
-
         return context;
     }
 
@@ -89,6 +82,5 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         });
 
         await this.item.updateCareerSkillLevel();
-        await this.item.updateCareerSkills();
     }
 }

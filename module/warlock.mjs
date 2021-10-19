@@ -74,11 +74,6 @@ Hooks.once("init", () => {
         makeDefault: false,
     });
 
-    loadTemplates([
-        "systems/warlock/templates/actors/partials/armour-table.hbs",
-        "systems/warlock/templates/actors/partials/weapons-table.hbs",
-    ]);
-
     game.settings.register("warlock", "activeSystem", {
         name: game.i18n.localize("WARLOCK.ActiveSystem"),
         hint: game.i18n.localize("WARLOCK.ActiveSystemHint"),
@@ -90,25 +85,7 @@ Hooks.once("init", () => {
             "warpstar": "Warpstar",
         },
         default: "warlock",
-        onChange: _ => window.location.reload(),
-    });
-    game.settings.register("warlock", "reputationEnabled", {
-        name: game.i18n.localize("WARLOCK.Reputation"),
-        hint: game.i18n.localize("WARLOCK.ReputationHint"),
-        scope: "world",
-        config: true,
-        type: Boolean,
-        default: false,
-        onChange: _ => window.location.reload(),
-    });
-    game.settings.register("warlock", "talentEnabled", {
-        name: game.i18n.localize("WARLOCK.Talent"),
-        hint: game.i18n.localize("WARLOCK.TalentHint"),
-        scope: "world",
-        config: true,
-        type: Boolean,
-        default: false,
-        onChange: _ => window.location.reload(),
+        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
     game.settings.register("warlock", "pluckEnabled", {
         name: game.i18n.localize("WARLOCK.Pluck"),
@@ -117,8 +94,31 @@ Hooks.once("init", () => {
         config: true,
         type: Boolean,
         default: false,
-        onChange: _ => window.location.reload(),
+        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
+    game.settings.register("warlock", "reputationEnabled", {
+        name: game.i18n.localize("WARLOCK.Reputation"),
+        hint: game.i18n.localize("WARLOCK.ReputationHint"),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
+    });
+    game.settings.register("warlock", "talentEnabled", {
+        name: game.i18n.localize("WARLOCK.Talent"),
+        hint: game.i18n.localize("WARLOCK.TalentHint"),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
+    });
+
+    loadTemplates([
+        "systems/warlock/templates/actors/partials/armour-table.hbs",
+        "systems/warlock/templates/actors/partials/weapons-table.hbs",
+    ]);
 
     Handlebars.registerHelper("getSkill", (careers, skillName) => {
         const activeSystem = game.settings.get("warlock", "activeSystem");
