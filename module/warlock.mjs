@@ -81,8 +81,8 @@ Hooks.once("init", () => {
         config: true,
         type: String,
         choices: {
-            "warlock": "Warlock",
-            "warpstar": "Warpstar",
+            "warlock": "Warlock!",
+            "warpstar": "Warpstar!",
         },
         default: "warlock",
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),

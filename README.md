@@ -1,11 +1,15 @@
-# Warlock/Warpstar (Unofficial) for Foundry VTT
+# Warlock!/Warpstar! (Unofficial) for Foundry VTT
 
 This unofficial system for Foundry VTT provides character sheets and virtual
-tabletop support for the Warlock and Warpstar role-playing games by Fire Ruby
+tabletop support for the Warlock! and Warpstar! role-playing games by Fire Ruby
 Designs.
 
 This system is a fan project and is not associated with Fire Ruby Designs in any
 way.
+
+You can purchase Warlock!
+[here](https://www.drivethrurpg.com/product/312204/Warlock) and Warpstar!
+[here](https://www.drivethrurpg.com/product/330123/Warpstar).
 
 ## Installing the System
 
