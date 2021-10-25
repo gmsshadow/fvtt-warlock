@@ -122,12 +122,11 @@ Hooks.once("init", () => {
 
     Handlebars.registerHelper("getSkill", (careers, skillName) => {
         const activeSystem = game.settings.get("warlock", "activeSystem");
-        for (let career of careers) {
-            if (career.data.data.isActive) {
-                return career.data.data.adventuringSkills[activeSystem][skillName];
-            }
+        const activeCareer = careers.find(career => career.data.data.isActive);
+        if (activeCareer) {
+            return activeCareer.data.data.adventuringSkills[activeSystem][skillName];
+        } else {
+            return {};
         }
-
-        return {};
     })
 });
