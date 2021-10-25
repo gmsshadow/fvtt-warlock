@@ -32,7 +32,9 @@
     background: var(--background-color);
 
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+    border-radius: 0px;
+
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 
     flex: 1;
     height: 26px;
@@ -55,6 +57,7 @@
 .warlock .field--no-decoration {
     background: none;
     border: 0;
+    box-shadow: none;
 }
 
 .warlock .field--wide {
@@ -104,7 +107,8 @@
     background: var(--background-color);
 
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .warlock .resource__body--column {
@@ -236,7 +240,9 @@
     height: 160px;
 
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+    border-radius: 0px;
+
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .warlock .header__image--small {
@@ -288,7 +294,8 @@
     padding-bottom: 5px;
 
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 
     background: var(--background-color);
 
@@ -379,7 +386,8 @@
     background: var(--background-color);
 
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 
     height: 100%;
 
@@ -430,7 +438,6 @@
     background: var(--background-color);
 
     border: 1px solid var(--border-color);
-    border-radius: 3px;
 
     text-align: center;
     word-break: break-all;
@@ -494,7 +501,6 @@
     background: var(--background-color);
     border: 1px solid var(--border-color);
     border-bottom: none;
-    border-radius: 3px 3px 0 0;
 }
 
 .warlock .dice-tooltip__rolls {
