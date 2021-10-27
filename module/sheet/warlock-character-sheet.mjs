@@ -156,12 +156,14 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     }
 
     async _onEditSkillLevel(event) {
+        let skill = event.currentTarget.closest(".table__entry").dataset.skill;
+        let level = parseInt(event.currentTarget.value, 10);
         this.actor.items
             .filter((item) => {
                 return item.type === "Career";
             })
             .forEach(async (career) => {
-                await career.updateCareerSkillLevel();
+                await career.updateCareerSkillLevel(skill, level);
             });
     }
 

@@ -20,7 +20,7 @@ export default class WarlockItem extends Item {
         }
     }
 
-    async updateCareerSkillLevel() {
+    async updateCareerSkillLevel(skill, level) {
         if (!this.type === "Career" || !this.isEmbedded) {
             return;
         }
@@ -30,9 +30,13 @@ export default class WarlockItem extends Item {
         let careerSkillsCount = 0;
 
         Object.entries(this.data.data.adventuringSkills[activeSystem])
-            .forEach(([key, value]) => {
-                if (value.isCareerSkill) {
-                    careerLevel += this.parent.data.data.adventuringSkills[activeSystem][key];
+            .forEach(([skillName, skillData]) => {
+                if (skillData.isCareerSkill) {
+                    if (skillName == skill) {
+                        careerLevel += level;
+                    } else {
+                        careerLevel += this.parent.data.data.adventuringSkills[activeSystem][skillName];
+                    }
                     ++careerSkillsCount;
                 }
             });
