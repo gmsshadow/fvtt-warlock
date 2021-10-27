@@ -14,7 +14,8 @@
                     type="text"
                     name="name"
                     value="{{actor.name}}"
-                    title="{{localize "WARLOCK.Name"}}">
+                    title="{{localize "WARLOCK.Name"}}"
+                    data-dtype="String">
             </div>
             <div class="header__row">
                 <input
@@ -23,14 +24,16 @@
                     name="data.biography.community"
                     value="{{data.data.biography.community}}"
                     placeholder="{{localize "WARLOCK.Community"}}"
-                    title="{{localize "WARLOCK.Community"}}">
+                    title="{{localize "WARLOCK.Community"}}"
+                    data-dtype="String">
                 <input
                     class="header__traits field field--center field--wide"
                     type="text"
                     name="data.biography.traits"
                     value="{{data.data.biography.traits}}"
                     placeholder="{{localize "WARLOCK.Traits"}}"
-                    title="{{localize "WARLOCK.Traits"}}">
+                    title="{{localize "WARLOCK.Traits"}}"
+                    data-dtype="String">
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
@@ -43,7 +46,8 @@
                             type="number"
                             name="data.resources.stamina.value"
                             value="{{data.data.resources.stamina.value}}"
-                            title="{{localize "WARLOCK.CurrentStamina"}}">
+                            title="{{localize "WARLOCK.CurrentStamina"}}"
+                            data-dtype="Number">
                         <span class="resource__separator">
                             /
                         </span>
@@ -52,7 +56,8 @@
                             type="number"
                             name="data.resources.stamina.max"
                             value="{{data.data.resources.stamina.max}}"
-                            title="{{localize "WARLOCK.MaximumStamina"}}">
+                            title="{{localize "WARLOCK.MaximumStamina"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
                 <div class="resource">
@@ -66,7 +71,8 @@
                             type="number"
                             name="data.resources.luck.value"
                             value="{{data.data.resources.luck.value}}"
-                            title="{{localize "WARLOCK.CurrentLuck"}}">
+                            title="{{localize "WARLOCK.CurrentLuck"}}"
+                            data-dtype="Number">
                         <span class="resource__separator">
                             /
                         </span>
@@ -75,7 +81,8 @@
                             type="number"
                             name="data.resources.luck.max"
                             value="{{data.data.resources.luck.max}}"
-                            title="{{localize "WARLOCK.MaximumLuck"}}">
+                            title="{{localize "WARLOCK.MaximumLuck"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
                 {{#if data.data.resources.pluck.enabled}}
@@ -90,7 +97,8 @@
                             type="number"
                             name="data.resources.pluck.value"
                             value="{{data.data.resources.pluck.value}}"
-                            title="{{localize "WARLOCK.Pluck"}}">
+                            title="{{localize "WARLOCK.Pluck"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
                 {{/if}}
@@ -108,7 +116,8 @@
                                 type="number"
                                 name="data.resources.reputation.value"
                                 value="{{data.data.resources.reputation.value}}"
-                                title="{{localize "WARLOCK.Reputation"}}: {{data.data.resources.reputation.description}}">
+                                title="{{localize "WARLOCK.Reputation"}}: {{data.data.resources.reputation.description}}"
+                                data-dtype="Number">
                             <a class="resource__expand toggle-reputation-description">
                                 <i class="fas fa-chevron-down"></i>
                             </a>
@@ -121,7 +130,8 @@
                                 name="data.resources.reputation.description"
                                 value="{{data.data.resources.reputation.description}}"
                                 placeholder="{{localize "WARLOCK.Description"}}"
-                                title="{{localize "WARLOCK.ReputationDescription"}}">
+                                title="{{localize "WARLOCK.ReputationDescription"}}"
+                                data-dtype="String">
                         </div>
                     </div>
                 </div>
@@ -136,7 +146,8 @@
                             type="number"
                             name="data.resources.advances"
                             value="{{data.data.resources.advances}}"
-                            title="{{localize "WARLOCK.Advances"}}">
+                            title="{{localize "WARLOCK.Advances"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
             </div>
@@ -303,6 +314,7 @@
                             name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}"
                             value="{{level}}"
                             title="{{localize "WARLOCK.SkillLevel"}}"
+                            data-dtype="Number"
                             data-skill="{{skill}}">
                         {{#with (getSkill ../data.data.careers skill)}}
                         {{#if isCareerSkill}}
@@ -362,8 +374,9 @@
                             {{#if (eq data.data.activeSystem "warlock")}}
                             title="{{localize "WARLOCK.Gold"}}">
                             {{else}}
-                            title="{{localize "WARLOCK.Jades"}}">
+                            title="{{localize "WARLOCK.Jades"}}"
                             {{/if}}
+                            data-dtype="Number">
                         <span class="money__entry-field table__entry-field"></span>
                     </div>
                     <div class="money__entry table__entry">
@@ -382,8 +395,9 @@
                             {{#if (eq data.data.activeSystem "warlock")}}
                             title="{{localize "WARLOCK.Silver"}}">
                             {{else}}
-                            title="{{localize "WARLOCK.Shards"}}">
+                            title="{{localize "WARLOCK.Shards"}}"
                             {{/if}}
+                            data-dtype="Number">
                         <span class="money__entry-field table__entry-field"></span>
                     </div>
                     <div class="money__entry table__entry">
@@ -402,8 +416,9 @@
                             {{#if (eq data.data.activeSystem "warlock")}}
                             title="{{localize "WARLOCK.Pennies"}}">
                             {{else}}
-                            title="{{localize "WARLOCK.Frags"}}">
+                            title="{{localize "WARLOCK.Frags"}}"
                             {{/if}}
+                            data-dtype="Number">
                         <span class="money__entry-field table__entry-field"></span>
                     </div>
                 </div>
@@ -614,7 +629,8 @@
                                 name="data.biography.talent.name"
                                 value="{{data.data.biography.talent.name}}"
                                 placeholder="{{localize "WARLOCK.Name"}}"
-                                title="{{localize "WARLOCK.TalentName"}}">
+                                title="{{localize "WARLOCK.TalentName"}}"
+                                data-dtype="String">
                             {{editor
                                 content=data.data.biography.talent.description
                                 target="data.biography.talent.description"

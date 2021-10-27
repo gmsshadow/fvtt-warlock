@@ -32,7 +32,7 @@ export default class WarlockItem extends Item {
         Object.entries(this.data.data.adventuringSkills[activeSystem])
             .forEach(([key, value]) => {
                 if (value.isCareerSkill) {
-                    careerLevel += parseInt(this.parent.data.data.adventuringSkills[activeSystem][key], 10);
+                    careerLevel += this.parent.data.data.adventuringSkills[activeSystem][key];
                     ++careerSkillsCount;
                 }
             });

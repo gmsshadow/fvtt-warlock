@@ -14,7 +14,8 @@
                     type="text"
                     name="name"
                     value="{{item.name}}"
-                    title="{{localize "WARLOCK.Name"}}">
+                    title="{{localize "WARLOCK.Name"}}"
+                    data-dtype="String">
             </div>
         </div>
     </header>
@@ -91,6 +92,7 @@
                             name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}.maximumLevel"
                             value="{{maximumLevel}}"
                             title="{{localize "WARLOCK.MaximumLevel"}}"
+                            data-dtype="Number"
                             data-career-skill="{{skill}}">
                         {{else}}
                         <span
