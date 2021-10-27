@@ -9,7 +9,7 @@ way.
 
 You can purchase Warlock!
 [here](https://www.drivethrurpg.com/product/312204/Warlock) and Warpstar!
-[here](https://www.drivethrurpg.com/product/330123/Warpstar).
+[here](https://www.drivethrurpg.com/product/330123/Warpstar). You can also join Fire Ruby Designs' Discord server [here](https://discord.com/invite/xjFgkxWEup).
 
 ## Installing the System
 
