@@ -12,7 +12,8 @@
                     type="text"
                     name="name"
                     value="{{actor.name}}"
-                    title="{{localize "WARLOCK.Name"}}">
+                    title="{{localize "WARLOCK.Name"}}"
+                    data-dtype="String">
             </div>
             <div class="header__row">
                 <input
@@ -21,14 +22,16 @@
                     name="data.type"
                     value="{{data.data.type}}"
                     placeholder="{{localize "WARLOCK.Type"}}"
-                    title="{{localize "WARLOCK.Type"}}">
+                    title="{{localize "WARLOCK.Type"}}"
+                    data-dtype="String">
                 <input
                     class="header__notes field field--center field--wide"
                     type="text"
                     name="data.notes"
                     value="{{data.data.notes}}"
                     placeholder="{{localize "WARLOCK.Notes"}}"
-                    title="{{localize "WARLOCK.Notes"}}">
+                    title="{{localize "WARLOCK.Notes"}}"
+                    data-dtype="String">
             </div>
             <div class="header__row header__row--align-end">
                 <div class="resource">
@@ -41,7 +44,8 @@
                             type="number"
                             name="data.stamina.value"
                             value="{{data.data.stamina.value}}"
-                            title="{{localize "WARLOCK.CurrentStamina"}}">
+                            title="{{localize "WARLOCK.CurrentStamina"}}"
+                            data-dtype="Number">
                         <span class="resource__separator">
                             /
                         </span>
@@ -50,7 +54,8 @@
                             type="number"
                             name="data.stamina.max"
                             value="{{data.data.stamina.max}}"
-                            title="{{localize "WARLOCK.MaximumStamina"}}">
+                            title="{{localize "WARLOCK.MaximumStamina"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
                 <div class="resource">
@@ -63,7 +68,8 @@
                             type="number"
                             name="data.actionsPerRound"
                             value="{{data.data.actionsPerRound}}"
-                            title="{{localize "WARLOCK.ActionsPerRound"}}">
+                            title="{{localize "WARLOCK.ActionsPerRound"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
                 <div class="resource">
@@ -79,7 +85,8 @@
                             type="number"
                             name="data.weaponSkill"
                             value="{{data.data.weaponSkill}}"
-                            title="{{localize "WARLOCK.WeaponSkill"}}">
+                            title="{{localize "WARLOCK.WeaponSkill"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
                 <div class="resource">
@@ -95,7 +102,8 @@
                             type="number"
                             name="data.adventuringSkills"
                             value="{{data.data.adventuringSkills}}"
-                            title="{{localize "WARLOCK.AdventuringSkills"}}">
+                            title="{{localize "WARLOCK.AdventuringSkills"}}"
+                            data-dtype="Number">
                     </div>
                 </div>
             </div>

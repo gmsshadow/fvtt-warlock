@@ -140,6 +140,6 @@ async function _getSkillTestOptions() {
 function _processSkillTestOptions(form, isOpposed) {
     return {
         isOpposed: isOpposed,
-        modifier: parseInt(form.modifier.value, 10),
+        modifier: form.modifier.value,
     };
 }
