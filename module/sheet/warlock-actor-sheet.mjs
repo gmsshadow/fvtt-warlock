@@ -34,6 +34,10 @@ export default class WarlockActorSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        html.find("input").focusin((event) => {
+            event.currentTarget.select();
+        });
+
         html.find(".chat-item").click(this._onChatItem.bind(this));
         html.find(".create-item").click(this._onCreateItem.bind(this));
         html.find(".delete-item").click(this._onDeleteItem.bind(this));
