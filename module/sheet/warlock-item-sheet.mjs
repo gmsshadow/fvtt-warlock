@@ -7,4 +7,10 @@ export default class WarlockItemSheet extends ItemSheet {
             ],
         };
     }
+
+    activateListeners(html) {
+        html.find("input").focusin((event) => {
+            event.currentTarget.select();
+        });
+    }
 }
