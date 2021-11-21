@@ -50,6 +50,8 @@ export default class WarlockActorSheet extends ActorSheet {
     getData() {
         const context = super.getData();
 
+        context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
+
         context.data.data.gear.weapons = context.actor.items
             .filter((item) => {
                 return item.type === "Weapon";

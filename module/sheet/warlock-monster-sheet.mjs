@@ -8,6 +8,13 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
             template: "systems/warlock/templates/actors/monster-sheet.hbs",
             width: 640,
             height: 550,
+            tabs: [
+                {
+                    navSelector: ".tabs",
+                    contentSelector: ".body",
+                    initial: "weaponsAndArmor",
+                },
+            ],
         }
     }
 

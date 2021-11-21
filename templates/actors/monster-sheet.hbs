@@ -110,21 +110,67 @@
         </div>
     </div>
 
-    <div class="body">
-        <div class="flex flex--column">
-            {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
-            {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
-            <div class="flex flex--column flex--no-gap">
-                <h1>
-                    {{localize "WARLOCK.Description"}}
-                </h1>
-                {{editor
-                    content=data.data.description
-                    target="data.description"
-                    button=true
-                    owner=owner
-                    editable=editable}}
+    <nav
+        class="tabs"
+        data-group="primary">
+        <a
+            class="tabs__item"
+            title="{{localize "WARLOCK.WeaponsAndArmor"}}"
+            data-tab="weaponsAndArmor">
+            {{localize "WARLOCK.WeaponsAndArmor"}}
+        </a>
+        <a
+            class="tabs__item"
+            {{#if (eq data.data.activeSystem "warlock")}}
+            title="{{localize "WARLOCK.Spells"}}"
+            {{else}}
+            title="{{localize "WARLOCK.Glyphs"}}"
+            {{/if}}
+            data-tab="spells">
+            {{#if (eq data.data.activeSystem "warlock")}}
+            {{localize "WARLOCK.Spells"}}
+            {{else}}
+            {{localize "WARLOCK.Glyphs"}}
+            {{/if}}
+        </a>
+        <a
+            class="tabs__item"
+            title="{{localize "WARLOCK.Description"}}"
+            data-tab="description">
+            {{localize "WARLOCK.Description"}}
+        </a>
+    </nav>
+
+    <section class="body">
+        <div
+            class="tab weapons-and-armor-tab"
+            data-group="primary"
+            data-tab="weaponsAndArmor">
+            <div class="flex flex--column">
+                {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
+                {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
             </div>
+        </div>
+        <div
+            class="tab spells-tab"
+            data-group="primary"
+            data-tab="spells">
+            {{#if (eq data.data.activeSystem "warlock")}}
+            {{> "systems/warlock/templates/actors/partials/spells-table.hbs"}}
+            {{else}}
+            {{> "systems/warlock/templates/actors/partials/glyphs-table.hbs"}}
+            {{/if}}
+        </div>
+        <div
+            class="tab description-tab"
+            data-group="primary"
+            data-tab="description">
+            {{editor
+                content=data.data.description
+                target="data.description"
+                button=true
+                owner=owner
+                editable=editable}}
         </div>
     </div>
 </form>
