@@ -1,0 +1,61 @@
+<div class="glyphs table">
+    <div class="glyphs__header table__header">
+        <span class="glyphs__header-field table__header-field">
+            {{localize "WARLOCK.Glyph"}}
+        </span>
+        <span class="glyphs__header-field table__header-field">
+            {{localize "WARLOCK.Test"}}
+        </span>
+        <span class="glyphs__header-field table__header-field">
+            {{localize "WARLOCK.StaminaCost"}}
+        </span>
+        <span class="glyphs__header-field table__header-field">
+            <a
+                class="create-item"
+                data-item-type="Glyph">
+                <i class="fas fa-plus"></i>
+            </a>
+        </span>
+    </div>
+    <div class="glyphs__body table__body">
+        {{#each data.data.glyphs}}
+        <div
+            class="glyphs__entry table__entry"
+            data-item-id="{{id}}">
+            <span
+                class="glyphs__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Glyph"}}">
+                {{name}}
+            </span>
+            <span
+                class="glyphs__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Test"}}">
+                {{data.data.test.value}}
+            </span>
+            <span
+                class="glyphs__entry-field table__entry-field"
+                title="{{localize "WARLOCK.StaminaCost"}}">
+                {{data.data.staminaCost}}
+            </span>
+            <span
+                class="glyphs__entry-field table__entry-field">
+                <a
+                    class="chat-item"
+                    title="{{localize "WARLOCK.ChatGlyph"}}">
+                    <i class="fas fa-comment"></i>
+                </a>
+                <a
+                    class="edit-item"
+                    title="{{localize "WARLOCK.EditGlyph"}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a
+                    class="delete-item"
+                    title="{{localize "WARLOCK.DeleteGlyph"}}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+        {{/each}}
+    </div>
+</div>

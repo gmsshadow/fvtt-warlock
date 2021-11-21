@@ -117,6 +117,8 @@ Hooks.once("init", () => {
 
     loadTemplates([
         "systems/warlock/templates/actors/partials/armour-table.hbs",
+        "systems/warlock/templates/actors/partials/glyphs-table.hbs",
+        "systems/warlock/templates/actors/partials/spells-table.hbs",
         "systems/warlock/templates/actors/partials/weapons-table.hbs",
     ]);
 

@@ -85,7 +85,6 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 return a.data.sort - b.data.sort;
             });
 
-        context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
         context.data.data.resources.reputation.enabled = game.settings.get("warlock", "reputationEnabled");
         context.data.data.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
         context.data.data.resources.pluck.enabled = game.settings.get("warlock", "pluckEnabled");

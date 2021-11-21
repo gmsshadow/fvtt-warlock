@@ -1,0 +1,53 @@
+<div class="spells table">
+    <div class="spells__header table__header">
+        <span class="spells__header-field table__header-field">
+            {{localize "WARLOCK.Spell"}}
+        </span>
+        <span class="spells__header-field table__header-field">
+            {{localize "WARLOCK.StaminaCost"}}
+        </span>
+        <span class="spells__header-field table__header-field">
+            <a
+                class="create-item"
+                data-item-type="Spell">
+                <i class="fas fa-plus"></i>
+            </a>
+        </span>
+    </div>
+    <div class="spells__body table__body">
+        {{#each data.data.spells}}
+        <div
+            class="spells__entry table__entry"
+            data-item-id="{{id}}">
+            <span
+                class="spells__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Spell"}}">
+                {{name}}
+            </span>
+            <span
+                class="spells__entry-field table__entry-field"
+                title="{{localize "WARLOCK.StaminaCost"}}">
+                {{data.data.staminaCost}}
+            </span>
+            <span
+                class="spells__entry-field table__entry-field">
+                <a
+                    class="chat-item"
+                    title="{{localize "WARLOCK.ChatSpell"}}">
+                    <i class="fas fa-comment"></i>
+                </a>
+                <a
+                    class="edit-item"
+                    title="{{localize "WARLOCK.EditSpell"}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a
+                    class="delete-item"
+                    title="{{localize "WARLOCK.DeleteSpell"}}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+        {{/each}}
+    </div>
+</div>
