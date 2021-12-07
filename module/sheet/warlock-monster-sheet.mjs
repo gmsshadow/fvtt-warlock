@@ -25,6 +25,27 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
     }
 
+    getData() {
+        const context = super.getData();
+
+        context.data.data.spells = context.actor.items
+            .filter((item) => {
+                return item.type === "Spell";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
+        context.data.data.glyphs = context.actor.items
+            .filter((item) => {
+                return item.type === "Glyph";
+            })
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
+
+        return context;
+    }
+
     async _onTestAdventuringSkills(event) {
         event.preventDefault();
 
