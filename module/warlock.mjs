@@ -131,5 +131,9 @@ Hooks.once("init", () => {
         } else {
             return {};
         }
-    })
+    });
+
+    Handlebars.registerHelper("enrichHTML", (html) => {
+        return TextEditor.enrichHTML(html);
+    });
 });
