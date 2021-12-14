@@ -4,6 +4,9 @@
             {{localize "WARLOCK.Weapon"}}
         </span>
         <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Skill"}}
+        </span>
+        <span class="weapons__header-field table__header-field">
             {{localize "WARLOCK.Type"}}
         </span>
         <span class="weapons__header-field table__header-field">
@@ -21,6 +24,7 @@
         {{#each data.data.gear.weapons}}
         <div
             class="weapons__entry table__entry"
+            data-skill="{{data.data.skill.value}}"
             data-item-id="{{id}}">
             <span
                 class="weapons__entry-field table__entry-field"
@@ -31,6 +35,23 @@
                 <a class="toggle-description">
                     {{name}}
                 </a>
+            </span>
+            <span
+                class="weapons__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Skill"}}">
+                {{#if (or
+                        (eq data.data.skill.value "—")
+                        (or
+                            (eq data.document.parent.type "Monster")
+                            (eq data.document.parent.type "Vehicle")))}}
+                —
+                {{else}}
+                <a
+                    class="test-skill"
+                    title="{{localize "WARLOCK.TestSkill"}}">
+                    {{data.data.skill.value}}
+                </a>
+                {{/if}}
             </span>
             <span
                 class="weapons__entry-field table__entry-field"

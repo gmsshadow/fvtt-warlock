@@ -24,8 +24,8 @@ export async function rollArmour(armour) {
     Chat.createRollChatMessage(rollHtml, roll);
 }
 
-export async function rollSkillTest(name, level) {
-    const testOptions = await _getSkillTestOptions();
+export async function rollSkillTest(name, level, testType = "basic") {
+    const testOptions = await _getSkillTestOptions(testType);
 
     if (testOptions.cancelled) {
         return;
@@ -109,7 +109,7 @@ async function _getToolTip(roll) {
     });
 }
 
-async function _getSkillTestOptions() {
+async function _getSkillTestOptions(defaultButton = "basic") {
     const dialogTemplate = "systems/warlock/templates/dialogs/skill-test-dialog.hbs";
     const dialogHtml = await renderTemplate(dialogTemplate, {});
 
@@ -131,7 +131,7 @@ async function _getSkillTestOptions() {
                     callback: (html) => resolve(_processSkillTestOptions(html[0].querySelector("form"), false))
                 }
             },
-            default: "basic",
+            default: defaultButton,
             close: () => resolve({cancelled: true}),
         }, null).render(true);
     });
