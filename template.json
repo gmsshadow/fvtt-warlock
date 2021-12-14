@@ -180,7 +180,7 @@
             "templates": [
                 "Description"
             ],
-            "isEquipped": true,
+            "isEquipped": false,
             "type": {
                 "value": "",
                 "choices": {
@@ -492,7 +492,7 @@
                 "Description"
             ],
             "activeSystem": "warlock",
-            "isEquipped": true,
+            "isEquipped": false,
             "type": {
                 "value": "",
                 "choices": {

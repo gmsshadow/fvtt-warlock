@@ -12,7 +12,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
                 {
                     navSelector: ".tabs",
                     contentSelector: ".body",
-                    initial: "weaponsAndArmor",
+                    initial: "gear",
                 },
             ],
         }

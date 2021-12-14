@@ -51,7 +51,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         html.find(".test-pluck").click(this._onTestPluck.bind(this));
         html.find(".test-reputation").click(this._onTestReputation.bind(this));
         html.find(".test-skill").click(this._onTestSkill.bind(this));
-        html.find(".toggle-reputation-description").click(this._onToggleReputationDescription.bind(this));
+        html.find(".open-reputation-dialog").click(this._onOpenReputationDialog.bind(this));
 
         // Set up the event listener to save the last focused skill level input
         // element.
@@ -252,10 +252,45 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         await Roll.rollSkillTest(skill, level);
     }
 
-    _onToggleReputationDescription(event) {
+    async _onOpenReputationDialog(event) {
         event.preventDefault();
 
-        $(event.currentTarget).toggleClass("resource__name--active");
-        $(event.currentTarget).closest(".resource__body").children(".resource__value--hideable").toggleClass("resource__value--hidden");
+        const dialogTemplate = "systems/warlock/templates/dialogs/reputation-configuration-dialog.hbs";
+        const dialogHtml = await renderTemplate(dialogTemplate, {
+            description: this.actor.data.data.resources.reputation.description,
+        });
+
+        const options = await new Promise(resolve => {
+            new Dialog({
+                title: game.i18n.localize("WARLOCK.Reputation"),
+                content: dialogHtml,
+                buttons: {
+                    cancel: {
+                        label: game.i18n.localize("WARLOCK.Cancel"),
+                        callback: (html) => resolve({cancelled: true}),
+                    },
+                    submit: {
+                        label: game.i18n.localize("WARLOCK.Submit"),
+                        callback: (html) => resolve({description: html[0].querySelector("form").description.value}),
+                    },
+                },
+                default: "submit",
+                close: () => resolve({cancelled: true}),
+            }, null).render(true);
+        });
+
+        if (options.cancelled) {
+            return;
+        }
+
+        await this.actor.update({
+            data: {
+                resources: {
+                    reputation: {
+                        description: options.description,
+                    }
+                }
+            }
+        });
     }
 }

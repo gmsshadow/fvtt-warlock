@@ -8,7 +8,7 @@
         <div class="header__body">
             <div class="header__row">
                 <input
-                    class="header__name field field--bold field--center"
+                    class="header__name field field--no-decoration field--center"
                     type="text"
                     name="name"
                     value="{{actor.name}}"
@@ -17,7 +17,7 @@
             </div>
             <div class="header__row">
                 <input
-                    class="header__type field field--center"
+                    class="header__type field field--no-decoration field--center"
                     type="text"
                     name="data.type"
                     value="{{data.data.type}}"
@@ -25,7 +25,7 @@
                     title="{{localize "WARLOCK.Type"}}"
                     data-dtype="String">
                 <input
-                    class="header__notes field field--center field--wide"
+                    class="header__notes field field--no-decoration field--center field--wide"
                     type="text"
                     name="data.notes"
                     value="{{data.data.notes}}"
@@ -76,7 +76,6 @@
                     <label class="resource__name">
                         <a class="test-weapon-skill">
                             {{localize "WARLOCK.WeaponSkill"}}
-                            <i class="rollable-icon fas fa-dice-d20"></i>
                         </a>
                     </label>
                     <div class="resource__body">
@@ -93,7 +92,6 @@
                     <label class="resource__name">
                         <a class="test-adventuring-skills">
                             {{localize "WARLOCK.AdventuringSkills"}}
-                            <i class="rollable-icon fas fa-dice-d20"></i>
                         </a>
                     </label>
                     <div class="resource__body">
@@ -115,9 +113,9 @@
         data-group="primary">
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.WeaponsAndArmor"}}"
-            data-tab="weaponsAndArmor">
-            {{localize "WARLOCK.WeaponsAndArmor"}}
+            title="{{localize "WARLOCK.Gear"}}"
+            data-tab="gear">
+            {{localize "WARLOCK.Gear"}}
         </a>
         <a
             class="tabs__item"
@@ -143,13 +141,12 @@
 
     <section class="body">
         <div
-            class="tab weapons-and-armor-tab"
+            class="tab gear-tab"
             data-group="primary"
-            data-tab="weaponsAndArmor">
-            <div class="flex flex--column">
-                {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
-                {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
-            </div>
+            data-tab="gear">
+            {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
+            {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
+            {{> "systems/warlock/templates/actors/partials/equipment-table.hbs"}}
         </div>
         <div
             class="tab spells-tab"

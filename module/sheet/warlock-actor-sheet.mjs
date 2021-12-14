@@ -45,6 +45,7 @@ export default class WarlockActorSheet extends ActorSheet {
         html.find(".equip-item").click(this._onEquipItem.bind(this));
         html.find(".roll-armour").click(this._onRollArmour.bind(this));
         html.find(".roll-weapon").click(this._onRollWeapon.bind(this));
+        html.find(".toggle-description").click(this._onToggleDescription.bind(this));
     }
 
     getData() {
@@ -128,8 +129,6 @@ export default class WarlockActorSheet extends ActorSheet {
                 parent: this.actor,
             },
         );
-
-        item.sheet.render(true);
 
         if (item.type === "Career") {
             const numberOfCareers = this.actor.items
@@ -218,5 +217,11 @@ export default class WarlockActorSheet extends ActorSheet {
         const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const weapon = this.actor.items.get(weaponId);
         Roll.rollWeapon(weapon);
+    }
+
+    _onToggleDescription(event) {
+        event.preventDefault();
+
+        $(event.currentTarget.closest(".table__entry")).next().slideToggle();
     }
 }

@@ -1,14 +1,14 @@
 <form class="{{cssClass}} document" autocomplete="off">
-    <div class="header">
+    <div class="header header--large">
         <img
-            class="header__image"
+            class="header__image header__image--large"
             src="{{actor.img}}"
             title="{{actor.name}}"
             data-edit="img">
         <div class="header__body">
             <div class="header__row">
                 <input
-                    class="header__name field field--bold field--center"
+                    class="header__name field field--no-decoration field--center"
                     type="text"
                     name="name"
                     value="{{actor.name}}"
@@ -116,21 +116,42 @@
         </div>
     </div>
 
+    <nav
+        class="tabs"
+        data-group="primary">
+        <a
+            class="tabs__item"
+            title="{{localize "WARLOCK.Gear"}}"
+            data-tab="gear">
+            {{localize "WARLOCK.Gear"}}
+        </a>
+        <a
+            class="tabs__item"
+            title="{{localize "WARLOCK.Description"}}"
+            data-tab="description">
+            {{localize "WARLOCK.Description"}}
+        </a>
+    </nav>
+
     <div class="body">
-        <div class="flex flex--column">
+        <div
+            class="tab gear-tab"
+            data-group="primary"
+            data-tab="gear">
             {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
             {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
-            <div class="flex flex--column flex--no-gap">
-                <h1>
-                    {{localize "WARLOCK.Description"}}
-                </h1>
-                {{editor
-                    content=data.data.description
-                    target="data.description"
-                    button=true
-                    owner=owner
-                    editable=editable}}
-            </div>
+            {{> "systems/warlock/templates/actors/partials/equipment-table.hbs"}}
+        </div>
+        <div
+            class="tab description-tab"
+            data-group="primary"
+            data-tab="description">
+            {{editor
+                content=data.data.description
+                target="data.description"
+                button=true
+                owner=owner
+                editable=editable}}
         </div>
     </div>
 </form>

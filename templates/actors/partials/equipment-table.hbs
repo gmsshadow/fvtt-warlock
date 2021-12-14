@@ -1,0 +1,60 @@
+<div class="equipment table">
+    <div class="equipment__header table__header">
+        <span class="equipment__header-field table__header-field">
+            {{localize "WARLOCK.Equipment"}}
+        </span>
+        <span class="equipment__header-field table__header-field">
+            {{localize "WARLOCK.Quantity"}}
+        </span>
+        <span class="equipment__header-field table__header-field">
+            <a
+                class="create-item"
+                data-item-type="Equipment">
+                <i class="fas fa-plus"></i> Add
+            </a>
+        </span>
+    </div>
+    <div class="equipment__body table__body">
+        {{#each data.data.gear.equipment}}
+        <div
+            class="equipment__entry table__entry"
+            data-item-id="{{id}}">
+            <span
+                class="equipment__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Equipment"}}">
+                <img
+                    class="table__entry-image"
+                    src="{{img}}">
+                <a class="toggle-description">
+                    {{name}}
+                </a>
+            </span>
+            <span
+                class="equipment__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Quantity"}}">
+                {{data.data.quantity}}
+            </span>
+            <span class="equipment__entry-field table__entry-field">
+                <a
+                    class="chat-item"
+                    title="{{localize "WARLOCK.ChatEquipment"}}">
+                    <i class="fas fa-comment"></i>
+                </a>
+                <a
+                    class="edit-item"
+                    title="{{localize "WARLOCK.EditEquipment"}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a
+                    class="delete-item"
+                    title="{{localize "WARLOCK.DeleteEquipment"}}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+        <div class="table__entry-field--collapsible">
+            {{{data.data.description}}}
+        </div>
+        {{/each}}
+    </div>
+</div>

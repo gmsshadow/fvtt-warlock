@@ -1,16 +1,11 @@
 <form
     class="{{cssClass}} document"
     autocomplete="off">
-    <header class="header header--small">
-        <img
-            class="header__image header__image--small"
-            src="{{item.img}}"
-            title="{{item.name}}"
-            data-edit="img">
+    <header class="header header--very-small">
         <div class="header__body">
             <div class="header__row">
                 <input
-                    class="header__name header__name--small field field--bold field--center"
+                    class="header__name field field--no-decoration field--center"
                     type="text"
                     name="name"
                     value="{{item.name}}"
@@ -111,9 +106,6 @@
             data-group="primary"
             data-tab="description">
             <div class="flex flex--column flex--no-gap">
-                <h1>
-                    {{localize "WARLOCK.Description"}}
-                </h1>
                 {{editor
                     content=data.data.description
                     target="data.description"
