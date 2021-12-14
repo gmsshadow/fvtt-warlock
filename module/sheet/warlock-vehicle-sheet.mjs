@@ -1,7 +1,7 @@
 import * as Roll from "../roll.mjs";
 import WarlockActorSheet from "./warlock-actor-sheet.mjs";
 
-export default class WarlockMonsterSheet extends WarlockActorSheet {
+export default class WarlockVehicleSheet extends WarlockActorSheet {
     static get defaultOptions() {
         return {
             ...super.defaultOptions,

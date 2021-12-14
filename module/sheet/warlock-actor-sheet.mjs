@@ -43,6 +43,7 @@ export default class WarlockActorSheet extends ActorSheet {
         html.find(".delete-item").click(this._onDeleteItem.bind(this));
         html.find(".edit-item").click(this._onEditItem.bind(this));
         html.find(".equip-item").click(this._onEquipItem.bind(this));
+        html.find(".pay-stamina-cost").click(this._onPayStaminaCost.bind(this));
         html.find(".roll-armour").click(this._onRollArmour.bind(this));
         html.find(".roll-weapon").click(this._onRollWeapon.bind(this));
         html.find(".toggle-description").click(this._onToggleDescription.bind(this));
@@ -200,6 +201,57 @@ export default class WarlockActorSheet extends ActorSheet {
             data: {
                 isEquipped: !item.data.data.isEquipped,
             },
+        });
+    }
+
+    async _onPayStaminaCost(event) {
+        event.preventDefault();
+
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        const staminaCost = item.data.data.staminaCost;
+
+        if (staminaCost >= this.actor.data.data.resources.stamina.value) {
+            ui.notifications.error("The stamina cost is equal to or greater than your current stamina!");
+            return;
+        }
+
+        const dialogTemplate = "systems/warlock/templates/dialogs/stamina-cost-dialog.hbs";
+        const dialogHtml = await renderTemplate(dialogTemplate, {
+            staminaCost: staminaCost,
+        });
+
+        const options = await new Promise(resolve => {
+            new Dialog({
+                title: game.i18n.localize("WARLOCK.StaminaCost"),
+                content: dialogHtml,
+                buttons: {
+                    cancel: {
+                        label: game.i18n.localize("WARLOCK.Cancel"),
+                        callback: (html) => resolve({cancelled: true}),
+                    },
+                    yes: {
+                        label: game.i18n.localize("WARLOCK.Yes"),
+                        callback: (html) => resolve({cancelled: false}),
+                    },
+                },
+                default: "yes",
+                close: () => resolve({cancelled: true}),
+            }, null).render(true);
+        });
+
+        if (options.cancelled) {
+            return;
+        }
+
+        await this.actor.update({
+            data: {
+                resources: {
+                    stamina: {
+                        value: this.actor.data.data.resources.stamina.value - staminaCost,
+                    }
+                }
+            }
         });
     }
 

@@ -22,6 +22,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         super.activateListeners(html);
 
         html.find(".test-adventuring-skills").click(this._onTestAdventuringSkills.bind(this));
+        html.find(".test-spell").click(this._onTestSpell.bind(this));
         html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
     }
 
@@ -49,12 +50,33 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     async _onTestAdventuringSkills(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills);
+        await Roll.rollSkillTest("Adventuring Skills", );
+    }
+
+    async _onTestSpell(event) {
+        event.preventDefault();
+
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+
+        switch (activeSystem) {
+            case "warlock":
+                await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills);
+                break;
+            case "warpstar":
+                const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
+                const item = this.actor.items.get(itemId);
+                const testType = item.data.data.test.value.toLowerCase();
+
+                await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills, testType);
+                break;
+            default:
+                break;
+        }
     }
 
     async _onTestWeaponSkill(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest("Weapon Skill", this.actor.data.data.weaponSkill);
+        await Roll.rollSkillTest("Weapon Skill", this.actor.data.data.weaponSkill, "opposed");
     }
 }

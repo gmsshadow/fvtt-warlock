@@ -20,7 +20,7 @@
     ],
 
     "minimumCoreVersion": "0.8.9",
-    "compatibleCoreVersion": "0.8.9",
+    "compatibleCoreVersion": "9",
 
     "url": "https://gitlab.com/azarvel/fvtt-warlock",
     "manifest": "https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json",

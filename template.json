@@ -530,6 +530,31 @@
                         }
                     }
                 }
+            },
+            "skill": {
+                "value": "—",
+                "choices": {
+                    "warlock": {
+                        "—": "—",
+                        "Blunt": "Blunt",
+                        "Bow": "Bow",
+                        "Brawling": "Brawling",
+                        "Crossbow": "Crossbow",
+                        "Large blade": "Large blade",
+                        "Pole arm": "Pole arm",
+                        "Small blade": "Small blade",
+                        "Thrown": "Thrown"
+                    },
+                    "warpstar": {
+                        "—": "—",
+                        "Blades": "Blades",
+                        "Blunt": "Blunt",
+                        "Brawling": "Brawling",
+                        "Ship gunner": "Ship gunner",
+                        "Small arms": "Small arms",
+                        "Thrown": "Thrown"
+                    }
+                }
             }
         }
     }

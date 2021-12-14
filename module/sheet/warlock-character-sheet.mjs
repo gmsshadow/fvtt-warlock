@@ -51,6 +51,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         html.find(".test-pluck").click(this._onTestPluck.bind(this));
         html.find(".test-reputation").click(this._onTestReputation.bind(this));
         html.find(".test-skill").click(this._onTestSkill.bind(this));
+        html.find(".test-spell").click(this._onTestSpell.bind(this));
         html.find(".open-reputation-dialog").click(this._onOpenReputationDialog.bind(this));
 
         // Set up the event listener to save the last focused skill level input
@@ -249,7 +250,53 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-        await Roll.rollSkillTest(skill, level);
+        let testType = "basic";
+
+        switch (activeSystem) {
+            case "warlock":
+                if (["Blunt", "Bow", "Brawling", "Crossbow", "Large blade", "Pole arm", "Small blade", "Thrown"].includes(skill)) {
+                    testType = "opposed";
+                }
+                break;
+            case "warpstar":
+                if (["Blades", "Blunt", "Brawling", "Ship gunner", "Small arms", "Thrown"].includes(skill)) {
+                    testType = "opposed";
+                }
+                break;
+            default:
+                break;
+        }
+
+        await Roll.rollSkillTest(skill, level, testType);
+    }
+
+    async _onTestSpell(event) {
+        event.preventDefault();
+
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+
+        let skill, level;
+
+        switch (activeSystem) {
+            case "warlock":
+                skill = "Incantation";
+                level = this.actor.data.data.adventuringSkills[activeSystem][skill];
+
+                await Roll.rollSkillTest(skill, level);
+                break;
+            case "warpstar":
+                skill = "Warp focus";
+                level = this.actor.data.data.adventuringSkills[activeSystem][skill];
+
+                const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
+                const item = this.actor.items.get(itemId);
+                const testType = item.data.data.test.value.toLowerCase();
+
+                await Roll.rollSkillTest(skill, level, testType);
+                break;
+            default:
+                break;
+        }
     }
 
     async _onOpenReputationDialog(event) {

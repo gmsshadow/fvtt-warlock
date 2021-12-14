@@ -4,6 +4,9 @@
             {{localize "WARLOCK.Spell"}}
         </span>
         <span class="spells__header-field table__header-field">
+            {{localize "WARLOCK.Test"}}
+        </span>
+        <span class="spells__header-field table__header-field">
             {{localize "WARLOCK.StaminaCost"}}
         </span>
         <span class="spells__header-field table__header-field">
@@ -30,9 +33,18 @@
                 </a>
             </span>
             <span
+                class="glyphs__entry-field table__entry-field"
+                title="{{localize "WARLOCK.Test"}}">
+                <a class="test-spell">
+                    {{localize "WARLOCK.Basic"}}
+                </a>
+            </span>
+            <span
                 class="spells__entry-field table__entry-field"
                 title="{{localize "WARLOCK.StaminaCost"}}">
-                {{data.data.staminaCost}}
+                <a class="pay-stamina-cost">
+                    {{data.data.staminaCost}}
+                </a>
             </span>
             <span
                 class="spells__entry-field table__entry-field">

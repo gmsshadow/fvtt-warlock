@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Global
+ ******************************************************************************/
+
 /* This is my solution to "disabling" initiative since I couldn't find a native
    way to do so. At a certain point, I'll implement a custom combat tracker that
    has these buttons removed. */
@@ -7,6 +11,10 @@
 .token-initiative {
     visibility: hidden;
 }
+
+/*******************************************************************************
+ * System-specific
+ ******************************************************************************/
 
 .warlock {
     --accent-color: #ff0000;
@@ -29,10 +37,6 @@
     text-align: center;
 }
 
-.warlock input:hover {
-    box-shadow: 0 0 10px var(--accent-color);
-}
-
 .warlock select.field {
     text-align: center;
     text-align-last: center;
@@ -42,6 +46,10 @@
     display: flex;
     flex-direction: column;
 }
+
+/*******************************************************************************
+ * Fields
+ ******************************************************************************/
 
 .warlock .field {
     background: var(--background-color);
@@ -57,7 +65,9 @@
     min-width: 0;
 }
 
+.warlock .field:hover,
 .warlock .field:focus {
+    border: 1px solid black;
     box-shadow: 0 0 10px var(--accent-color);
 }
 
@@ -78,6 +88,10 @@
 .warlock .field--wide {
     flex-grow: 2;
 }
+
+/*******************************************************************************
+ * Resources
+ ******************************************************************************/
 
 .warlock .resource {
     display: flex;
@@ -118,6 +132,10 @@
 .warlock .resource__body--relative-position {
     position: relative;
 }
+
+/*******************************************************************************
+ * Tables
+ ******************************************************************************/
 
 .warlock .table:not(:last-child) {
     margin-bottom: 10px;
@@ -193,6 +211,10 @@
     display: none;
 }
 
+/*******************************************************************************
+ * Grid
+ ******************************************************************************/
+
 .warlock .grid {
     display: grid;
     gap: 10px;
@@ -211,6 +233,10 @@
 .warlock .grid--two-columns {
     grid-template-columns: repeat(2, 1fr);
 }
+
+/*******************************************************************************
+ * Flex
+ ******************************************************************************/
 
 .warlock .flex {
     display: flex;
@@ -232,6 +258,10 @@
 .warlock .flex--no-gap {
     gap: 0;
 }
+
+/*******************************************************************************
+ * Headers
+ ******************************************************************************/
 
 .warlock .header {
     border-bottom: 2px groove var(--border-color);
@@ -339,10 +369,14 @@
     visibility: visible;
 }
 
+/*******************************************************************************
+ * Tabs
+ ******************************************************************************/
+
 .warlock .tabs {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
 
     padding-top: 5px;
     padding-bottom: 5px;
@@ -367,6 +401,10 @@
 
     text-shadow: 0 0 10px var(--accent-color);
 }
+
+/*******************************************************************************
+ * Sheets
+ ******************************************************************************/
 
 .warlock .body,
 .warlock .tab {
@@ -432,7 +470,7 @@
 
 .warlock .weapons__header,
 .warlock .weapons__entry {
-    grid-template-columns: 5fr repeat(3, 100px);
+    grid-template-columns: 5fr repeat(4, 100px);
 }
 
 .warlock .armour__header,
@@ -446,18 +484,22 @@
 
 .warlock .equipment__header,
 .warlock .equipment__entry {
-    grid-template-columns: 7fr repeat(2, 100px);
+    grid-template-columns: 5fr repeat(2, 100px);
 }
 
 .warlock .spells__header,
 .warlock .spells__entry {
-    grid-template-columns: 7fr repeat(2, 100px);
+    grid-template-columns: 5fr repeat(3, 100px);
 }
 
 .warlock .glyphs__header,
 .warlock .glyphs__entry {
     grid-template-columns: 5fr repeat(3, 100px);
 }
+
+/*******************************************************************************
+ * Editor
+ ******************************************************************************/
 
 .warlock .editor {
     background: var(--background-color);
@@ -481,6 +523,10 @@
        height of 17px for some reason. */
     height: 100% !important;
 }
+
+/*******************************************************************************
+ * Chat Cards
+ ******************************************************************************/
 
 .warlock .dice-roll {
     display: flex;

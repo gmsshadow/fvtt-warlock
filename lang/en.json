@@ -9,6 +9,7 @@
         "AntiPersonnelGun": "Anti-Personnel Gun",
         "Armour": "Armour",
         "Astronav": "Astronav",
+        "Basic": "Basic",
         "BasicTest": "Basic Test",
         "Biography": "Biography",
         "Cancel": "Cancel",
@@ -77,6 +78,7 @@
         "NewSpell": "New Spell",
         "NewWeapon": "New Weapon",
         "Notes": "Notes",
+        "Opposed": "Opposed",
         "OpposedTest": "Opposed Test",
         "Pennies": "Pennies",
         "Pluck": "Pluck",
@@ -111,6 +113,7 @@
         "Traits": "Traits",
         "Type": "Type",
         "Weapon": "Weapon",
-        "WeaponSkill": "Weapon Skill"
+        "WeaponSkill": "Weapon Skill",
+        "Yes": "Yes"
     }
 }
