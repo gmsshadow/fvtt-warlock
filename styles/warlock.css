@@ -263,6 +263,8 @@
     border: none;
     border-right: 2px groove var(--border-color);
     border-radius: 0px;
+
+    padding-right: 2px;
 }
 
 .warlock .header__image--large {
