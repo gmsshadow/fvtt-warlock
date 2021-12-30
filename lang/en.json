@@ -80,6 +80,7 @@
         "Notes": "Notes",
         "Opposed": "Opposed",
         "OpposedTest": "Opposed Test",
+        "Pay": "Pay",
         "Pennies": "Pennies",
         "Pluck": "Pluck",
         "PluckHint": "Enable or disable the optional Pluck rule.",
@@ -87,7 +88,7 @@
         "Reduction": "Reduction",
         "ReductionRoll": "Reduction Roll",
         "Reputation": "Reputation",
-        "ReputationDescription": "Reputation Description",
+        "ReputationConfigurationHint": "Enter the event or group with which the reputation is associated.",
         "ReputationHint": "Enable or disable the optional Reputation rule.",
         "Scanners": "Scanners",
         "Shards": "Shards",
@@ -96,6 +97,8 @@
         "Skill": "Skill",
         "SkillLevel": "Skill Level",
         "Skills": "Skills",
+        "SkillTest": "Skill Test",
+        "SkillTestModifierHint": "Enter any situational modifiers to the roll.",
         "Spell": "Spell",
         "Spells": "Spells",
         "Stamina": "Stamina",
@@ -113,7 +116,6 @@
         "Traits": "Traits",
         "Type": "Type",
         "Weapon": "Weapon",
-        "WeaponSkill": "Weapon Skill",
-        "Yes": "Yes"
+        "WeaponSkill": "Weapon Skill"
     }
 }

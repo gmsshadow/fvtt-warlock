@@ -10,7 +10,7 @@ export function createRollChatMessage(messageContent, roll) {
 }
 
 export async function createItemChatMessage(item) {
-    let content = null;
+    let content;
 
     switch (item.type) {
         case "Armour":

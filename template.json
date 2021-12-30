@@ -5,24 +5,55 @@
             "Monster",
             "Vehicle"
         ],
+        "templates": {
+            "Actions per Round": {
+                "resources": {
+                    "actionsPerRound": {
+                        "value": 1,
+                        "max": 1
+                    }
+                }
+            },
+            "Biography": {
+                "biography": {
+                    "notes": "",
+                    "description": ""
+                }
+            },
+            "Common Gear": {
+                "gear": {
+                    "weapons": [],
+                    "armour": [],
+                    "equipment": []
+                }
+            },
+            "Stamina": {
+                "resources": {
+                    "stamina": {
+                        "value": 0,
+                        "max": 0
+                    }
+                }
+            }
+        },
         "Character": {
+            "templates": [
+                "Actions per Round",
+                "Biography",
+                "Common Gear",
+                "Stamina"
+            ],
             "activeSystem": "warlock",
             "biography": {
-                "description": "",
                 "community": "",
                 "traits": "",
                 "talent": {
                     "enabled": false,
                     "name": "",
                     "description": ""
-                },
-                "notes": ""
+                }
             },
             "resources": {
-                "stamina": {
-                    "value": 0,
-                    "max": 0
-                },
                 "luck": {
                     "value": 0,
                     "max": 0
@@ -46,10 +77,7 @@
                     "gold": 0,
                     "silver": 0,
                     "pennies": 0
-                },
-                "weapons": [],
-                "armour": [],
-                "equipment": []
+                }
             },
             "adventuringSkills": {
                 "warlock": {
@@ -123,23 +151,21 @@
             }
         },
         "Monster": {
+            "templates": [
+                "Actions per Round",
+                "Biography",
+                "Common Gear",
+                "Stamina"
+            ],
             "type": "",
-            "actionsPerRound": 1,
             "weaponSkill": 0,
-            "adventuringSkills": 0,
-            "stamina": {
-                "value": 0,
-                "max": 0
-            },
-            "gear": {
-                "weapons": [],
-                "armour": [],
-                "equipment": []
-            },
-            "notes": "",
-            "description": ""
+            "adventuringSkills": 0
         },
         "Vehicle": {
+            "templates": [
+                "Biography",
+                "Common Gear"
+            ],
             "capabilities": {
                 "manoeuvrability": 0,
                 "shipGun": 0,
@@ -147,16 +173,10 @@
                 "scanners": 0,
                 "astronav": 0
             },
-            "gear": {
-                "weapons": [],
-                "armour": [],
-                "equipment": []
-            },
             "structure": {
                 "value": 0,
                 "max": 0
-            },
-            "description": ""
+            }
         }
     },
     "Item": {

@@ -12,10 +12,14 @@ import WarlockGlyphSheet from "./sheet/warlock-glyph-sheet.mjs";
 import WarlockSpellSheet from "./sheet/warlock-spell-sheet.mjs";
 import WarlockWeaponSheet from "./sheet/warlock-weapon-sheet.mjs";
 
-Hooks.once("init", () => {
+import * as Migrations from "./migrations.mjs";
+
+function _initializeCONFIG() {
     CONFIG.Actor.documentClass = WarlockActor;
     CONFIG.Item.documentClass = WarlockItem;
+}
 
+function _initializeSheets() {
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("warlock", WarlockCharacterSheet, {
         types: [
@@ -73,6 +77,16 @@ Hooks.once("init", () => {
         ],
         makeDefault: false,
     });
+}
+
+function _initializeSettings() {
+    game.settings.register("warlock", "systemMigrationVersion", {
+        name: "System Migration Version",
+        scope: "world",
+        config: false,
+        type: String,
+        default: ""
+    });
 
     game.settings.register("warlock", "activeSystem", {
         name: game.i18n.localize("WARLOCK.ActiveSystem"),
@@ -114,7 +128,9 @@ Hooks.once("init", () => {
         default: false,
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
+}
 
+function _initializeHandlebarsTemplates() {
     loadTemplates([
         "systems/warlock/templates/actors/partials/armour-table.hbs",
         "systems/warlock/templates/actors/partials/equipment-table.hbs",
@@ -122,7 +138,9 @@ Hooks.once("init", () => {
         "systems/warlock/templates/actors/partials/spells-table.hbs",
         "systems/warlock/templates/actors/partials/weapons-table.hbs",
     ]);
+}
 
+function _initializeHandlebarsHelpers() {
     Handlebars.registerHelper("getSkill", (careers, skillName) => {
         const activeSystem = game.settings.get("warlock", "activeSystem");
         const activeCareer = careers.find(career => career.data.data.isActive);
@@ -136,4 +154,38 @@ Hooks.once("init", () => {
     Handlebars.registerHelper("enrichHTML", (html) => {
         return TextEditor.enrichHTML(html);
     });
+}
+
+/**
+ * Initialize the various world settings once Foundry has started initialization.
+ */
+Hooks.once("init", () => {
+    _initializeCONFIG();
+    _initializeSheets();
+    _initializeSettings();
+    _initializeHandlebarsTemplates();
+    _initializeHandlebarsHelpers();
+});
+
+/**
+ * Migrate the world, if necessary, once Foundry has completely initialized.
+ */
+Hooks.once("ready", () => {
+    // Exit early if the user isn't the GM.
+    if (!game.user.isGM) {
+        return;
+    }
+
+    // Determine if a migration needs to take place.
+    const currentVersion = game.settings.get("warlock", "systemMigrationVersion");
+    const NEEDS_MIGRATION_VERSION = "0.2.1";
+    const needsMigration = !currentVersion || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
+
+    // Return if a migration doesn't need to occur.
+    if (!needsMigration) {
+        return;
+    }
+
+    // Migrate the world.
+    Migrations.migrateWorld();
 });

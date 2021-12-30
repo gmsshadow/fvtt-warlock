@@ -1,10 +1,8 @@
 import * as Chat from "./chat.mjs";
 
 export async function rollArmour(armour) {
-    let rollFormula = `${armour.data.data.reductionRoll}`;
-
-    let rollFlavor = `Rolling ${armour.name} stamina loss reduction`;
-
+    const rollFormula = `${armour.data.data.reductionRoll}`;
+    const rollFlavor = `Rolling ${armour.name} stamina loss reduction`;
     const roll = new Roll(rollFormula, {});
 
     await roll.evaluate({
@@ -25,7 +23,7 @@ export async function rollArmour(armour) {
 }
 
 export async function rollSkillTest(name, level, testType = "basic") {
-    const testOptions = await _getSkillTestOptions(testType);
+    const testOptions = await _getSkillTestOptions(name, testType);
 
     if (testOptions.cancelled) {
         return;
@@ -36,11 +34,12 @@ export async function rollSkillTest(name, level, testType = "basic") {
     let rollFlavor = "";
 
     if (testOptions.isOpposed) {
-        rollFlavor += "Opposed Test | ";
+        rollFlavor += "Opposed Skill Test";
     } else {
-        rollFlavor += "Basic Test | ";
+        rollFlavor += "Basic Skill Test";
     }
 
+    rollFlavor += " | ";
     rollFlavor += `${name} at level ${level}`;
 
     const rollTemplate = "systems/warlock/templates/chat/skill-test-card.hbs";
@@ -56,10 +55,8 @@ export async function rollSkillTest(name, level, testType = "basic") {
 }
 
 export async function rollWeapon(weapon) {
-    let rollFormula = `${weapon.data.data.damage.roll}`;
-
-    let rollFlavor = `Rolling ${weapon.name} damage`;
-
+    const rollFormula = `${weapon.data.data.damage.roll}`;
+    const rollFlavor = `Rolling ${weapon.name} damage`;
     const roll = new Roll(rollFormula, {});
 
     await roll.evaluate({
@@ -109,24 +106,27 @@ async function _getToolTip(roll) {
     });
 }
 
-async function _getSkillTestOptions(defaultButton = "basic") {
+async function _getSkillTestOptions(skill, defaultButton) {
     const dialogTemplate = "systems/warlock/templates/dialogs/skill-test-dialog.hbs";
     const dialogHtml = await renderTemplate(dialogTemplate, {});
 
     return new Promise(resolve => {
         new Dialog({
-            title: game.i18n.localize("WARLOCK.Test"),
+            title: `${game.i18n.localize("WARLOCK.SkillTest")}: ${skill}`,
             content: dialogHtml,
             buttons: {
                 opposed: {
+                    icon: "<i class=\"fas fa-users\"></i>",
                     label: game.i18n.localize("WARLOCK.OpposedTest"),
                     callback: (html) => resolve(_processSkillTestOptions(html[0].querySelector("form"), true)),
                 },
                 cancel: {
+                    icon: "<i class=\"fas fa-times\"></i>",
                     label: game.i18n.localize("WARLOCK.Cancel"),
                     callback: (html) => resolve({cancelled: true}),
                 },
                 basic: {
+                    icon: "<i class=\"fas fa-user\"></i>",
                     label: game.i18n.localize("WARLOCK.BasicTest"),
                     callback: (html) => resolve(_processSkillTestOptions(html[0].querySelector("form"), false))
                 }
