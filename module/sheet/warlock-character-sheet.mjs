@@ -250,7 +250,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-        let testType = "basic";
+        let testType = "";
 
         switch (activeSystem) {
             case "warlock":
@@ -282,7 +282,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 skill = "Incantation";
                 level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-                await Roll.rollSkillTest(skill, level);
+                await Roll.rollSkillTest(skill, level, "basic");
                 break;
             case "warpstar":
                 skill = "Warp focus";
@@ -313,10 +313,12 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 content: dialogHtml,
                 buttons: {
                     cancel: {
+                        icon: "<i class=\"fas fa-times\"></i>",
                         label: game.i18n.localize("WARLOCK.Cancel"),
                         callback: (html) => resolve({cancelled: true}),
                     },
                     submit: {
+                        icon: "<i class=\"fas fa-check\"></i>",
                         label: game.i18n.localize("WARLOCK.Submit"),
                         callback: (html) => resolve({description: html[0].querySelector("form").description.value}),
                     },

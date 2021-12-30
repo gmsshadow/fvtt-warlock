@@ -5,7 +5,8 @@ export default class WarlockItem extends Item {
 
             let careerSkills = "";
 
-            Object.entries(this.data.data.adventuringSkills[activeSystem])
+            Object
+                .entries(this.data.data.adventuringSkills[activeSystem])
                 .forEach(([key, value]) => {
                     if (value.isCareerSkill) {
                         if (careerSkills.length !== 0) {
@@ -29,7 +30,8 @@ export default class WarlockItem extends Item {
         let careerLevel = 0;
         let careerSkillsCount = 0;
 
-        Object.entries(this.data.data.adventuringSkills[activeSystem])
+        Object
+            .entries(this.data.data.adventuringSkills[activeSystem])
             .forEach(([skillName, skillData]) => {
                 if (skillData.isCareerSkill) {
                     if (skillName == skill) {

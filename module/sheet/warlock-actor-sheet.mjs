@@ -227,15 +227,16 @@ export default class WarlockActorSheet extends ActorSheet {
                 content: dialogHtml,
                 buttons: {
                     cancel: {
+                        icon: "<i class=\"fas fa-times\"></i>",
                         label: game.i18n.localize("WARLOCK.Cancel"),
                         callback: (html) => resolve({cancelled: true}),
                     },
-                    yes: {
-                        label: game.i18n.localize("WARLOCK.Yes"),
+                    pay: {
+                        icon: "<i class=\"fas fa-tint\"></i>",
+                        label: game.i18n.localize("WARLOCK.Pay") + ` ${staminaCost} stamina`,
                         callback: (html) => resolve({cancelled: false}),
                     },
                 },
-                default: "yes",
                 close: () => resolve({cancelled: true}),
             }, null).render(true);
         });

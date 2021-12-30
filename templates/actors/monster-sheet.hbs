@@ -27,8 +27,8 @@
                 <input
                     class="header__notes field field--no-decoration field--center field--wide"
                     type="text"
-                    name="data.notes"
-                    value="{{data.data.notes}}"
+                    name="data.biography.notes"
+                    value="{{data.data.biography.notes}}"
                     placeholder="{{localize "WARLOCK.Notes"}}"
                     title="{{localize "WARLOCK.Notes"}}"
                     data-dtype="String">
@@ -42,8 +42,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.stamina.value"
-                            value="{{data.data.stamina.value}}"
+                            name="data.resources.stamina.value"
+                            value="{{data.data.resources.stamina.value}}"
                             title="{{localize "WARLOCK.CurrentStamina"}}"
                             data-dtype="Number">
                         <span class="resource__separator">
@@ -52,8 +52,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.stamina.max"
-                            value="{{data.data.stamina.max}}"
+                            name="data.resources.stamina.max"
+                            value="{{data.data.resources.stamina.max}}"
                             title="{{localize "WARLOCK.MaximumStamina"}}"
                             data-dtype="Number">
                     </div>
@@ -66,8 +66,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.actionsPerRound"
-                            value="{{data.data.actionsPerRound}}"
+                            name="data.resources.actionsPerRound.max"
+                            value="{{data.data.resources.actionsPerRound.max}}"
                             title="{{localize "WARLOCK.ActionsPerRound"}}"
                             data-dtype="Number">
                     </div>
@@ -163,8 +163,8 @@
             data-group="primary"
             data-tab="description">
             {{editor
-                content=data.data.description
-                target="data.description"
+                content=data.data.biography.description
+                target="data.biography.description"
                 button=true
                 owner=owner
                 editable=editable}}
