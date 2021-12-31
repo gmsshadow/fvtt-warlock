@@ -22,6 +22,40 @@ export async function rollArmour(armour) {
     Chat.createRollChatMessage(rollHtml, roll);
 }
 
+export async function rollInitiative() {
+    const rollFormula = "1d6";
+    let playerRoll = new Roll(rollFormula, {});
+    let gmRoll = new Roll(rollFormula, {});
+
+    await playerRoll.evaluate({
+        async: true,
+    });
+    await gmRoll.evaluate({
+        async: true,
+    });
+
+    while (playerRoll.total === gmRoll.total) {
+        playerRoll = await playerRoll.reroll({
+            async: true,
+        });
+        gmRoll = await gmRoll.reroll({
+            async: true,
+        });
+    }
+
+    const rollTemplate = "systems/warlock/templates/chat/initiative-card.hbs";
+    const rollHtml = await renderTemplate(rollTemplate, {
+        formula: rollFormula,
+        total: "",
+        playerTotal: playerRoll.total,
+        playerTooltip: await _getToolTip(playerRoll),
+        gmTotal: gmRoll.total,
+        gmTooltip: await _getToolTip(gmRoll),
+    });
+
+    Chat.createRollChatMessage(rollHtml, playerRoll);
+}
+
 export async function rollSkillTest(name, level, testType = "basic") {
     const testOptions = await _getSkillTestOptions(name, testType);
 

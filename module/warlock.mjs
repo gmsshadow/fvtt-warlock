@@ -12,11 +12,16 @@ import WarlockGlyphSheet from "./sheet/warlock-glyph-sheet.mjs";
 import WarlockSpellSheet from "./sheet/warlock-spell-sheet.mjs";
 import WarlockWeaponSheet from "./sheet/warlock-weapon-sheet.mjs";
 
+import WarlockCombat from "./combat/combat.mjs";
+import WarlockCombatTracker from "./combat/combat-tracker.mjs";
+
 import * as Migrations from "./migrations.mjs";
 
 function _initializeCONFIG() {
     CONFIG.Actor.documentClass = WarlockActor;
+    CONFIG.Combat.documentClass = WarlockCombat;
     CONFIG.Item.documentClass = WarlockItem;
+    CONFIG.ui.combat = WarlockCombatTracker;
 }
 
 function _initializeSheets() {
@@ -168,9 +173,15 @@ Hooks.once("init", () => {
 });
 
 /**
- * Migrate the world, if necessary, once Foundry has completely initialized.
+ * Set the resource tracked by the combat tracker and migrate the world, if
+ * necessary, once Foundry has completely initialized.
  */
 Hooks.once("ready", () => {
+    // Set the tracked resource for the combatants in the combat tracker.
+    game.settings.set("core", Combat.CONFIG_SETTING, {
+        resource: "resources.actionsPerRound",
+    });
+
     // Exit early if the user isn't the GM.
     if (!game.user.isGM) {
         return;
