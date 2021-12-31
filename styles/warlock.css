@@ -1,18 +1,4 @@
 /*******************************************************************************
- * Global
- ******************************************************************************/
-
-/* This is my solution to "disabling" initiative since I couldn't find a native
-   way to do so. At a certain point, I'll implement a custom combat tracker that
-   has these buttons removed. */
-.combat-control[data-control="rollAll"],
-.combat-control[data-control="rollNPC"],
-.combat-control[data-control="resetAll"],
-.token-initiative {
-    visibility: hidden;
-}
-
-/*******************************************************************************
  * System-specific
  ******************************************************************************/
 
