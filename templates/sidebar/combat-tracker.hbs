@@ -126,6 +126,7 @@
                 </div>
             </div>
             <div class="token-resource">
+                {{#if user.isGM}}
                 <a
                     class="modify-actions-per-round"
                     title="{{localize "WARLOCK.ModifyActionsPerRound"}}">
@@ -133,6 +134,11 @@
                         {{this.resource.value}} / {{this.resource.max}}
                     </span>
                 </a>
+                {{else}}
+                <span class="resource">
+                    {{this.resource.value}} / {{this.resource.max}}
+                </span>
+                {{/if}}
             </div>
         </li>
         {{/each}}

@@ -50,59 +50,79 @@ export default class WarlockCombatTracker extends CombatTracker {
             labels: {}
         };
         data.labels.scope = game.i18n.localize(`COMBAT.${data.linked ? "Linked" : "Unlinked"}`);
-        if ( !hasCombat ) return data;
+        if (!hasCombat) {
+            return data;
+        }
 
         // Format information about each combatant in the encounter
         let hasDecimals = false;
         const turns = [];
-        for ( let [i, combatant] of combat.turns.entries() ) {
-        if ( !combatant.visible ) continue;
+        for (let [i, combatant] of combat.turns.entries()) {
+            if (!combatant.visible) {
+                continue;
+            }
 
-        // Prepare turn data
-        const resource = combatant.permission >= CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER ? combatant.resource : null
-        const turn = {
-            id: combatant.id,
-            name: combatant.name,
-            img: combatant.img,
-            active: combatant === this.currentlySelectedCombatant,
-            owner: combatant.isOwner,
-            defeated: combatant.data.defeated,
-            hidden: combatant.hidden,
-            initiative: combatant.initiative,
-            hasRolled: combatant.initiative !== null,
-            hasResource: resource !== null,
-            resource: resource
-        };
-        if ( Number.isFinite(turn.initiative) && !Number.isInteger(turn.initiative) ) hasDecimals = true;
-        turn.css = [
-            turn.active ? "active" : "",
-            turn.hidden ? "hidden" : "",
-            turn.defeated ? "defeated" : ""
-        ].join(" ").trim();
+            // Prepare turn data
+            const turn = {
+                id: combatant.id,
+                name: combatant.name,
+                img: combatant.img,
+                active: combatant === this.currentlySelectedCombatant,
+                owner: combatant.isOwner,
+                defeated: combatant.data.defeated,
+                hidden: combatant.hidden,
+                initiative: combatant.initiative,
+                hasRolled: combatant.initiative !== null,
+                hasResource: combatant.resource !== null,
+                resource: combatant.resource
+            };
 
-        // Cached thumbnail image for video tokens
-        if ( VideoHelper.hasVideoExtension(turn.img) ) {
-            if ( combatant._thumb ) turn.img = combatant._thumb;
-            else turn.img = combatant._thumb = await game.video.createThumbnail(combatant.img, {width: 100, height: 100});
-        }
+            if (Number.isFinite(turn.initiative)
+                && !Number.isInteger(turn.initiative)) {
+                hasDecimals = true;
+            }
+            turn.css = [
+                turn.active ? "active" : "",
+                turn.hidden ? "hidden" : "",
+                turn.defeated ? "defeated" : ""
+            ].join(" ").trim();
 
-        // Actor and Token status effects
-        turn.effects = new Set();
-        if ( combatant.token ) {
-            combatant.token.data.effects.forEach(e => turn.effects.add(e));
-            if ( combatant.token.data.overlayEffect ) turn.effects.add(combatant.token.data.overlayEffect);
-        }
-        if ( combatant.actor ) combatant.actor.temporaryEffects.forEach(e => {
-            if ( e.getFlag("core", "statusId") === CONFIG.Combat.defeatedStatusId ) turn.defeated = true;
-            else if ( e.data.icon ) turn.effects.add(e.data.icon);
-        });
-        turns.push(turn);
+            // Cached thumbnail image for video tokens
+            if (VideoHelper.hasVideoExtension(turn.img)) {
+                if (combatant._thumb) {
+                    turn.img = combatant._thumb;
+                } else {
+                    turn.img = combatant._thumb = await game.video.createThumbnail(combatant.img, {width: 100, height: 100});
+                }
+            }
+
+            // Actor and Token status effects
+            turn.effects = new Set();
+            if (combatant.token) {
+                combatant.token.data.effects.forEach(e => turn.effects.add(e));
+                if (combatant.token.data.overlayEffect) {
+                    turn.effects.add(combatant.token.data.overlayEffect);
+                }
+            }
+            if (combatant.actor) {
+                combatant.actor.temporaryEffects.forEach(e => {
+                    if (e.getFlag("core", "statusId") === CONFIG.Combat.defeatedStatusId) {
+                        turn.defeated = true;
+                    } else if (e.data.icon) {
+                        turn.effects.add(e.data.icon);
+                    }
+                });
+            }
+
+            turns.push(turn);
         }
 
         // Format initiative numeric precision
         const precision = CONFIG.Combat.initiative.decimals;
         turns.forEach(t => {
-        if ( t.initiative !== null ) t.initiative = t.initiative.toFixed(hasDecimals ? precision : 0);
+            if (t.initiative !== null) {
+                t.initiative = t.initiative.toFixed(hasDecimals ? precision : 0);
+            }
         });
 
         // Merge update data for rendering
