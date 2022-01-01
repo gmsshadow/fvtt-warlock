@@ -89,11 +89,11 @@ export default class WarlockActorSheet extends ActorSheet {
     }
 
     async _onCreateItem(event) {
+        event.preventDefault();
+
         if (!this.isEditable) {
             return;
         }
-
-        event.preventDefault();
 
         const itemType = event.currentTarget.dataset.itemType;
         let itemName = "";
@@ -149,11 +149,11 @@ export default class WarlockActorSheet extends ActorSheet {
     }
 
     async _onDeleteItem(event) {
+        event.preventDefault();
+
         if (!this.isEditable) {
             return;
         }
-
-        event.preventDefault();
 
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
@@ -184,11 +184,11 @@ export default class WarlockActorSheet extends ActorSheet {
     }
 
     async _onEquipItem(event) {
+        event.preventDefault();
+
         if (!this.isEditable) {
             return;
         }
-
-        event.preventDefault();
 
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
