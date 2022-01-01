@@ -48,12 +48,14 @@
         {{/if}}
         <nav
             class="encounters flexrow {{#if hasCombat}}combat{{/if}}">
+            {{#if hasCombat}}
             {{#if user.isGM}}
             <a
                 class="roll-initiative"
                 title="{{localize "WARLOCK.RollInitiative"}}">
                 <i class="fas fa-dice"></i>
             </a>
+            {{/if}}
             {{/if}}
             {{#if combatCount}}
             {{#if combat.data.round}}
