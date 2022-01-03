@@ -2,28 +2,30 @@ export default class WarlockActor extends Actor {
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
 
-        // Add an "Unarmed" weapon to the character.
-        this.createEmbeddedDocuments("Item", [
-            {
-                type: "Weapon",
-                name: "Unarmed",
-                data: {
-                    isEquipped: true,
-                    type: {
-                        value: "Casual",
-                    },
-                    damage: {
-                        roll: "1d6-2",
+        if (this.type === "Character") {
+            // Add an "Unarmed" weapon to the character.
+            this.createEmbeddedDocuments("Item", [
+                {
+                    type: "Weapon",
+                    name: "Unarmed",
+                    data: {
+                        isEquipped: true,
                         type: {
-                            value: "Crushing",
+                            value: "Casual",
+                        },
+                        damage: {
+                            roll: "1d6-2",
+                            type: {
+                                value: "Crushing",
+                            },
+                        },
+                        skill: {
+                            value: "Brawling",
                         },
                     },
-                    skill: {
-                        value: "Brawling",
-                    },
-                },
-            }
-        ]);
+                }
+            ]);
+        }
     }
 
     async _preCreate(data, options, user) {
