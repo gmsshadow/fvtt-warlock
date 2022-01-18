@@ -1,5 +1,7 @@
+/**
+ * Migrate the world which includes actors, items, scenes, compendia, etc.
+ */
 export async function migrateWorld() {
-    // Notify the user that a migration is occurring.
     ui.notifications.info(`Migrating your world for version ${game.system.data.version} — Please do not close your game or shut down your server.`, {
         permanent: true,
     });
@@ -16,44 +18,90 @@ export async function migrateWorld() {
         await item.update(updateData);
     }
 
+    // TODO(jcd) Migrate compendia.
+
     // Set the migration version for future sessions.
     game.settings.set("warlock", "systemMigrationVersion", game.system.data.version);
 
-    // Notify the user that migration was successful.
     ui.notifications.info(`Successfully migrated your world for version ${game.system.data.version}!`, {
         permanent: true,
     });
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the ActorData for an Actor.
+ *
+ * @param {data.ActorData} actorData The data corresponding to an Actor
+ * @returns {object} The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateActorData(actorData) {
     const updateData = {};
 
-    if (actorData.type === "Character") {
-        _migrateCharacterData(actorData, updateData);
-    } else if (actorData.type === "Monster") {
-        _migrateMonsterData(actorData, updateData);
-    } else if (actorData.type === "Vehicle") {
-        _migrateVehicleData(actorData, updateData);
+    switch (actorData.type) {
+        case "Character":
+            _migrateCharacterData(actorData, updateData);
+            break;
+        case "Monster":
+            _migrateMonsterData(actorData, updateData);
+            break;
+        case "Vehicle":
+            _migrateVehicleData(actorData, updateData);
+            break;
+        default:
+            // TODO(jcd): Log an error here.
+            break;
     }
 
     return updateData;
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the ActorData for a Character.
+ *
+ * This function is currently a no-op since no migrations need to occur for
+ * Characters.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Character
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateCharacterData(actorData, updateData) {
     // Do nothing.
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the ActorData for a Monster.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Monster
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateMonsterData(actorData, updateData) {
-    // Migrate stamina.
     _migrateMonsterStamina(actorData, updateData);
-
-    // Migrate actions per round.
     _migrateMonsterActionsPerRound(actorData, updateData);
-
-    // Migrate notes and description.
     _migrateMonsterNotesAndDescription(actorData, updateData);
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the stamina for a Monster.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Monster
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateMonsterStamina(actorData, updateData) {
     if (actorData.data.stamina !== undefined) {
         // Convert the old values.
@@ -65,6 +113,16 @@ function _migrateMonsterStamina(actorData, updateData) {
     }
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the actions per round for a Monster.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Monster
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateMonsterActionsPerRound(actorData, updateData) {
     if (actorData.data.actionsPerRound !== undefined) {
         // Convert the old value.
@@ -76,6 +134,16 @@ function _migrateMonsterActionsPerRound(actorData, updateData) {
     }
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the notes and description for a Monster.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Monster
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateMonsterNotesAndDescription(actorData, updateData) {
     if (actorData.data.notes !== undefined) {
         // Convert the old value.
@@ -94,11 +162,31 @@ function _migrateMonsterNotesAndDescription(actorData, updateData) {
     }
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the ActorData for a Vehicle.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Monster
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateVehicleData(actorData, updateData) {
     // Migrate description.
     _migrateVehicleDescription(actorData, updateData);
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the description for a Vehicle.
+ *
+ * @param {data.ActorData} actorData The data corresponding to a Monster
+ * @param {object} updateData The modifications to the ActorData object
+ *
+ * @private
+ */
 function _migrateVehicleDescription(actorData, updateData) {
     if (actorData.data.description !== undefined) {
         // Convert the old value.
@@ -109,6 +197,19 @@ function _migrateVehicleDescription(actorData, updateData) {
     }
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Migrates the ItemData for an Item.
+ *
+ * This function is currently a no-op since no migrations need to occur for
+ * Items.
+ *
+ * @param {ItemData} itemData The data corresponding to an Item
+ * @param {object} updateData The modifications to the ItemData object
+ *
+ * @private
+ */
 function _migrateItemData(itemData, updateData) {
     // Do nothing.
 }

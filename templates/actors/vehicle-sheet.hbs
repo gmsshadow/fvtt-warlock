@@ -7,6 +7,7 @@
             src="{{actor.img}}"
             title="{{actor.name}}"
             data-edit="img">
+
         <div class="header__body">
             <div class="header__row">
                 <input
@@ -17,11 +18,13 @@
                     title="{{localize "WARLOCK.Name"}}"
                     data-dtype="String">
             </div>
+
             <div class="header__row header__row--align-end">
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.Structure"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -30,9 +33,11 @@
                             value="{{data.data.structure.value}}"
                             title="{{localize "WARLOCK.CurrentStructure"}}"
                             data-dtype="Number">
+
                         <span class="resource__separator">
                             /
                         </span>
+
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
@@ -42,10 +47,12 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.ShipGun"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -56,10 +63,12 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.AntiPersonnelGun"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -71,11 +80,13 @@
                     </div>
                 </div>
             </div>
+
             <div class="header__row header__row--align-end">
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.Manoeuvrability"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -86,10 +97,12 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.Scanners"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -100,10 +113,12 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.Astronav"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -127,6 +142,7 @@
             data-tab="gear">
             {{localize "WARLOCK.Gear"}}
         </a>
+
         <a
             class="tabs__item"
             title="{{localize "WARLOCK.Description"}}"
@@ -144,6 +160,7 @@
             {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
             {{> "systems/warlock/templates/actors/partials/equipment-table.hbs"}}
         </div>
+
         <div
             class="tab description-tab"
             data-group="primary"

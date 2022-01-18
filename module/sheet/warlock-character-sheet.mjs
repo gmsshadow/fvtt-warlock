@@ -1,7 +1,17 @@
-import * as Roll from "../roll.mjs";
 import WarlockActorSheet from "./warlock-actor-sheet.mjs";
 
+import * as Roll from "../utils/roll.mjs";
+
+/**
+ * The custom WarlockCharacterSheet that extends the custom WarlockActorSheet.
+ *
+ * @extends WarlockActorSheet
+ */
 export default class WarlockCharacterSheet extends WarlockActorSheet {
+    /**
+     * @override
+     * @inheritdoc
+     */
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
@@ -18,6 +28,12 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         };
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     render(force=false, options={}) {
         super.render(force, options);
 
@@ -39,6 +55,12 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -54,34 +76,30 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         html.find(".test-spell").click(this._onTestSpell.bind(this));
         html.find(".open-reputation-dialog").click(this._onOpenReputationDialog.bind(this));
 
-        // Set up the event listener to save the last focused skill level input
-        // element.
+        // Save the last focused skill level input element.
         html.find(".edit-skill-level").focusin((event) => {
             this.saveFocus = event.currentTarget.dataset.skill;
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     getData() {
         const context = super.getData();
 
-        context.data.data.careers = context.actor.items
-            .filter((item) => {
-                return item.type === "Career";
-            })
+        context.data.data.careers = context.actor.itemTypes["Career"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
-        context.data.data.spells = context.actor.items
-            .filter((item) => {
-                return item.type === "Spell";
-            })
+        context.data.data.spells = context.actor.itemTypes["Spell"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
-        context.data.data.glyphs = context.actor.items
-            .filter((item) => {
-                return item.type === "Glyph";
-            })
+        context.data.data.glyphs = context.actor.itemTypes["Glyph"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
@@ -93,6 +111,15 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         return context;
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Activates a career.
+     *
+     * @param {Event} event The click event to activate a career
+     *
+     * @private
+     */
     async _onActivateCareer(event) {
         if (!this.isEditable) {
             return;
@@ -101,10 +128,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         event.preventDefault();
 
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
-        const careerData = this.actor.items
-            .filter((item) => {
-                return item.type === "Career";
-            })
+        const careerData = this.actor.itemTypes["Career"]
             .map((career) => {
                 return career.id;
             })
@@ -130,6 +154,15 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         ].concat(careerData));
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Consolidates money to the highest note.
+     *
+     * @param {Event} event The click event to consolidate money
+     *
+     * @private
+     */
     async _onConsolidateMoney(event) {
         event.preventDefault();
 
@@ -155,18 +188,33 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Edits a skill level.
+     *
+     * @param {Event} event The change event to edit a skill level
+     *
+     * @private
+     */
     async _onEditSkillLevel(event) {
         let skill = event.currentTarget.closest(".table__entry").dataset.skill;
         let level = parseInt(event.currentTarget.value, 10);
-        this.actor.items
-            .filter((item) => {
-                return item.type === "Career";
-            })
+        this.actor.itemTypes["Career"]
             .forEach(async (career) => {
                 await career.updateCareerSkillLevel(skill, level);
             });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Increments a skill level by one.
+     *
+     * @param {Event} event The click event to increment a skill level
+     *
+     * @private
+     */
     async _onIncrementSkillLevel(event) {
         // Increase the skill level.
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
@@ -183,10 +231,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         });
 
         // Notify the careers of the level increase.
-        this.actor.items
-            .filter((item) => {
-                return item.type === "Career";
-            })
+        this.actor.itemTypes["Career"]
             .forEach(async (career) => {
                 let currentLevel = career.data.data.currentLevel;
                 await career.updateCareerSkillLevel();
@@ -216,6 +261,15 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test using the career skill.
+     *
+     * @param {Event} event The click event to test with a career skill
+     *
+     * @private
+     */
     async _onTestCareer(event) {
         event.preventDefault();
 
@@ -225,24 +279,60 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         await Roll.rollSkillTest(career.name, career.data.data.currentLevel);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test using luck.
+     *
+     * @param {Event} event The click event to test Luck
+     *
+     * @private
+     */
     async _onTestLuck(event) {
         event.preventDefault();
 
         await Roll.rollSkillTest("Luck", this.actor.data.data.resources.luck.value);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test using Pluck.
+     *
+     * @param {Event} event The click event to test Pluck
+     *
+     * @private
+     */
     async _onTestPluck(event) {
         event.preventDefault();
 
         await Roll.rollSkillTest("Pluck", this.actor.data.data.resources.pluck.value);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test using Reputation.
+     *
+     * @param {Event} event The click event to test Reputation
+     *
+     * @private
+     */
     async _onTestReputation(event) {
         event.preventDefault();
 
         await Roll.rollSkillTest(`Reputation (${this.actor.data.data.resources.reputation.description})`, this.actor.data.data.resources.reputation.value);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test.
+     *
+     * @param {Event} event The click event to test a skill
+     *
+     * @private
+     */
     async _onTestSkill(event) {
         event.preventDefault();
 
@@ -270,6 +360,15 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         await Roll.rollSkillTest(skill, level, testType);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test for a spell or glyph.
+     *
+     * @param {Event} event The click event to test for a spell or glyph
+     *
+     * @private
+     */
     async _onTestSpell(event) {
         event.preventDefault();
 
@@ -299,6 +398,16 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Opens the reputation configuration Dialog.
+     *
+     * @param {Event} event The click event to open the reputation configuration
+     * Dialog
+     *
+     * @private
+     */
     async _onOpenReputationDialog(event) {
         event.preventDefault();
 

@@ -1,7 +1,17 @@
-import * as Roll from "../roll.mjs";
 import WarlockActorSheet from "./warlock-actor-sheet.mjs";
 
+import * as Roll from "../utils/roll.mjs";
+
+/**
+ * The custom WarlockMonsterSheet that extends the custom WarlockActorSheet.
+ *
+ * @extends WarlockActorSheet
+ */
 export default class WarlockMonsterSheet extends WarlockActorSheet {
+    /**
+     * @override
+     * @inheritdoc
+     */
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
@@ -18,6 +28,12 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -26,20 +42,20 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     getData() {
         const context = super.getData();
 
-        context.data.data.spells = context.actor.items
-            .filter((item) => {
-                return item.type === "Spell";
-            })
+        context.data.data.spells = context.actor.itemTypes["Spell"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
-        context.data.data.glyphs = context.actor.items
-            .filter((item) => {
-                return item.type === "Glyph";
-            })
+        context.data.data.glyphs = context.actor.itemTypes["Glyph"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
@@ -47,12 +63,30 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         return context;
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Rolls a skill test using Adventuring Skills.
+     *
+     * @param {Event} event The click event to test Adventuring Skills
+     *
+     * @private
+     */
     async _onTestAdventuringSkills(event) {
         event.preventDefault();
 
         await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Roll a skill test for a spell or glyph.
+     *
+     * @param {Event} event The click event to test for a spell or glyph
+     *
+     * @private
+     */
     async _onTestSpell(event) {
         event.preventDefault();
 
@@ -74,6 +108,15 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Rolls a skill test using Weapon Skill.
+     *
+     * @param {Event} event The click event to test Weapon Skill
+     *
+     * @private
+     */
     async _onTestWeaponSkill(event) {
         event.preventDefault();
 

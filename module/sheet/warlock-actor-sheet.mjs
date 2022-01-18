@@ -1,7 +1,16 @@
-import * as Chat from "../chat.mjs";
-import * as Roll from "../roll.mjs";
+import * as Chat from "../utils/chat.mjs";
+import * as Roll from "../utils/roll.mjs";
 
+/**
+ * The custom WarlockActorSheet that extends the base ActorSheet.
+ *
+ * @extends ActorSheet
+ */
 export default class WarlockActorSheet extends ActorSheet {
+    /**
+     * @override
+     * @inheritdoc
+     */
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
@@ -31,9 +40,16 @@ export default class WarlockActorSheet extends ActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Select all of the text in an input element when focusing it.
         html.find("input").focusin((event) => {
             event.currentTarget.select();
         });
@@ -49,29 +65,26 @@ export default class WarlockActorSheet extends ActorSheet {
         html.find(".toggle-description").click(this._onToggleDescription.bind(this));
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     getData() {
         const context = super.getData();
 
         context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
 
-        context.data.data.gear.weapons = context.actor.items
-            .filter((item) => {
-                return item.type === "Weapon";
-            })
+        context.data.data.gear.weapons = context.actor.itemTypes["Weapon"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
-        context.data.data.gear.armour = context.actor.items
-            .filter((item) => {
-                return item.type === "Armour";
-            })
+        context.data.data.gear.armour = context.actor.itemTypes["Armour"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
-        context.data.data.gear.equipment = context.actor.items
-            .filter((item) => {
-                return item.type === "Equipment";
-            })
+        context.data.data.gear.equipment = context.actor.itemTypes["Equipment"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
             });
@@ -79,6 +92,15 @@ export default class WarlockActorSheet extends ActorSheet {
         return context;
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Displays an item card in the chat log.
+     *
+     * @param {Event} event The click event to send the Item to chat
+     *
+     * @private
+     */
     async _onChatItem(event) {
         event.preventDefault();
 
@@ -88,6 +110,15 @@ export default class WarlockActorSheet extends ActorSheet {
         await Chat.createItemChatMessage(item);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Creates an Item and embeds it within the Actor.
+     *
+     * @param {Event} event The click event to create an Item
+     *
+     * @private
+     */
     async _onCreateItem(event) {
         event.preventDefault();
 
@@ -118,7 +149,8 @@ export default class WarlockActorSheet extends ActorSheet {
                 itemName = game.i18n.localize("WARLOCK.NewWeapon");
                 break;
             default:
-                break;
+                // TODO(jcd) Log an error.
+                return;
         }
 
         const item = await Item.create(
@@ -131,14 +163,9 @@ export default class WarlockActorSheet extends ActorSheet {
             },
         );
 
+        // Activate the new career if it's the only one.
         if (item.type === "Career") {
-            const numberOfCareers = this.actor.items
-                .filter((item) => {
-                    return item.type === "Career";
-                })
-                .length;
-
-            if (numberOfCareers === 1) {
+            if (this.actor.itemTypes["Career"].length === 1) {
                 await item.update({
                     data: {
                         isActive: true,
@@ -148,6 +175,15 @@ export default class WarlockActorSheet extends ActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Deletes an Item from the Actor.
+     *
+     * @param {Event} event The click event to delete an Item
+     *
+     * @private
+     */
     async _onDeleteItem(event) {
         event.preventDefault();
 
@@ -160,13 +196,10 @@ export default class WarlockActorSheet extends ActorSheet {
 
         await item.delete();
 
+        // Activate the "next" career if the deleted career was the active one.
         if (item.type === "Career" && item.data.data.isActive) {
-            const careers = this.actor.items.filter((item) => {
-                return item.type === "Career";
-            });
-
-            if (careers.length > 0) {
-                await careers[0].update({
+            if (this.actor.itemTypes["Career"].length > 0) {
+                await this.actor.itemTypes["Career"][0].update({
                     data: {
                         isActive: true,
                     },
@@ -175,6 +208,15 @@ export default class WarlockActorSheet extends ActorSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Opens the corresponding sheet for an Item.
+     *
+     * @param {Event} event The click event to edit the Item
+     *
+     * @private
+     */
     _onEditItem(event) {
         event.preventDefault();
 
@@ -183,6 +225,15 @@ export default class WarlockActorSheet extends ActorSheet {
         item.sheet.render(true);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Equips an Item within an Actor.
+     *
+     * @param {Event} event The click event to equip the Item
+     *
+     * @private
+     */
     async _onEquipItem(event) {
         event.preventDefault();
 
@@ -204,6 +255,16 @@ export default class WarlockActorSheet extends ActorSheet {
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Displays a Dialog to subtract the stamina cost of a spell or glyph from
+     * the Actor's current stamina.
+     *
+     * @param {Event} event The click event to display the stamina cost Dialog
+     *
+     * @private
+     */
     async _onPayStaminaCost(event) {
         event.preventDefault();
 
@@ -215,6 +276,8 @@ export default class WarlockActorSheet extends ActorSheet {
             ui.notifications.error("The stamina cost is equal to or greater than your current stamina!");
             return;
         }
+
+        // TODO(jcd) Move this dialog code somewhere else.
 
         const dialogTemplate = "systems/warlock/templates/dialogs/stamina-cost-dialog.hbs";
         const dialogHtml = await renderTemplate(dialogTemplate, {
@@ -229,15 +292,21 @@ export default class WarlockActorSheet extends ActorSheet {
                     cancel: {
                         icon: "<i class=\"fas fa-times\"></i>",
                         label: game.i18n.localize("WARLOCK.Cancel"),
-                        callback: (html) => resolve({cancelled: true}),
+                        callback: (html) => resolve({
+                            cancelled: true,
+                        }),
                     },
                     pay: {
                         icon: "<i class=\"fas fa-tint\"></i>",
                         label: game.i18n.localize("WARLOCK.Pay") + ` ${staminaCost} stamina`,
-                        callback: (html) => resolve({cancelled: false}),
+                        callback: (html) => resolve({
+                            cancelled: false,
+                        }),
                     },
                 },
-                close: () => resolve({cancelled: true}),
+                close: () => resolve({
+                    cancelled: true,
+                }),
             }, null).render(true);
         });
 
@@ -256,6 +325,16 @@ export default class WarlockActorSheet extends ActorSheet {
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Rolls an armour's stamina loss reduction and displays it in the chat log.
+     *
+     * @param {Event} event The click event to roll the armour's stamina loss
+     * reduction
+     *
+     * @private
+     */
     async _onRollArmour(event) {
         event.preventDefault();
 
@@ -264,6 +343,15 @@ export default class WarlockActorSheet extends ActorSheet {
         Roll.rollArmour(armour);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Rolls a weapon's damage and displays it in the chat log.
+     *
+     * @param {Event} event The click event to roll the weapon's damage
+     *
+     * @private
+     */
     async _onRollWeapon(event) {
         event.preventDefault();
 
@@ -272,6 +360,15 @@ export default class WarlockActorSheet extends ActorSheet {
         Roll.rollWeapon(weapon);
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Toggles the display of an Item's description.
+     *
+     * @param {Event} event The click event to toggle an Item's description
+     *
+     * @private
+     */
     _onToggleDescription(event) {
         event.preventDefault();
 

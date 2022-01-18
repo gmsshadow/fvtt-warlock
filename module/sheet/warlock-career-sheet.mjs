@@ -1,6 +1,15 @@
 import WarlockItemSheet from "./warlock-item-sheet.mjs";
 
+/**
+ * The custom WarlockCareerSheet that extends the custom WarlockItemSheet.
+ *
+ * @extends WarlockItemSheet
+ */
 export default class WarlockCareerSheet extends WarlockItemSheet {
+    /**
+     * @override
+     * @inheritdoc
+     */
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
@@ -17,6 +26,12 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     render(force=false, options={}) {
         super.render(force, options);
 
@@ -38,18 +53,29 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     activateListeners(html) {
         super.activateListeners(html);
 
         html.find(".toggle-career-skill").click(this._onToggleCareerSkill.bind(this));
 
-        // Set up the event listener to save the last focused skill level input
-        // element.
+        // Save the last focused skill level input element.
         html.find(".edit-career-skill-level").focusin((event) => {
             this.saveFocus = event.currentTarget.dataset.skill;
         });
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     async getData() {
         const context = super.getData();
 
@@ -58,6 +84,15 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         return context;
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Toggles a career skill.
+     *
+     * @param {Event} event The click event to toggle a career skill
+     *
+     * @private
+     */
     async _onToggleCareerSkill(event) {
         if (!this.isEditable) {
             return;

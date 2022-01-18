@@ -7,6 +7,7 @@
             src="{{actor.img}}"
             title="{{actor.name}}"
             data-edit="img">
+
         <div class="header__body">
             <div class="header__row">
                 <input
@@ -17,6 +18,7 @@
                     title="{{localize "WARLOCK.Name"}}"
                     data-dtype="String">
             </div>
+
             <div class="header__row">
                 <input
                     class="header__type field field--no-decoration field--center"
@@ -26,6 +28,7 @@
                     placeholder="{{localize "WARLOCK.Type"}}"
                     title="{{localize "WARLOCK.Type"}}"
                     data-dtype="String">
+
                 <input
                     class="header__notes field field--no-decoration field--center field--wide"
                     type="text"
@@ -35,11 +38,13 @@
                     title="{{localize "WARLOCK.Notes"}}"
                     data-dtype="String">
             </div>
+
             <div class="header__row header__row--align-end">
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.Stamina"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -48,9 +53,11 @@
                             value="{{data.data.resources.stamina.value}}"
                             title="{{localize "WARLOCK.CurrentStamina"}}"
                             data-dtype="Number">
+
                         <span class="resource__separator">
                             /
                         </span>
+
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
@@ -60,10 +67,12 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         {{localize "WARLOCK.ActionsPerRound"}}
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -74,12 +83,14 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         <a class="test-weapon-skill">
                             {{localize "WARLOCK.WeaponSkill"}}
                         </a>
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -90,12 +101,14 @@
                             data-dtype="Number">
                     </div>
                 </div>
+
                 <div class="resource">
                     <label class="resource__name">
                         <a class="test-adventuring-skills">
                             {{localize "WARLOCK.AdventuringSkills"}}
                         </a>
                     </label>
+
                     <div class="resource__body">
                         <input
                             class="resource__value field field--center field--no-decoration"
@@ -119,6 +132,7 @@
             data-tab="gear">
             {{localize "WARLOCK.Gear"}}
         </a>
+
         <a
             class="tabs__item"
             {{#if (eq data.data.activeSystem "warlock")}}
@@ -133,6 +147,7 @@
             {{localize "WARLOCK.Glyphs"}}
             {{/if}}
         </a>
+
         <a
             class="tabs__item"
             title="{{localize "WARLOCK.Description"}}"
@@ -147,9 +162,12 @@
             data-group="primary"
             data-tab="gear">
             {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
+
             {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
+
             {{> "systems/warlock/templates/actors/partials/equipment-table.hbs"}}
         </div>
+
         <div
             class="tab spells-tab"
             data-group="primary"
@@ -160,6 +178,7 @@
             {{> "systems/warlock/templates/actors/partials/glyphs-table.hbs"}}
             {{/if}}
         </div>
+
         <div
             class="tab description-tab"
             data-group="primary"

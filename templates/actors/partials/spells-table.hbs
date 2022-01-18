@@ -3,12 +3,15 @@
         <span class="spells__header-field table__header-field">
             {{localize "WARLOCK.Spell"}}
         </span>
+
         <span class="spells__header-field table__header-field">
             {{localize "WARLOCK.Test"}}
         </span>
+
         <span class="spells__header-field table__header-field">
             {{localize "WARLOCK.StaminaCost"}}
         </span>
+
         <span class="spells__header-field table__header-field">
             <a
                 class="create-item"
@@ -17,6 +20,7 @@
             </a>
         </span>
     </div>
+
     <div class="spells__body table__body">
         {{#each data.data.spells}}
         <div
@@ -28,10 +32,12 @@
                 <img
                     class="table__entry-image"
                     src="{{img}}">
+
                 <a class="toggle-description">
                     {{name}}
                 </a>
             </span>
+
             <span
                 class="glyphs__entry-field table__entry-field"
                 title="{{localize "WARLOCK.Test"}}">
@@ -39,6 +45,7 @@
                     {{localize "WARLOCK.Basic"}}
                 </a>
             </span>
+
             <span
                 class="spells__entry-field table__entry-field"
                 title="{{localize "WARLOCK.StaminaCost"}}">
@@ -46,6 +53,7 @@
                     {{data.data.staminaCost}}
                 </a>
             </span>
+
             <span
                 class="spells__entry-field table__entry-field">
                 <a
@@ -53,11 +61,13 @@
                     title="{{localize "WARLOCK.ChatSpell"}}">
                     <i class="fas fa-comment"></i>
                 </a>
+
                 <a
                     class="edit-item"
                     title="{{localize "WARLOCK.EditSpell"}}">
                     <i class="fas fa-edit"></i>
                 </a>
+
                 <a
                     class="delete-item"
                     title="{{localize "WARLOCK.DeleteSpell"}}">
@@ -65,6 +75,7 @@
                 </a>
             </span>
         </div>
+
         <div class="table__entry-field--collapsible">
             {{{enrichHTML data.data.description}}}
         </div>

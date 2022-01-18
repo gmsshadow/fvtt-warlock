@@ -1,7 +1,15 @@
-import * as Roll from "../roll.mjs";
 import WarlockActorSheet from "./warlock-actor-sheet.mjs";
 
+/**
+ * The custom WarlockVehicleSheet that extends the custom WarlockActorSheet.
+ *
+ * @extends WarlockActorSheet
+ */
 export default class WarlockVehicleSheet extends WarlockActorSheet {
+    /**
+     * @override
+     * @inheritdoc
+     */
     static get defaultOptions() {
         return {
             ...super.defaultOptions,

@@ -15,8 +15,21 @@ import WarlockWeaponSheet from "./sheet/warlock-weapon-sheet.mjs";
 import WarlockCombat from "./combat/combat.mjs";
 import WarlockCombatTracker from "./combat/combat-tracker.mjs";
 
-import * as Migrations from "./migrations.mjs";
+import * as Migrations from "./utils/migrations.mjs";
+import * as Roll from "./utils/roll.mjs";
 
+/**
+ * Initializes the global game variable.
+ */
+function _initializeGame() {
+    game.warlock = {
+        roll: Roll,
+    };
+}
+
+/**
+ * Initializes the global CONFIG variable.
+ */
 function _initializeCONFIG() {
     CONFIG.Actor.documentClass = WarlockActor;
     CONFIG.Combat.documentClass = WarlockCombat;
@@ -24,6 +37,11 @@ function _initializeCONFIG() {
     CONFIG.ui.combat = WarlockCombatTracker;
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Registers and unregisters various sheets.
+ */
 function _initializeSheets() {
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("warlock", WarlockCharacterSheet, {
@@ -84,6 +102,11 @@ function _initializeSheets() {
     });
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Registers game settings.
+ */
 function _initializeSettings() {
     game.settings.register("warlock", "systemMigrationVersion", {
         name: "System Migration Version",
@@ -135,6 +158,11 @@ function _initializeSettings() {
     });
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Loads Handlebars templates used as partials.
+ */
 function _initializeHandlebarsTemplates() {
     loadTemplates([
         "systems/warlock/templates/actors/partials/armour-table.hbs",
@@ -145,6 +173,11 @@ function _initializeHandlebarsTemplates() {
     ]);
 }
 
+/* -------------------------------------------- */
+
+/**
+ * Registers custom Handlebars helpers.
+ */
 function _initializeHandlebarsHelpers() {
     Handlebars.registerHelper("getSkill", (careers, skillName) => {
         const activeSystem = game.settings.get("warlock", "activeSystem");
@@ -161,10 +194,10 @@ function _initializeHandlebarsHelpers() {
     });
 }
 
-/**
- * Initialize the various world settings once Foundry has started initialization.
- */
+/* -------------------------------------------- */
+
 Hooks.once("init", () => {
+    _initializeGame();
     _initializeCONFIG();
     _initializeSheets();
     _initializeSettings();
@@ -172,31 +205,44 @@ Hooks.once("init", () => {
     _initializeHandlebarsHelpers();
 });
 
+/* -------------------------------------------- */
+
 /**
- * Set the resource tracked by the combat tracker and migrate the world, if
- * necessary, once Foundry has completely initialized.
+ * Sets the tracked resource for combatants in the combat tracker.
  */
-Hooks.once("ready", () => {
-    // Set the tracked resource for the combatants in the combat tracker.
+function _initializeTrackedResource() {
     game.settings.set("core", Combat.CONFIG_SETTING, {
         resource: "resources.actionsPerRound",
     });
+}
 
-    // Exit early if the user isn't the GM.
+/* -------------------------------------------- */
+
+/**
+ * Migrates the world and its documents if necessary.
+ */
+function _initializeMigration() {
     if (!game.user.isGM) {
         return;
     }
 
-    // Determine if a migration needs to take place.
     const currentVersion = game.settings.get("warlock", "systemMigrationVersion");
     const NEEDS_MIGRATION_VERSION = "0.2.1";
-    const needsMigration = !currentVersion || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
+    const needsMigration = (
+        !currentVersion
+        || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)
+    );
 
-    // Return if a migration doesn't need to occur.
     if (!needsMigration) {
         return;
     }
 
-    // Migrate the world.
     Migrations.migrateWorld();
+}
+
+/* -------------------------------------------- */
+
+Hooks.once("ready", () => {
+    _initializeTrackedResource();
+    _initializeMigration();
 });
