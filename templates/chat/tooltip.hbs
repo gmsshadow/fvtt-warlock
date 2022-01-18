@@ -6,15 +6,18 @@
                 <span class="dice-tooltip__part-formula">
                     {{this.formula}}
                 </span>
+
                 {{#if this.flavor}}
                 <span class="dice-tooltip__part-flavor">
                     {{this.flavor}}
                 </span>
                 {{/if}}
+
                 <span class="dice-tooltip__part-total">
                     {{this.total}}
                 </span>
             </header>
+
             <ol class="dice-tooltip__rolls">
                 {{#each this.rolls}}
                 <li class="dice-tooltip__roll {{this.classes}}">

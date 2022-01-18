@@ -24,6 +24,7 @@
             data-tab="skills">
             {{localize "WARLOCK.Skills"}}
         </a>
+
         <a
             class="tabs__item"
             title="{{localize "WARLOCK.Description"}}"
@@ -42,23 +43,29 @@
                     <span class="career-skills__header-field table__header-field">
                         {{localize "WARLOCK.Skill"}}
                     </span>
+
                     <span class="career-skills__header-field table__header-field">
                         {{localize "WARLOCK.Current"}}
                     </span>
+
                     <span class="career-skills__header-field table__header-field">
                         {{localize "WARLOCK.Max"}}
                     </span>
+
                     <!-- The header entries are duplicated since the body is a two-column grid. -->
                     <span class="career-skills__header-field table__header-field">
                         {{localize "WARLOCK.Skill"}}
                     </span>
+
                     <span class="career-skills__header-field table__header-field">
                         {{localize "WARLOCK.Current"}}
                     </span>
+
                     <span class="career-skills__header-field table__header-field">
                         {{localize "WARLOCK.Max"}}
                     </span>
                 </div>
+
                 <div class="career-skills__body table__body">
                     {{#each (lookup data.data.adventuringSkills data.data.activeSystem) as |data skill|}}
                     <div
@@ -69,6 +76,7 @@
                             title="{{localize "WARLOCK.Skill"}}">
                             {{skill}}
                         </span>
+
                         <span
                             class="career-skills__entry-field table__entry-field"
                             title="{{localize "WARLOCK.IsCareerSkill"}}">
@@ -80,6 +88,7 @@
                                 {{/if}}
                             </a>
                         </span>
+
                         {{#if data.isCareerSkill}}
                         <input
                             class="edit-career-skill-level career-skills__entry-field table__entry-field field field--no-decoration"
@@ -101,6 +110,7 @@
                 </div>
             </div>
         </div>
+
         <div
             class="tab notes-tab"
             data-group="primary"

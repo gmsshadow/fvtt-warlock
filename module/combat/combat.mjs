@@ -1,26 +1,47 @@
-import * as Roll from "../roll.mjs";
+import * as Roll from "../utils/roll.mjs";
 
+/**
+ * The custom WarlockCombat class that extends the base Combat class.
+ */
 export default class WarlockCombat extends Combat {
-    get combatant() {
-        return this.currentlySelectedCombatant || this.turns[this.data.turn];
-    }
-
+    /**
+     * @override
+     * @inheritdoc
+     */
     async delete() {
         await super.delete();
         await this.refreshActionsPerRound();
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     async nextRound() {
         await super.nextRound();
         await this.refreshActionsPerRound();
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     async startCombat() {
         await super.startCombat();
         await this.refreshActionsPerRound();
         await Roll.rollInitiative();
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Resets the current actions per round for all combatants to their maximum
+     * value.
+     */
     async refreshActionsPerRound() {
         this.combatants.forEach(async (combatant) => {
             await combatant.actor.update({

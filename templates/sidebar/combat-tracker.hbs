@@ -10,6 +10,7 @@
                 title="{{localize 'COMBAT.Create'}}">
                 <i class="fas fa-plus"></i>
             </a>
+
             {{#if combatCount}}
             <a
                 class="combat-cycle"
@@ -21,9 +22,11 @@
                 {{/if}}>
                 <i class="fas fa-caret-left"></i>
             </a>
+
             <h4 class="encounter">
                 {{localize "COMBAT.Encounter"}} {{currentIndex}} / {{combatCount}}
             </h4>
+
             <a
                 class="combat-cycle"
                 title="{{localize 'COMBAT.EncounterNext'}}"
@@ -35,6 +38,7 @@
                 <i class="fas fa-caret-right"></i>
             </a>
             {{/if}}
+
             <a
                 class="combat-control"
                 title="{{localize 'COMBAT.Delete'}}"
@@ -46,6 +50,7 @@
             </a>
         </nav>
         {{/if}}
+
         <nav
             class="encounters flexrow {{#if hasCombat}}combat{{/if}}">
             {{#if hasCombat}}
@@ -57,6 +62,7 @@
             </a>
             {{/if}}
             {{/if}}
+
             {{#if combatCount}}
             {{#if combat.data.round}}
             <h3 class="encounter-title">
@@ -86,6 +92,7 @@
             {{/if}}
         </nav>
     </header>
+
     <ol
         id="combat-tracker"
         class="directory-list">
@@ -97,10 +104,12 @@
                 class="token-image"
                 data-src="{{this.img}}"
                 title="{{this.name}}"/>
+
             <div class="token-name flexcol">
                 <h4>
                     {{this.name}}
                 </h4>
+
                 <div class="combatant-controls flexrow">
                     {{#if ../user.isGM}}
                     <a
@@ -109,6 +118,7 @@
                         data-control="toggleHidden">
                         <i class="fas fa-eye-slash"></i>
                     </a>
+
                     <a
                         class="combatant-control {{#if this.defeated}}active{{/if}}"
                         title="{{localize 'COMBAT.ToggleDead'}}"
@@ -116,6 +126,7 @@
                         <i class="fas fa-skull"></i>
                     </a>
                     {{/if}}
+
                     <div class="token-effects">
                         {{#each this.effects}}
                         <img
@@ -125,6 +136,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="token-resource">
                 {{#if this.owner}}
                 <a
@@ -143,39 +155,42 @@
         </li>
         {{/each}}
     </ol>
+
     <nav
         id="combat-controls"
         class="directory-footer flexrow">
-    {{#if hasCombat}}
+        {{#if hasCombat}}
         {{#if user.isGM}}
-            {{#if round}}
-            <a
-                class="combat-control"
-                title="{{localize 'COMBAT.RoundPrev'}}"
-                data-control="previousRound">
-                <i class="fas fa-step-backward"></i>
-            </a>
-            <a
-                class="combat-control center"
-                title="{{localize 'COMBAT.End'}}"
-                data-control="endCombat">
-                {{localize 'COMBAT.End'}}
-            </a>
-            <a
-                class="combat-control"
-                title="{{localize 'COMBAT.RoundNext'}}"
-                data-control="nextRound">
-                <i class="fas fa-step-forward"></i>
-            </a>
-            {{else}}
-            <a
-                class="combat-control center"
-                title="{{localize 'COMBAT.Begin'}}"
-                data-control="startCombat">
-                {{localize 'COMBAT.Begin'}}
-            </a>
-            {{/if}}
+        {{#if round}}
+        <a
+            class="combat-control"
+            title="{{localize 'COMBAT.RoundPrev'}}"
+            data-control="previousRound">
+            <i class="fas fa-step-backward"></i>
+        </a>
+
+        <a
+            class="combat-control center"
+            title="{{localize 'COMBAT.End'}}"
+            data-control="endCombat">
+            {{localize 'COMBAT.End'}}
+        </a>
+
+        <a
+            class="combat-control"
+            title="{{localize 'COMBAT.RoundNext'}}"
+            data-control="nextRound">
+            <i class="fas fa-step-forward"></i>
+        </a>
+        {{else}}
+        <a
+            class="combat-control center"
+            title="{{localize 'COMBAT.Begin'}}"
+            data-control="startCombat">
+            {{localize 'COMBAT.Begin'}}
+        </a>
         {{/if}}
-    {{/if}}
+        {{/if}}
+        {{/if}}
     </nav>
 </section>

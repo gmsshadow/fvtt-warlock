@@ -1,6 +1,15 @@
 import WarlockItemSheet from "./warlock-item-sheet.mjs";
 
+/**
+ * The custom WarlockWeaponSheet that extends the custom WarlockItemSheet.
+ *
+ * @extends WarlockItemSheet
+ */
 export default class WarlockWeaponSheet extends WarlockItemSheet {
+    /**
+     * @override
+     * @inheritdoc
+     */
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
@@ -10,6 +19,12 @@ export default class WarlockWeaponSheet extends WarlockItemSheet {
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
+     */
     getData() {
         const context = super.getData();
 

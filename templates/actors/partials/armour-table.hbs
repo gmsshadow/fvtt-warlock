@@ -3,12 +3,15 @@
         <span class="armour__header-field table__header-field">
             {{localize "WARLOCK.Armour"}}
         </span>
+
         <span class="armour__header-field table__header-field">
             {{localize "WARLOCK.Type"}}
         </span>
+
         <span class="armour__header-field table__header-field">
             {{localize "WARLOCK.Reduction"}}
         </span>
+
         <span class="armour__header-field table__header-field">
             <a
                 class="create-item"
@@ -17,6 +20,7 @@
             </a>
         </span>
     </div>
+
     <div class="armour__body table__body">
         {{#each data.data.gear.armour}}
         <div
@@ -32,11 +36,13 @@
                     {{name}}
                 </a>
             </span>
+
             <span
                 class="armour__entry-field table__entry-field"
                 title="{{localize "WARLOCK.Type"}}">
                 {{data.data.type.value}}
             </span>
+
             <span
                 class="armour__entry-field table__entry-field"
                 title="{{localize "WARLOCK.Reduction"}}">
@@ -44,6 +50,7 @@
                     {{data.data.reductionRoll}}
                 </a>
             </span>
+
             <span class="armour__entry-field table__entry-field">
                 <a
                     class="equip-item"
@@ -54,16 +61,19 @@
                     <i class="fas fa-tshirt equip-item__not-equipped"></i>
                     {{/if}}
                 </a>
+
                 <a
                     class="chat-item"
                     title="{{localize "WARLOCK.ChatArmour"}}">
                     <i class="fas fa-comment"></i>
                 </a>
+
                 <a
                     class="edit-item"
                     title="{{localize "WARLOCK.EditArmour"}}">
                     <i class="fas fa-edit"></i>
                 </a>
+
                 <a
                     class="delete-item"
                     title="{{localize "WARLOCK.DeleteArmour"}}">
@@ -71,6 +81,7 @@
                 </a>
             </span>
         </div>
+
         <div class="table__entry-field--collapsible">
             {{{enrichHTML data.data.description}}}
         </div>

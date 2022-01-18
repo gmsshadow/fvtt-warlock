@@ -1,26 +1,48 @@
+/**
+ * The custom WarlockItem document that extends the base Item document.
+ *
+ * @extends Item
+ */
 export default class WarlockItem extends Item {
+    /**
+     * @override
+     * @inheritdoc
+     */
     prepareDerivedData() {
-        if (this.type === "Career") {
-            const activeSystem = game.settings.get("warlock", "activeSystem");
+        switch (this.type) {
+            case "Career":
+                // Create the list of career skills that is shown in the chat
+                // message for this career.
+                const activeSystem = game.settings.get("warlock", "activeSystem");
+                let careerSkills = "";
 
-            let careerSkills = "";
+                Object
+                    .entries(this.data.data.adventuringSkills[activeSystem])
+                    .forEach(([key, value]) => {
+                        if (value.isCareerSkill) {
+                            if (careerSkills.length !== 0) {
+                                careerSkills += ", "
+                            }
 
-            Object
-                .entries(this.data.data.adventuringSkills[activeSystem])
-                .forEach(([key, value]) => {
-                    if (value.isCareerSkill) {
-                        if (careerSkills.length !== 0) {
-                            careerSkills += ", "
+                            careerSkills += `${key} ${value.maximumLevel}`;
                         }
+                    });
 
-                        careerSkills += `${key} ${value.maximumLevel}`;
-                    }
-                });
-
-            this.data.data.careerSkills = careerSkills;
+                this.data.data.careerSkills = careerSkills;
+                break;
+            default:
+                break;
         }
     }
 
+    /* -------------------------------------------- */
+
+    /**
+     * Calculates the career skill level when a relevant skill changes in level.
+     *
+     * @param {string} skill The name of the skill that changed in level
+     * @param {number} level The new level of the skill
+     */
     async updateCareerSkillLevel(skill, level) {
         if (!this.type === "Career" || !this.isEmbedded) {
             return;
@@ -35,6 +57,8 @@ export default class WarlockItem extends Item {
             .forEach(([skillName, skillData]) => {
                 if (skillData.isCareerSkill) {
                     if (skillName == skill) {
+                        // Use the new skill level if this skill is what caused
+                        // this method to be called.
                         careerLevel += level;
                     } else {
                         careerLevel += this.parent.data.data.adventuringSkills[activeSystem][skillName];
