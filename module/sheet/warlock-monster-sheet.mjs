@@ -75,7 +75,11 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     async _onTestAdventuringSkills(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills);
+        await Roll.rollSkillTest(
+            this.actor,
+            "Adventuring Skills",
+            this.actor.data.data.adventuringSkills,
+        );
     }
 
     /* -------------------------------------------- */
@@ -94,14 +98,23 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
 
         switch (activeSystem) {
             case "warlock":
-                await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills);
+                await Roll.rollSkillTest(
+                    this.actor,
+                    "Adventuring Skills",
+                    this.actor.data.data.adventuringSkills,
+                );
                 break;
             case "warpstar":
                 const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
                 const item = this.actor.items.get(itemId);
                 const testType = item.data.data.test.value.toLowerCase();
 
-                await Roll.rollSkillTest("Adventuring Skills", this.actor.data.data.adventuringSkills, testType);
+                await Roll.rollSkillTest(
+                    this.actor,
+                    "Adventuring Skills",
+                    this.actor.data.data.adventuringSkills,
+                    testType,
+                );
                 break;
             default:
                 break;
@@ -120,6 +133,11 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     async _onTestWeaponSkill(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest("Weapon Skill", this.actor.data.data.weaponSkill, "opposed");
+        await Roll.rollSkillTest(
+            this.actor,
+            "Weapon Skill",
+            this.actor.data.data.weaponSkill,
+            "opposed",
+        );
     }
 }

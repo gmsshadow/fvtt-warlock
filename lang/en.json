@@ -85,6 +85,7 @@
         "Pennies": "Pennies",
         "Pluck": "Pluck",
         "PluckHint": "Enable or disable the optional Pluck rule.",
+        "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event.",
         "Quantity": "Quantity",
         "Reduction": "Reduction",
         "ReductionRoll": "Reduction Roll",

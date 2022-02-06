@@ -340,7 +340,7 @@ export default class WarlockActorSheet extends ActorSheet {
 
         const armourId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const armour = this.actor.items.get(armourId);
-        Roll.rollArmour(armour);
+        Roll.rollArmour(this.actor, armour);
     }
 
     /* -------------------------------------------- */
@@ -357,7 +357,7 @@ export default class WarlockActorSheet extends ActorSheet {
 
         const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const weapon = this.actor.items.get(weaponId);
-        Roll.rollWeapon(weapon);
+        Roll.rollWeapon(this.actor, weapon);
     }
 
     /* -------------------------------------------- */

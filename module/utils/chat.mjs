@@ -2,12 +2,18 @@
  * Renders the Handlebars template and creates a ChatMessage for a given Roll.
  *
  * @param {Roll} roll The Roll with which to create the ChatMessage
+ * @param {ChatSpeakerData} speaker The speaker for the message
  * @param {string} templatePath The path to the Handlebars template for the
  * ChatMessage.
  * @param {object} renderOptions The object containing the data needed to render
  * the template.
  */
-export async function createRollChatMessage(roll, templatePath, renderOptions) {
+export async function createRollChatMessage(
+    roll,
+    speaker,
+    templatePath,
+    renderOptions,
+) {
     const content = await renderTemplate(templatePath, renderOptions);
 
     ChatMessage.create({
@@ -15,7 +21,7 @@ export async function createRollChatMessage(roll, templatePath, renderOptions) {
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         content: content,
         sound: CONFIG.sounds.dice,
-        speaker: ChatMessage.getSpeaker(),
+        speaker: speaker,
         roll: roll,
     });
 }
