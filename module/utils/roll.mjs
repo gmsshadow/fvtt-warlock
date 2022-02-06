@@ -4,9 +4,10 @@ import * as Chat from "./chat.mjs";
  * Rolls the stamina reduction for a given piece of armour and creates a
  * ChatMessage for it.
  *
+ * @param {WarlockActor} actor The Actor object of the character
  * @param {WarlockItem} armour The WarlockItem corresponding to the armour
  */
-export async function rollArmour(armour) {
+export async function rollArmour(actor, armour) {
     const rollFormula = `${armour.data.data.reductionRoll}`;
     const rollFlavor = `Rolling ${armour.name} stamina loss reduction`;
     const roll = new Roll(rollFormula, {});
@@ -17,6 +18,9 @@ export async function rollArmour(armour) {
 
     await Chat.createRollChatMessage(
         roll,
+        ChatMessage.getSpeaker({
+            actor: actor,
+        }),
         "systems/warlock/templates/chat/stamina-loss-reduction-card.hbs",
         {
             formula: roll.formula,
@@ -59,6 +63,7 @@ export async function rollInitiative() {
 
     await Chat.createRollChatMessage(
         playerRoll,
+        ChatMessage.getSpeaker(),
         "systems/warlock/templates/chat/initiative-card.hbs",
         {
             formula: rollFormula,
@@ -74,15 +79,43 @@ export async function rollInitiative() {
 /* -------------------------------------------- */
 
 /**
+ * Rolls for a generic Pluck event using the given Pluck.
+ *
+ * @param {WarlockActor} actor The Actor object of the character
+ * @param {number} pluck The character's current Pluck
+ */
+export async function rollPluckEvent(actor, pluck) {
+    const rollFlavor = "Pluck Event";
+    const rollFormula = "2d6 + @pluck";
+    const roll = new Roll(rollFormula, {
+        pluck: pluck,
+    });
+
+    await roll.evaluate({
+        async: true,
+    });
+
+    await roll.toMessage({
+        flavor: rollFlavor,
+        speaker: ChatMessage.getSpeaker({
+            actor: actor,
+        }),
+    });
+}
+
+/* -------------------------------------------- */
+
+/**
  * Rolls a basic or opposed skill test and creates the ChatMessage for it.
  *
  * @todo Refactor testType to be an enumeration.
  *
+ * @param {WarlockActor} actor The Actor object of the character
  * @param {string} name The name of the skill
  * @param {number} level The level of the skill
  * @param {string} testType The type of test
  */
-export async function rollSkillTest(name, level, testType = "basic") {
+export async function rollSkillTest(actor, name, level, testType = "basic") {
     const testOptions = await _getSkillTestOptions(name, testType);
 
     // Exit early if the skill test was cancelled.
@@ -120,6 +153,9 @@ export async function rollSkillTest(name, level, testType = "basic") {
 
     await Chat.createRollChatMessage(
         roll,
+        ChatMessage.getSpeaker({
+            actor: actor,
+        }),
         "systems/warlock/templates/chat/skill-test-card.hbs",
         {
             formula: roll.formula,
@@ -136,9 +172,10 @@ export async function rollSkillTest(name, level, testType = "basic") {
 /**
  * Rolls the damage for a given weapon and creates a ChatMessage for it.
  *
+ * @param {WarlockActor} actor The Actor object of the character
  * @param {WarlockItem} weapon The WarlockItem corresponding to the weapon
  */
-export async function rollWeapon(weapon) {
+export async function rollWeapon(actor, weapon) {
     const rollFormula = `${weapon.data.data.damage.roll}`;
     const rollFlavor = `Rolling ${weapon.name} damage`;
     const roll = new Roll(rollFormula, {});
@@ -149,6 +186,9 @@ export async function rollWeapon(weapon) {
 
     await Chat.createRollChatMessage(
         roll,
+        ChatMessage.getSpeaker({
+            actor: actor,
+        }),
         "systems/warlock/templates/chat/damage-card.hbs",
         {
             formula: roll.formula,

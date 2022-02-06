@@ -276,7 +276,11 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         const careerId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const career = this.actor.items.get(careerId);
 
-        await Roll.rollSkillTest(career.name, career.data.data.currentLevel);
+        await Roll.rollSkillTest(
+            this.actor,
+            career.name,
+            career.data.data.currentLevel,
+        );
     }
 
     /* -------------------------------------------- */
@@ -291,13 +295,18 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestLuck(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest("Luck", this.actor.data.data.resources.luck.value);
+        await Roll.rollSkillTest(
+            this.actor,
+            "Luck",
+            this.actor.data.data.resources.luck.value,
+        );
     }
 
     /* -------------------------------------------- */
 
     /**
-     * Roll a skill test using Pluck.
+     * Roll a skill test using Pluck, or roll for a Pluck result if a Shift key
+     * is held down.
      *
      * @param {Event} event The click event to test Pluck
      *
@@ -306,7 +315,18 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestPluck(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest("Pluck", this.actor.data.data.resources.pluck.value);
+        if (event.shiftKey) {
+            await Roll.rollPluckEvent(
+                this.actor,
+                this.actor.data.data.resources.pluck.value,
+            );
+        } else {
+            await Roll.rollSkillTest(
+                this.actor,
+                "Pluck",
+                this.actor.data.data.resources.pluck.value,
+            );
+        }
     }
 
     /* -------------------------------------------- */
@@ -321,7 +341,11 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestReputation(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest(`Reputation (${this.actor.data.data.resources.reputation.description})`, this.actor.data.data.resources.reputation.value);
+        await Roll.rollSkillTest(
+            this.actor,
+            `Reputation (${this.actor.data.data.resources.reputation.description})`,
+            this.actor.data.data.resources.reputation.value,
+        );
     }
 
     /* -------------------------------------------- */
@@ -357,7 +381,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 break;
         }
 
-        await Roll.rollSkillTest(skill, level, testType);
+        await Roll.rollSkillTest(this.actor, skill, level, testType);
     }
 
     /* -------------------------------------------- */
@@ -381,7 +405,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 skill = "Incantation";
                 level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-                await Roll.rollSkillTest(skill, level, "basic");
+                await Roll.rollSkillTest(this.actor, skill, level, "basic");
                 break;
             case "warpstar":
                 skill = "Warp focus";
@@ -391,7 +415,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 const item = this.actor.items.get(itemId);
                 const testType = item.data.data.test.value.toLowerCase();
 
-                await Roll.rollSkillTest(skill, level, testType);
+                await Roll.rollSkillTest(this.actor, skill, level, testType);
                 break;
             default:
                 break;
