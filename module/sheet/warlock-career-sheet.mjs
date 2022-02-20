@@ -26,7 +26,7 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -53,7 +53,7 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -70,7 +70,7 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -84,7 +84,7 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         return context;
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Toggles a career skill.
@@ -94,11 +94,11 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
      * @private
      */
     async _onToggleCareerSkill(event) {
+        event.preventDefault();
+
         if (!this.isEditable) {
             return;
         }
-
-        event.preventDefault();
 
         const skillName = event.currentTarget.closest(".table__entry").dataset.skill;
         const activeSystem = game.settings.get("warlock", "activeSystem");

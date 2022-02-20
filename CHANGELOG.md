@@ -7,6 +7,31 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.3.7]
+### Added
+- Doc-strings and comments across codebase.
+- Updates to CHANGELOG.md.
+- Ability to modify equipment quantities by left-clicking and right-clicking.
+- Compendium migration functionality.
+
+### Changed
+- Changed Main tab name to Skills.
+- Made various small refactors.
+- Changed display of combatants in combat tracker with no actions left.
+- Updated chat cards for items to display additional information.
+
+## [0.3.6]
+### Added
+- Ability to roll 2d6+Pluck from the sheet.
+
+### Fixed
+- Modified roll chat messages to show the actor as the speaker instead of the
+  user.
+
+## [0.3.5]
+### Added
+- Doc-strings and comments across codebase.
+
 ## [0.3.6]
 ### Added
 - Ability to roll 2d6+Pluck from the sheet.
@@ -141,7 +166,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - The initial private release of this system.
 
-[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.6...develop
+[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.7...develop
+[0.3.7]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.6...v0.3.7
 [0.3.6]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.5...v0.3.6
 [0.3.5]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.4...v0.3.5
 [0.3.4]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.3...v0.3.4

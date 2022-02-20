@@ -1,5 +1,5 @@
-import * as Chat from "../utils/chat.mjs";
-import * as Roll from "../utils/roll.mjs";
+import Chat from "../utils/chat.mjs";
+import Rolls from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockActorSheet that extends the base ActorSheet.
@@ -40,7 +40,7 @@ export default class WarlockActorSheet extends ActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -59,13 +59,15 @@ export default class WarlockActorSheet extends ActorSheet {
         html.find(".delete-item").click(this._onDeleteItem.bind(this));
         html.find(".edit-item").click(this._onEditItem.bind(this));
         html.find(".equip-item").click(this._onEquipItem.bind(this));
+        html.find(".modify-quantity").click(this._onIncreaseQuantity.bind(this));
+        html.find(".modify-quantity").contextmenu(this._onDecreaseQuantity.bind(this));
         html.find(".pay-stamina-cost").click(this._onPayStaminaCost.bind(this));
-        html.find(".roll-armour").click(this._onRollArmour.bind(this));
-        html.find(".roll-weapon").click(this._onRollWeapon.bind(this));
+        html.find(".roll-armour").click(this._onRollStaminaLossReduction.bind(this));
+        html.find(".roll-weapon").click(this._onRollDamage.bind(this));
         html.find(".toggle-description").click(this._onToggleDescription.bind(this));
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -92,7 +94,7 @@ export default class WarlockActorSheet extends ActorSheet {
         return context;
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Displays an item card in the chat log.
@@ -107,10 +109,13 @@ export default class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        await Chat.createItemChatMessage(item);
+        await Chat.createItemCardMessage(
+            item,
+            item.generateDetails(),
+        );
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Creates an Item and embeds it within the Actor.
@@ -175,7 +180,38 @@ export default class WarlockActorSheet extends ActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Decreases the quantity of a given equipment Item.
+     *
+     * @param {Event} event The contextmenu event to decrease the quantity
+     *
+     * @private
+     */
+    async _onDecreaseQuantity(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        if ((item.data.type !== "Equipment")
+            || ((item.data.data.quantity - 1) < 0)) {
+            return;
+        }
+
+        await item.update({
+            data: {
+                quantity: item.data.data.quantity - 1,
+            },
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Deletes an Item from the Actor.
@@ -208,7 +244,7 @@ export default class WarlockActorSheet extends ActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Opens the corresponding sheet for an Item.
@@ -220,12 +256,16 @@ export default class WarlockActorSheet extends ActorSheet {
     _onEditItem(event) {
         event.preventDefault();
 
+        if (!this.isEditable) {
+            return;
+        }
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
         item.sheet.render(true);
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Equips an Item within an Actor.
@@ -255,7 +295,37 @@ export default class WarlockActorSheet extends ActorSheet {
         });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Increases the quantity of a given equipment Item.
+     *
+     * @param {Event} event The click event to increase the quantity
+     *
+     * @private
+     */
+    async _onIncreaseQuantity(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
+        const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        if (item.data.type !== "Equipment") {
+            return;
+        }
+
+        await item.update({
+            data: {
+                quantity: item.data.data.quantity + 1,
+            },
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Displays a Dialog to subtract the stamina cost of a spell or glyph from
@@ -268,11 +338,16 @@ export default class WarlockActorSheet extends ActorSheet {
     async _onPayStaminaCost(event) {
         event.preventDefault();
 
+        if (!this.isEditable) {
+            return;
+        }
+
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
         const staminaCost = item.data.data.staminaCost;
+        const currentStamina = this.actor.data.data.resources.stamina.value;
 
-        if (staminaCost >= this.actor.data.data.resources.stamina.value) {
+        if (staminaCost >= currentStamina) {
             ui.notifications.error("The stamina cost is equal to or greater than your current stamina!");
             return;
         }
@@ -298,7 +373,7 @@ export default class WarlockActorSheet extends ActorSheet {
                     },
                     pay: {
                         icon: "<i class=\"fas fa-tint\"></i>",
-                        label: game.i18n.localize("WARLOCK.Pay") + ` ${staminaCost} stamina`,
+                        label: game.i18n.localize("WARLOCK.PayStaminaCost") + ` (${staminaCost})`,
                         callback: (html) => resolve({
                             cancelled: false,
                         }),
@@ -318,14 +393,14 @@ export default class WarlockActorSheet extends ActorSheet {
             data: {
                 resources: {
                     stamina: {
-                        value: this.actor.data.data.resources.stamina.value - staminaCost,
+                        value: currentStamina - staminaCost,
                     }
                 }
             }
         });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Rolls an armour's stamina loss reduction and displays it in the chat log.
@@ -335,15 +410,15 @@ export default class WarlockActorSheet extends ActorSheet {
      *
      * @private
      */
-    async _onRollArmour(event) {
+    async _onRollStaminaLossReduction(event) {
         event.preventDefault();
 
         const armourId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const armour = this.actor.items.get(armourId);
-        Roll.rollArmour(this.actor, armour);
+        Rolls.rollStaminaLossReduction(this.actor, armour);
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Rolls a weapon's damage and displays it in the chat log.
@@ -352,15 +427,15 @@ export default class WarlockActorSheet extends ActorSheet {
      *
      * @private
      */
-    async _onRollWeapon(event) {
+    async _onRollDamage(event) {
         event.preventDefault();
 
         const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const weapon = this.actor.items.get(weaponId);
-        Roll.rollWeapon(this.actor, weapon);
+        Rolls.rollDamage(this.actor, weapon);
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Toggles the display of an Item's description.

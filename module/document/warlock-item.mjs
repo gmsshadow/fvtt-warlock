@@ -35,7 +35,61 @@ export default class WarlockItem extends Item {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Generates a listing of item details for chat cards.
+     *
+     * @returns {Array} Array of item detail strings
+     */
+    generateDetails() {
+        const details = [];
+
+        switch (this.type) {
+            case "Armour":
+                details.push(
+                    `${this.data.data.type.value} armour`,
+                    `${this.data.data.reductionRoll} reduced stamina loss`,
+                );
+                break;
+            case "Career":
+                details.push(
+                    `Level ${this.data.data.currentLevel}`,
+                    `Adventuring skills: ${this.data.careerSkills}`,
+                );
+                break;
+            case "Equipment":
+                details.push(
+                    `Quantity: ${this.data.data.quantity}`,
+                );
+                break;
+            case "Glyph":
+                details.push(
+                    `${this.data.data.test.value} test`,
+                    `${this.data.data.staminaCost} stamina cost`,
+                );
+                break;
+            case "Spell":
+                details.push(
+                    `${this.data.data.staminaCost} stamina cost`,
+                );
+                break;
+            case "Weapon":
+                details.push(
+                    `${this.data.data.type.value}`,
+                    `${this.data.data.damage.roll} ${(this.data.data.damage.type.value).toLowerCase()} damage`,
+                    `Skill: ${this.data.data.skill.value}`,
+                );
+                break;
+            default:
+                // TODO(jcd) Log this.
+                break;
+        }
+
+        return details;
+    }
+
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Calculates the career skill level when a relevant skill changes in level.

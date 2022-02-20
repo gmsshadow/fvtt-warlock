@@ -1,6 +1,25 @@
-/*******************************************************************************
- * System-specific
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Global                                                                     */
+/* -------------------------------------------------------------------------- */
+#combat.directory .directory-list .directory-item.active {
+    border: none;
+}
+
+#combat li.combatant.active {
+    background: none;
+}
+
+#combat li.combatant.hover, #combat li.combatant:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#combat li.combatant.combat-tracker__combatant--greyed-out {
+    opacity: 0.5;
+}
+
+/* -------------------------------------------------------------------------- */
+/* System-specific                                                            */
+/* -------------------------------------------------------------------------- */
 
 .warlock {
     --accent-color: #ff0000;
@@ -8,6 +27,7 @@
     --border-color: #eeede0;
     --not-equipped-color: #b5b3a4;
     --separator-color: #b5b3a4;
+    --shadow-color: rgba(0, 0, 0, 0.1);
     --text-failure-color: #b31414;
     --text-success-color: #1c883c;
     --underline-color: #460100;
@@ -33,9 +53,9 @@
     flex-direction: column;
 }
 
-/*******************************************************************************
- * Fields
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Fields                                                                     */
+/* -------------------------------------------------------------------------- */
 
 .warlock .field {
     background: var(--background-color);
@@ -43,7 +63,7 @@
     border: 2px groove var(--border-color);
     border-radius: 0px;
 
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 10px var(--shadow-color);
 
     flex: 1;
     height: 26px;
@@ -75,9 +95,9 @@
     flex-grow: 2;
 }
 
-/*******************************************************************************
- * Resources
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Resources                                                                  */
+/* -------------------------------------------------------------------------- */
 
 .warlock .resource {
     display: flex;
@@ -119,9 +139,9 @@
     position: relative;
 }
 
-/*******************************************************************************
- * Tables
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Tables                                                                     */
+/* -------------------------------------------------------------------------- */
 
 .warlock .table:not(:last-child) {
     margin-bottom: 10px;
@@ -201,9 +221,9 @@
     display: none;
 }
 
-/*******************************************************************************
- * Grid
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Grid                                                                       */
+/* -------------------------------------------------------------------------- */
 
 .warlock .grid {
     display: grid;
@@ -224,9 +244,9 @@
     grid-template-columns: repeat(2, 1fr);
 }
 
-/*******************************************************************************
- * Flex
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Flex                                                                       */
+/* -------------------------------------------------------------------------- */
 
 .warlock .flex {
     display: flex;
@@ -249,9 +269,9 @@
     gap: 0;
 }
 
-/*******************************************************************************
- * Headers
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Headers                                                                    */
+/* -------------------------------------------------------------------------- */
 
 .warlock .header {
     border-bottom: 2px groove var(--border-color);
@@ -359,9 +379,9 @@
     visibility: visible;
 }
 
-/*******************************************************************************
- * Tabs
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Tabs                                                                       */
+/* -------------------------------------------------------------------------- */
 
 .warlock .tabs {
     display: flex;
@@ -392,9 +412,9 @@
     text-shadow: 0 0 10px var(--accent-color);
 }
 
-/*******************************************************************************
- * Sheets
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Sheets                                                                     */
+/* -------------------------------------------------------------------------- */
 
 .warlock .body,
 .warlock .tab {
@@ -487,16 +507,16 @@
     grid-template-columns: 5fr repeat(3, 100px);
 }
 
-/*******************************************************************************
- * Editor
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Editor                                                                     */
+/* -------------------------------------------------------------------------- */
 
 .warlock .editor {
     background: var(--background-color);
 
     border: 2px groove var(--border-color);
 
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 10px var(--shadow-color);
 
     height: 100%;
 
@@ -514,9 +534,9 @@
     height: 100% !important;
 }
 
-/*******************************************************************************
- * Chat Cards
- ******************************************************************************/
+/* -------------------------------------------------------------------------- */
+/* Chat Cards                                                                 */
+/* -------------------------------------------------------------------------- */
 
 .warlock .dice-roll {
     display: flex;
@@ -578,10 +598,6 @@
     text-align: center;
 }
 
-.warlock .dice-roll__stamina-cost {
-    font-size: 12px;
-}
-
 .warlock .dice-tooltip {
     display: none;
 
@@ -639,50 +655,62 @@
 }
 
 .warlock .dice-tooltip__roll.d4 {
-background-image: url("../../../icons/svg/d4-grey.svg");
+    background-image: url("../../../icons/svg/d4-grey.svg");
 }
 
 .warlock .dice-tooltip__roll.d6 {
-background-image: url("../../../icons/svg/d6-grey.svg");
+    background-image: url("../../../icons/svg/d6-grey.svg");
 }
 
 .warlock .dice-tooltip__roll.d8 {
-background-image: url("../../../icons/svg/d8-grey.svg");
+    background-image: url("../../../icons/svg/d8-grey.svg");
 }
 
 .warlock .dice-tooltip__roll.d10 {
-background-image: url("../../../icons/svg/d10-grey.svg");
+    background-image: url("../../../icons/svg/d10-grey.svg");
 }
 
 .warlock .dice-tooltip__roll.d12 {
-background-image: url("../../../icons/svg/d12-grey.svg");
+    background-image: url("../../../icons/svg/d12-grey.svg");
 }
 
 .warlock .dice-tooltip__roll.d20 {
-background-image: url("../../../icons/svg/d20-grey.svg");
+    background-image: url("../../../icons/svg/d20-grey.svg");
 }
 
 .warlock .dice-tooltip__roll.min {
-color: #aa0200;
-filter: sepia(0.5) hue-rotate(-60deg);
+    color: #aa0200;
+    filter: sepia(0.5) hue-rotate(-60deg);
 }
 
 .warlock .dice-tooltip__roll.max {
-color: #18520b;
-filter: sepia(0.5) hue-rotate(60deg);
+    color: #18520b;
+    filter: sepia(0.5) hue-rotate(60deg);
+}
+
+.warlock .chat-card__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.warlock .chat-card__image {
+    border: none;
+
+    height: 40px;
 }
 
 .warlock .chat-card__name {
     font-size: 16px;
-
-    text-align: center;
-}
-
-.warlock .chat-card__details {
-    display: flex;
-    flex-direction: column;
 }
 
 .warlock .chat-card__details-field {
     font-size: 12px;
+
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.warlock .chat-card__details-field:not(:first-child) {
+    border-left: 2px groove var(--border-color);
 }
