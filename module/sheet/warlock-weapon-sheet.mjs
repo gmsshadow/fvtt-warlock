@@ -19,7 +19,7 @@ export default class WarlockWeaponSheet extends WarlockItemSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override

@@ -1,6 +1,6 @@
 import WarlockActorSheet from "./warlock-actor-sheet.mjs";
 
-import * as Roll from "../utils/roll.mjs";
+import Rolls from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockCharacterSheet that extends the custom WarlockActorSheet.
@@ -22,13 +22,13 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 {
                     navSelector: ".tabs",
                     contentSelector: ".body",
-                    initial: "main",
+                    initial: "skills",
                 },
             ],
         };
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -55,7 +55,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -82,7 +82,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -111,7 +111,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         return context;
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Activates a career.
@@ -121,11 +121,11 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
      * @private
      */
     async _onActivateCareer(event) {
+        event.preventDefault();
+
         if (!this.isEditable) {
             return;
         }
-
-        event.preventDefault();
 
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const careerData = this.actor.itemTypes["Career"]
@@ -154,7 +154,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         ].concat(careerData));
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Consolidates money to the highest note.
@@ -165,6 +165,10 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
      */
     async _onConsolidateMoney(event) {
         event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
 
         let gold = this.actor.data.data.gear.money.gold;
         let silver = this.actor.data.data.gear.money.silver;
@@ -188,7 +192,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Edits a skill level.
@@ -198,6 +202,12 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
      * @private
      */
     async _onEditSkillLevel(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
         let skill = event.currentTarget.closest(".table__entry").dataset.skill;
         let level = parseInt(event.currentTarget.value, 10);
         this.actor.itemTypes["Career"]
@@ -206,7 +216,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
             });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Increments a skill level by one.
@@ -216,6 +226,12 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
      * @private
      */
     async _onIncrementSkillLevel(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
         // Increase the skill level.
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const activeSystem = game.settings.get("warlock", "activeSystem");
@@ -261,7 +277,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         });
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test using the career skill.
@@ -276,14 +292,14 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         const careerId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const career = this.actor.items.get(careerId);
 
-        await Roll.rollSkillTest(
+        await Rolls.rollSkillTest(
             this.actor,
             career.name,
             career.data.data.currentLevel,
         );
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test using luck.
@@ -295,14 +311,14 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestLuck(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest(
+        await Rolls.rollSkillTest(
             this.actor,
             "Luck",
             this.actor.data.data.resources.luck.value,
         );
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test using Pluck, or roll for a Pluck result if a Shift key
@@ -316,12 +332,12 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         event.preventDefault();
 
         if (event.shiftKey) {
-            await Roll.rollPluckEvent(
+            await Rolls.rollPluckEvent(
                 this.actor,
                 this.actor.data.data.resources.pluck.value,
             );
         } else {
-            await Roll.rollSkillTest(
+            await Rolls.rollSkillTest(
                 this.actor,
                 "Pluck",
                 this.actor.data.data.resources.pluck.value,
@@ -329,7 +345,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test using Reputation.
@@ -341,14 +357,14 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestReputation(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest(
+        await Rolls.rollSkillTest(
             this.actor,
             `Reputation (${this.actor.data.data.resources.reputation.description})`,
             this.actor.data.data.resources.reputation.value,
         );
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test.
@@ -364,27 +380,10 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-        let testType = "";
-
-        switch (activeSystem) {
-            case "warlock":
-                if (["Blunt", "Bow", "Brawling", "Crossbow", "Large blade", "Pole arm", "Small blade", "Thrown"].includes(skill)) {
-                    testType = "opposed";
-                }
-                break;
-            case "warpstar":
-                if (["Blades", "Blunt", "Brawling", "Ship gunner", "Small arms", "Thrown"].includes(skill)) {
-                    testType = "opposed";
-                }
-                break;
-            default:
-                break;
-        }
-
-        await Roll.rollSkillTest(this.actor, skill, level, testType);
+        await Rolls.rollSkillTest(this.actor, skill, level);
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test for a spell or glyph.
@@ -405,24 +404,24 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                 skill = "Incantation";
                 level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-                await Roll.rollSkillTest(this.actor, skill, level, "basic");
+                await Rolls.rollSkillTest(this.actor, skill, level);
                 break;
             case "warpstar":
                 skill = "Warp focus";
                 level = this.actor.data.data.adventuringSkills[activeSystem][skill];
 
-                const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
-                const item = this.actor.items.get(itemId);
-                const testType = item.data.data.test.value.toLowerCase();
-
-                await Roll.rollSkillTest(this.actor, skill, level, testType);
+                await Rolls.rollSkillTest(
+                    this.actor,
+                    skill,
+                    level,
+                );
                 break;
             default:
                 break;
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Opens the reputation configuration Dialog.
@@ -434,6 +433,10 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
      */
     async _onOpenReputationDialog(event) {
         event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
 
         const dialogTemplate = "systems/warlock/templates/dialogs/reputation-configuration-dialog.hbs";
         const dialogHtml = await renderTemplate(dialogTemplate, {

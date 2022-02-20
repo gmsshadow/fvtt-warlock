@@ -15,17 +15,22 @@ import WarlockWeaponSheet from "./sheet/warlock-weapon-sheet.mjs";
 import WarlockCombat from "./combat/combat.mjs";
 import WarlockCombatTracker from "./combat/combat-tracker.mjs";
 
-import * as Migrations from "./utils/migrations.mjs";
-import * as Roll from "./utils/roll.mjs";
+import Migrations from "./utils/migrations.mjs";
+import Rolls from "./utils/rolls.mjs";
+
+import "./hooks.mjs";
 
 /**
  * Initializes the global game variable.
  */
 function _initializeGame() {
     game.warlock = {
-        roll: Roll,
+        migrations: Migrations,
+        rolls: Rolls,
     };
 }
+
+/* -------------------------------------------------------------------------- */
 
 /**
  * Initializes the global CONFIG variable.
@@ -37,25 +42,28 @@ function _initializeCONFIG() {
     CONFIG.ui.combat = WarlockCombatTracker;
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Registers and unregisters various sheets.
  */
 function _initializeSheets() {
     Actors.unregisterSheet("core", ActorSheet);
+
     Actors.registerSheet("warlock", WarlockCharacterSheet, {
         types: [
             "Character",
         ],
         makeDefault: true,
     });
+
     Actors.registerSheet("warlock", WarlockMonsterSheet, {
         types: [
             "Monster",
         ],
         makeDefault: false,
     });
+
     Actors.registerSheet("warlock", WarlockVehicleSheet, {
         types: [
             "Vehicle",
@@ -64,36 +72,42 @@ function _initializeSheets() {
     });
 
     Items.unregisterSheet("core", ItemSheet);
+
     Items.registerSheet("warlock", WarlockArmourSheet, {
         types: [
             "Armour",
         ],
         makeDefault: false,
     });
+
     Items.registerSheet("warlock", WarlockCareerSheet, {
         types: [
             "Career",
         ],
         makeDefault: false,
     });
+
     Items.registerSheet("warlock", WarlockEquipmentSheet, {
         types: [
             "Equipment",
         ],
         makeDefault: false,
     });
+
     Items.registerSheet("warlock", WarlockGlyphSheet, {
         types: [
             "Glyph",
         ],
         makeDefault: false,
     });
+
     Items.registerSheet("warlock", WarlockSpellSheet, {
         types: [
             "Spell",
         ],
         makeDefault: false,
     });
+
     Items.registerSheet("warlock", WarlockWeaponSheet, {
         types: [
             "Weapon",
@@ -102,7 +116,7 @@ function _initializeSheets() {
     });
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Registers game settings.
@@ -129,6 +143,7 @@ function _initializeSettings() {
         default: "warlock",
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
+
     game.settings.register("warlock", "pluckEnabled", {
         name: game.i18n.localize("WARLOCK.Pluck"),
         hint: game.i18n.localize("WARLOCK.PluckHint"),
@@ -138,6 +153,7 @@ function _initializeSettings() {
         default: false,
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
+
     game.settings.register("warlock", "reputationEnabled", {
         name: game.i18n.localize("WARLOCK.Reputation"),
         hint: game.i18n.localize("WARLOCK.ReputationHint"),
@@ -147,6 +163,7 @@ function _initializeSettings() {
         default: false,
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
+
     game.settings.register("warlock", "talentEnabled", {
         name: game.i18n.localize("WARLOCK.Talent"),
         hint: game.i18n.localize("WARLOCK.TalentHint"),
@@ -158,7 +175,7 @@ function _initializeSettings() {
     });
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Loads Handlebars templates used as partials.
@@ -173,7 +190,7 @@ function _initializeHandlebarsTemplates() {
     ]);
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Registers custom Handlebars helpers.
@@ -194,7 +211,7 @@ function _initializeHandlebarsHelpers() {
     });
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 Hooks.once("init", () => {
     _initializeGame();
@@ -205,7 +222,7 @@ Hooks.once("init", () => {
     _initializeHandlebarsHelpers();
 });
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Sets the tracked resource for combatants in the combat tracker.
@@ -216,7 +233,7 @@ function _initializeTrackedResource() {
     });
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * Migrates the world and its documents if necessary.
@@ -240,7 +257,7 @@ function _initializeMigration() {
     Migrations.migrateWorld();
 }
 
-/* -------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 Hooks.once("ready", () => {
     _initializeTrackedResource();

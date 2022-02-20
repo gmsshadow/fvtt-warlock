@@ -1,4 +1,4 @@
-import * as Roll from "../utils/roll.mjs";
+import Rolls from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockCombat class that extends the base Combat class.
@@ -13,7 +13,7 @@ export default class WarlockCombat extends Combat {
         await this.refreshActionsPerRound();
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -24,7 +24,7 @@ export default class WarlockCombat extends Combat {
         await this.refreshActionsPerRound();
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -33,10 +33,10 @@ export default class WarlockCombat extends Combat {
     async startCombat() {
         await super.startCombat();
         await this.refreshActionsPerRound();
-        await Roll.rollInitiative();
+        await Rolls.rollInitiative();
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Resets the current actions per round for all combatants to their maximum

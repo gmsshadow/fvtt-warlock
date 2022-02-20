@@ -12,6 +12,8 @@ export default class WarlockItemSheet extends ItemSheet {
         };
     }
 
+    /* ---------------------------------------------------------------------- */
+
     /**
      * @override
      * @inheritdoc

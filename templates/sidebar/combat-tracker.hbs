@@ -98,7 +98,7 @@
         class="directory-list">
         {{#each turns}}
         <li
-            class="combatant actor directory-item flexrow {{this.css}}"
+            class="combatant actor directory-item flexrow {{this.css}} {{#if (eq this.resource.value 0)}}combat-tracker__combatant--greyed-out{{/if}}"
             data-combatant-id="{{this.id}}">
             <img
                 class="token-image"

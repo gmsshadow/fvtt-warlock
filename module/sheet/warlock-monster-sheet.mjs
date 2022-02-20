@@ -1,6 +1,6 @@
 import WarlockActorSheet from "./warlock-actor-sheet.mjs";
 
-import * as Roll from "../utils/roll.mjs";
+import Rolls from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockMonsterSheet that extends the custom WarlockActorSheet.
@@ -28,7 +28,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -42,7 +42,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * @override
@@ -63,7 +63,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         return context;
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Rolls a skill test using Adventuring Skills.
@@ -75,14 +75,14 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     async _onTestAdventuringSkills(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest(
+        await Rolls.rollSkillTest(
             this.actor,
             "Adventuring Skills",
             this.actor.data.data.adventuringSkills,
         );
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Roll a skill test for a spell or glyph.
@@ -98,22 +98,17 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
 
         switch (activeSystem) {
             case "warlock":
-                await Roll.rollSkillTest(
+                await Rolls.rollSkillTest(
                     this.actor,
                     "Adventuring Skills",
                     this.actor.data.data.adventuringSkills,
                 );
                 break;
             case "warpstar":
-                const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
-                const item = this.actor.items.get(itemId);
-                const testType = item.data.data.test.value.toLowerCase();
-
-                await Roll.rollSkillTest(
+                await Rolls.rollSkillTest(
                     this.actor,
                     "Adventuring Skills",
                     this.actor.data.data.adventuringSkills,
-                    testType,
                 );
                 break;
             default:
@@ -121,7 +116,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         }
     }
 
-    /* -------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
 
     /**
      * Rolls a skill test using Weapon Skill.
@@ -133,11 +128,10 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     async _onTestWeaponSkill(event) {
         event.preventDefault();
 
-        await Roll.rollSkillTest(
+        await Rolls.rollSkillTest(
             this.actor,
             "Weapon Skill",
             this.actor.data.data.weaponSkill,
-            "opposed",
         );
     }
 }

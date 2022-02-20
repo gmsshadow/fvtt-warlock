@@ -1,0 +1,24 @@
+<div class="warlock chat-card">
+    <div class="chat-card__header">
+        <img class="chat-card__image" src="{{item.img}}">
+        <div class="chat-card__name">
+            {{item.name}}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="chat-card__description">
+        {{{item.data.data.description}}}
+    </div>
+
+    <hr>
+
+    <div class="chat-card__details">
+        {{#each details}}
+        <span class="chat-card__details-field">
+            {{this}}
+        </span>
+        {{/each}}
+    </div>
+</div>
