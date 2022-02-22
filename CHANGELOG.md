@@ -7,9 +7,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.3.9]
+### Fixed
+- Compounding roll modifiers.
+
 ## [0.3.8]
 ### Added
-- Compendia for Warlock!
+- Compendia for Warlock!.
 
 ## [0.3.7]
 ### Added

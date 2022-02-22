@@ -135,12 +135,10 @@ export default class Rolls {
         let rollFormula = "1d20 + @level";
 
         if (testOptions.modifier > 0) {
-            rollFormula += " + ";
+            rollFormula += " + @modifier";
         } else if (testOptions.modifier < 0) {
-            rollFormula += " - ";
+            rollFormula += " - @modifier";
         }
-
-        rollFormula += "@modifier";
 
         const roll = new Roll(rollFormula, {
             level: level,
