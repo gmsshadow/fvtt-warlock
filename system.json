@@ -23,49 +23,65 @@
             "label": "Bestiary (Warlock!)",
             "name": "bestiary-warlock",
             "path": "packs/bestiary-warlock.db",
-            "entity": "Actor"
+            "system": "warlock",
+            "entity": "Actor",
+            "type": "Actor"
         },
         {
             "label": "Armour (Warlock!)",
             "name": "armour-warlock",
             "path": "packs/armour-warlock.db",
-            "entity": "Item"
+            "system": "warlock",
+            "entity": "Item",
+            "type": "Item"
         },
         {
             "label": "Careers, Basic (Warlock!)",
             "name": "careers-basic-warlock",
             "path": "packs/careers-basic-warlock.db",
-            "entity": "Item"
+            "system": "warlock",
+            "entity": "Item",
+            "type": "Item"
         },
         {
             "label": "Careers, Advanced (Warlock!)",
             "name": "careers-advanced-warlock",
             "path": "packs/careers-advanced-warlock.db",
-            "entity": "Item"
+            "system": "warlock",
+            "entity": "Item",
+            "type": "Item"
         },
         {
             "label": "Spells (Warlock!)",
             "name": "spells-warlock",
             "path": "packs/spells-warlock.db",
-            "entity": "Item"
+            "system": "warlock",
+            "entity": "Item",
+            "type": "Item"
         },
         {
             "label": "Weapons (Warlock!)",
             "name": "weapons-warlock",
             "path": "packs/weapons-warlock.db",
-            "entity": "Item"
+            "system": "warlock",
+            "entity": "Item",
+            "type": "Item"
         },
         {
             "label": "Macros (Warlock!)",
             "name": "macros-warlock",
             "path": "packs/macros-warlock.db",
-            "entity": "Macro"
+            "system": "warlock",
+            "entity": "Macro",
+            "type": "Macro"
         },
         {
             "label": "Rollable Tables (Warlock!)",
             "name": "rollable-tables-warlock",
             "path": "packs/rollable-tables-warlock.db",
-            "entity": "RollTable"
+            "system": "warlock",
+            "entity": "RollTable",
+            "type": "RollTable"
         }
     ],
 
