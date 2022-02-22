@@ -3,7 +3,7 @@
     "title": "Warlock! & Warpstar!",
     "description": "A system for playing Warlock! and Warpstar! in Foundry VTT.",
     "author": "Azarvel",
-    "version": "0.3.7",
+    "version": "0.3.8",
 
     "esmodules": [
         "module/warlock.mjs"
@@ -18,11 +18,61 @@
             "path": "lang/en.json"
         }
     ],
+    "packs": [
+        {
+            "label": "Bestiary (Warlock!)",
+            "name": "bestiary-warlock",
+            "path": "packs/bestiary-warlock.db",
+            "entity": "Actor"
+        },
+        {
+            "label": "Armour (Warlock!)",
+            "name": "armour-warlock",
+            "path": "packs/armour-warlock.db",
+            "entity": "Item"
+        },
+        {
+            "label": "Careers, Basic (Warlock!)",
+            "name": "careers-basic-warlock",
+            "path": "packs/careers-basic-warlock.db",
+            "entity": "Item"
+        },
+        {
+            "label": "Careers, Advanced (Warlock!)",
+            "name": "careers-advanced-warlock",
+            "path": "packs/careers-advanced-warlock.db",
+            "entity": "Item"
+        },
+        {
+            "label": "Spells (Warlock!)",
+            "name": "spells-warlock",
+            "path": "packs/spells-warlock.db",
+            "entity": "Item"
+        },
+        {
+            "label": "Weapons (Warlock!)",
+            "name": "weapons-warlock",
+            "path": "packs/weapons-warlock.db",
+            "entity": "Item"
+        },
+        {
+            "label": "Macros (Warlock!)",
+            "name": "macros-warlock",
+            "path": "packs/macros-warlock.db",
+            "entity": "Macro"
+        },
+        {
+            "label": "Rollable Tables (Warlock!)",
+            "name": "rollable-tables-warlock",
+            "path": "packs/rollable-tables-warlock.db",
+            "entity": "RollTable"
+        }
+    ],
 
     "minimumCoreVersion": "0.8.9",
     "compatibleCoreVersion": "9",
 
     "url": "https://gitlab.com/azarvel/fvtt-warlock",
     "manifest": "https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json",
-    "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v0.3.7/downloads/warlock-v0.3.7.zip"
+    "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v0.3.8/downloads/warlock-v0.3.8.zip"
 }

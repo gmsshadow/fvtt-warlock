@@ -25,6 +25,13 @@ File a new issue [here](https://gitlab.com/azarvel/fvtt-warlock/-/issues) or
 contact me through the official Foundry VTT Discord server in the
 `#other-game-systems` channel (`Azarvel#6970`).
 
+## Credits
+
+Content from Warlock! and Warpstar! by Greg Saunders used with permission.
+
+Icons made by Carl Olsen, Delapouite, Lorc, and Skoll. Available on
+https://game-icons.net.
+
 ## Acknowledgments
 
 Thank you to Greg Saunders for writing Warlock! and Warpstar! and green-lighting

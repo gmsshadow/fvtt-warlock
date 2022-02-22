@@ -7,6 +7,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.3.8]
+### Added
+- Compendia for Warlock!
+
 ## [0.3.7]
 ### Added
 - Doc-strings and comments across codebase.
@@ -166,7 +170,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - The initial private release of this system.
 
-[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.7...develop
+[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.8...develop
+[0.3.8]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.7...v0.3.8
 [0.3.7]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.6...v0.3.7
 [0.3.6]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.5...v0.3.6
 [0.3.5]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.4...v0.3.5
