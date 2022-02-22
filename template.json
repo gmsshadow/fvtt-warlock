@@ -538,7 +538,8 @@
                             "": "",
                             "Crushing": "Crushing",
                             "Piercing": "Piercing",
-                            "Slashing": "Slashing"
+                            "Slashing": "Slashing",
+                            "Blast": "Blast"
                         },
                         "warpstar": {
                             "": "",
