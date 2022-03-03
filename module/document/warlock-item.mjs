@@ -103,36 +103,60 @@ export default class WarlockItem extends Item {
         }
 
         const activeSystem = game.settings.get("warlock", "activeSystem");
-        let careerLevel = 0;
-        let careerSkillsCount = 0;
 
-        Object
-            .entries(this.data.data.adventuringSkills[activeSystem])
-            .forEach(([skillName, skillData]) => {
-                if (skillData.isCareerSkill) {
-                    if (skillName == skill) {
-                        // Use the new skill level if this skill is what caused
-                        // this method to be called.
-                        careerLevel += level;
+        if (activeSystem === "warlock") {
+            const careerLevel = Object
+                .entries(this.data.data.adventuringSkills[activeSystem])
+                .filter(([name, data]) => {
+                    return data.isCareerSkill;
+                })
+                .reduce((accumulator, careerSkill) => {
+                    let skillLevel;
+
+                    // Use the level argument if this skill was the catalyst for
+                    // updating the career level. It hasn't updated yet in the
+                    // actor data model, so we have to differentiate here.
+                    if (careerSkill[0] === skill) {
+                        skillLevel = level;
                     } else {
-                        careerLevel += this.parent.data.data.adventuringSkills[activeSystem][skillName];
+                        skillLevel = this.parent.data.data.adventuringSkills[activeSystem][careerSkill[0]];
                     }
-                    ++careerSkillsCount;
-                }
+
+                    return (accumulator > skillLevel) ? skillLevel : accumulator;
+                }, Infinity);
+
+            await this.update({
+                data: {
+                    currentLevel: careerLevel,
+                },
             });
+        } else if (activeSystem === "warpstar") {
+            const careerLevel = Object
+                .entries(this.data.data.adventuringSkills[activeSystem])
+                .filter(([name, data]) => {
+                    return data.isCareerSkill;
+                })
+                .reduce((accumulator, careerSkill, _, {length}) => {
+                    let skillLevel;
 
-        if (careerSkillsCount === 0) {
-            // This occurs if the career has no skills selected and the player
-            // modifies one of their skill's levels.
-            careerLevel = 0;
-        } else {
-            careerLevel = Math.ceil(careerLevel / careerSkillsCount);
+                    // Use the level argument if this skill was the catalyst for
+                    // updating the career level. It hasn't updated yet in the
+                    // actor data model, so we have to differentiate here.
+                    if (careerSkill[0] === skill) {
+                        skillLevel = level;
+                    } else {
+                        skillLevel = this.parent.data.data.adventuringSkills[activeSystem][careerSkill[0]];
+                    }
+
+                    return accumulator + (skillLevel / length);
+                }, 0);
+
+            await this.update({
+                data: {
+                    // Round the career level up if it's a fraction.
+                    currentLevel: Math.ceil(careerLevel),
+                },
+            });
         }
-
-        await this.update({
-            data: {
-                currentLevel: careerLevel,
-            },
-        });
     }
 }

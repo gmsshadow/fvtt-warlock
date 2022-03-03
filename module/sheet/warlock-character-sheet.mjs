@@ -250,7 +250,10 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         this.actor.itemTypes["Career"]
             .forEach(async (career) => {
                 let currentLevel = career.data.data.currentLevel;
-                await career.updateCareerSkillLevel();
+                await career.updateCareerSkillLevel(
+                    skill,
+                    this.actor.data.data.adventuringSkills[activeSystem][skill],
+                );
 
                 // Check if the active career level has changed.
                 if (career.data.data.isActive && (currentLevel < career.data.data.currentLevel)) {
