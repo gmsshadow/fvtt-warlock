@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.3.10]
+### Changed
+- Career level calculations for Warlock!
+- Stamina cost for Blast, Foulness, and Sleep.
+- Roll for critical tables.
+
+### Fixed
+- Career levels not calculating when a skill is advanced.
+
 ## [0.3.9]
 ### Fixed
 - Compounding roll modifiers.
@@ -174,8 +183,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - The initial private release of this system.
 
-[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.9...develop
-[0.3.8]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.8...v0.3.9
+[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.10...develop
+[0.3.10]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.9...v0.3.10
+[0.3.9]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.8...v0.3.9
 [0.3.8]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.7...v0.3.8
 [0.3.7]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.6...v0.3.7
 [0.3.6]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.5...v0.3.6
