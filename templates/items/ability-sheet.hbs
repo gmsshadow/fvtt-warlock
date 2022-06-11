@@ -1,0 +1,31 @@
+<form
+    class="{{cssClass}} document"
+    autocomplete="off">
+    <header class="header">
+        <div class="header__body">
+            <div class="header__row">
+                <input
+                    class="header__name field field--no-decoration field--center"
+                    type="text"
+                    name="name"
+                    value="{{item.name}}"
+                    data-dtype="String">
+            </div>
+        </div>
+    </header>
+
+    <section class="body">
+        <div class="flex flex--column flex--no-gap">
+            <h1>
+                {{localize "WARLOCK.Items.Equipment.Description"}}
+            </h1>
+
+            {{editor
+                content=data.data.description
+                target="data.description"
+                button=true
+                owner=owner
+                editable=editable}}
+        </div>
+    </section>
+</form>

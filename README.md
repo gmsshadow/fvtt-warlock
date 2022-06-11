@@ -29,7 +29,7 @@ contact me through the official Foundry VTT Discord server in the
 
 Content from Warlock! and Warpstar! by Greg Saunders used with permission.
 
-Icons made by Carl Olsen, Delapouite, Lorc, and Skoll. Available on
+Icons made by Carl Olsen, Caro Asercion, Delapouite, John Colburn, Lorc, sbed, and Skoll. Available on
 https://game-icons.net.
 
 ## Acknowledgments

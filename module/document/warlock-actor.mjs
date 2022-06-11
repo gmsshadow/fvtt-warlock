@@ -3,41 +3,23 @@
  *
  * @extends Actor
  */
-export default class WarlockActor extends Actor {
+export class WarlockActor extends Actor {
     /**
      * @override
      * @inheritdoc
      */
-    async _onCreate(data, options, userId) {
-        await super._onCreate(data, options, userId);
+    async _preCreate(data, options, user) {
+        await super._preCreate(data, options, user);
 
         switch (this.type) {
             case "Character":
-                // TODO(jcd): If the default weapons are ever allowed to be in
-                // compendia, update this to import the Unarmed weapon instead.
-
-                // Add an "Unarmed" weapon to the character.
-                this.createEmbeddedDocuments("Item", [
-                    {
-                        type: "Weapon",
-                        name: "Unarmed",
-                        data: {
-                            isEquipped: true,
-                            type: {
-                                value: "Casual",
-                            },
-                            damage: {
-                                roll: "1d6-2",
-                                type: {
-                                    value: "Crushing",
-                                },
-                            },
-                            skill: {
-                                value: "Brawling",
-                            },
-                        },
-                    }
-                ]);
+                await this._createCharacter();
+                break;
+            case "Monster":
+                await this._createMonster();
+                break;
+            case "Vehicle":
+                await this._createVehicle();
                 break;
             default:
                 break;
@@ -47,36 +29,125 @@ export default class WarlockActor extends Actor {
     /* ---------------------------------------------------------------------- */
 
     /**
+     * Creates the preliminary data for a Character.
+     *
+     * @private
+     */
+    async _createCharacter()
+    {
+        // Add system-appropriate skills.
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+
+        const skills = {};
+        for (const skill of Object.keys(game.warlock.skills[activeSystem]))
+        {
+            skills[skill] = 0;
+        }
+
+        await this.data.update({
+            data: {
+                adventuringSkills: skills,
+            }
+        });
+
+        // Add an unarmed weapon.
+        let weaponsPack;
+        if (activeSystem === "warlock")
+        {
+            weaponsPack = game.packs.find(pack => pack.metadata.label === "Weapons (Warlock!)");
+        }
+        else if (activeSystem === "warpstar")
+        {
+            weaponsPack = game.packs.find(pack => pack.metadata.label === "Weapons (Warpstar!)");
+        }
+
+        const wasLocked = weaponsPack.locked;
+        if (wasLocked)
+        {
+            await weaponsPack.configure({
+                locked: false,
+            });
+        }
+
+        const weapons = await weaponsPack.getDocuments();
+        const unarmedWeapon = weapons.find(weapon => weapon.name === "Unarmed").toObject();
+        unarmedWeapon.data.isEquipped = true;
+
+        await this.data.update({
+            items: [
+                unarmedWeapon,
+            ],
+        });
+
+        await weaponsPack.configure({
+            locked: wasLocked,
+        });
+
+        // Set token defaults.
+        this.data.token.update({
+            vision: true,
+            actorLink: true,
+            disposition: 1,
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Creates the preliminary data for a Monster.
+     *
+     * @private
+     */
+    async _createMonster()
+    {
+        // Set token defaults.
+        this.data.token.update({
+            vision: false,
+            actorLink: false,
+            disposition: -1,
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Creates the preliminary data for a Vehicle.
+     *
+     * @private
+     */
+    async _createVehicle()
+    {
+        // Set token defaults.
+        this.data.token.update({
+            actorLink: true,
+            disposition: 0,
+        });
+    }
+
+    /**
      * @override
      * @inheritdoc
      */
-    async _preCreate(data, options, user) {
-        await super._preCreate(data, options, user);
+    prepareDerivedData()
+    {
+        if (this.data.data.adventuringSkills
+            && !(this.data.data.adventuringSkills.warlock
+                 || this.data.data.adventuringSkills.warpstar)
+            && this.type === "Character")
+        {
+            // Translate skill names.
+            const translatedSkills = {};
+            for (const skill of Object.keys(this.data.data.adventuringSkills))
+            {
+                // Title-case the skill name and remove spaces.
+                const skillName = skill
+                    .split(" ")
+                    .map(word => word[0].toUpperCase() + word.substring(1))
+                    .join("");
+                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.data.data.adventuringSkills[skill];
+            }
 
-        // Set token defaults.
-        switch (this.type) {
-            case "Character":
-                this.data.token.update({
-                    vision: true,
-                    actorLink: true,
-                    disposition: 1,
-                });
-                break;
-            case "Monster":
-                this.data.token.update({
-                    vision: false,
-                    actorLink: false,
-                    disposition: -1,
-                });
-                break;
-            case "Vehicle":
-                this.data.token.update({
-                    actorLink: true,
-                    disposition: 0,
-                });
-                break;
-            default:
-                break;
+            this.data.data.adventuringSkills = translatedSkills;
         }
     }
 }

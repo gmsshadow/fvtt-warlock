@@ -1,0 +1,223 @@
+{{!-- Equipped Weapons --}}
+<div class="weapons table">
+    <div class="weapons__header table__header">
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Tables.EquippedWeapons"}}
+        </span>
+
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Tables.Skill"}}
+        </span>
+
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Tables.Type"}}
+        </span>
+
+        <span class="weapons__header-field table__header-field">
+            {{localize "WARLOCK.Tables.Damage"}}
+        </span>
+
+        <span class="weapons__header-field table__header-field">
+        </span>
+    </div>
+
+    <div class="weapons__body table__body">
+        {{#each data.data.gear.weapons}}
+        {{#if data.data.isEquipped}}
+        <div
+            class="weapons__entry table__entry table__entry--tall"
+            data-skill="{{data.data.skill.value}}"
+            data-item-id="{{id}}">
+            <span class="weapons__entry-field table__entry-field">
+                <img
+                    class="table__entry-image"
+                    src="{{img}}">
+
+                <a class="toggle-description">
+                    {{name}}
+                </a>
+            </span>
+
+            <span class="weapons__entry-field table__entry-field">
+                {{#if (eq data.data.skill.value "—")}}
+                —
+                {{else}}
+                <a
+                    class="test-skill"
+                    title="{{localize "WARLOCK.Tests.TestSkill"}}">
+                    {{data.data.skill.value}}
+                </a>
+                {{/if}}
+            </span>
+
+            <span class="weapons__entry-field table__entry-field">
+                {{data.data.type.value}}
+            </span>
+
+            <span class="weapons__entry-field table__entry-field">
+                <a
+                    class="roll-weapon"
+                    title="{{localize "WARLOCK.Tables.RollWeaponDamageTooltip"}}">
+                    {{data.data.damage.roll}} {{data.data.damage.type.value}}
+                </a>
+            </span>
+
+            <span class="weapons__entry-field table__entry-field">
+                <a
+                    class="chat-item"
+                    title="{{localize "WARLOCK.Items.ChatItem"}}">
+                    <i class="fas fa-comment"></i>
+                </a>
+
+                <a
+                    class="edit-item"
+                    title="{{localize "WARLOCK.Items.EditItem"}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <a
+                    class="delete-item"
+                    title="{{localize "WARLOCK.Items.DeleteItem"}}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+
+        <div class="table__entry-field--collapsible">
+            {{{data.data.description}}}
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+</div>
+
+{{!-- Equipped Armour --}}
+<div class="armour table">
+    <div class="armour__header table__header">
+        <span class="armour__header-field table__header-field">
+            {{localize "WARLOCK.Tables.EquippedArmour"}}
+        </span>
+
+        <span class="armour__header-field table__header-field">
+            {{localize "WARLOCK.Tables.Type"}}
+        </span>
+
+        <span class="armour__header-field table__header-field">
+            {{localize "WARLOCK.Tables.Reduction"}}
+        </span>
+
+        <span class="armour__header-field table__header-field">
+        </span>
+    </div>
+
+    <div class="armour__body table__body">
+        {{#each data.data.gear.armour}}
+        {{#if data.data.isEquipped}}
+        <div
+            class="armour__entry table__entry table__entry--tall"
+            data-item-id="{{id}}">
+            <span class="armour__entry-field table__entry-field">
+                <img
+                    class="table__entry-image"
+                    src="{{img}}">
+                <a class="toggle-description">
+                    {{name}}
+                </a>
+            </span>
+
+            <span class="armour__entry-field table__entry-field">
+                {{data.data.type.value}}
+            </span>
+
+            <span class="armour__entry-field table__entry-field">
+                <a
+                    class="roll-armour"
+                    title="{{localize "WARLOCK.Tables.RollArmourReductionTooltip"}}">
+                    {{data.data.reductionRoll}}
+                </a>
+            </span>
+
+            <span class="armour__entry-field table__entry-field">
+                <a
+                    class="chat-item"
+                    title="{{localize "WARLOCK.Items.ChatItem"}}">
+                    <i class="fas fa-comment"></i>
+                </a>
+
+                <a
+                    class="edit-item"
+                    title="{{localize "WARLOCK.Items.EditItem"}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <a
+                    class="delete-item"
+                    title="{{localize "WARLOCK.Items.DeleteItem"}}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+
+        <div class="table__entry-field--collapsible">
+            {{{data.data.description}}}
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+</div>
+
+{{!-- Critical Effects --}}
+<div class="critical-effects table">
+    <div class="critical-effects__header table__header">
+        <span class="critical-effects__header-field table__header-field">
+            {{localize "WARLOCK.Tables.CriticalEffects"}}
+        </span>
+
+        <span class="critical-effects__header-field table__header-field">
+            <a class="create-effect">
+                <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
+            </a>
+        </span>
+    </div>
+
+    <div class="critical-effects__body table__body">
+        {{#each effects}}
+        <div
+            class="critical-effects__entry table__entry table__entry--tall"
+            data-effect-id="{{_id}}">
+            <span class="critical-effects__entry-field table__entry-field">
+                <img
+                    class="table__entry-image"
+                    src="{{icon}}">
+                <a class="toggle-description">
+                    {{label}}
+                </a>
+            </span>
+
+            <span class="critical-effects__entry-field table__entry-field">
+                <a
+                    class="chat-effect"
+                    title="{{localize "WARLOCK.ActiveEffect.ChatEffect"}}">
+                    <i class="fas fa-comment"></i>
+                </a>
+
+                <a
+                    class="edit-effect"
+                    title="{{localize "WARLOCK.ActiveEffect.EditEffect"}}">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <a
+                    class="delete-effect"
+                    title="{{localize "WARLOCK.ActiveEffect.DeleteEffect"}}">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </span>
+        </div>
+
+        <div class="table__entry-field--collapsible">
+            {{{data.data.description}}}
+        </div>
+        {{/each}}
+    </div>
+</div>

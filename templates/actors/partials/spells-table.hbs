@@ -1,22 +1,22 @@
 <div class="spells table">
     <div class="spells__header table__header">
         <span class="spells__header-field table__header-field">
-            {{localize "WARLOCK.Spell"}}
+            {{localize "WARLOCK.Items.Spell.Name"}}
         </span>
 
         <span class="spells__header-field table__header-field">
-            {{localize "WARLOCK.Test"}}
+            {{localize "WARLOCK.Tables.Test"}}
         </span>
 
         <span class="spells__header-field table__header-field">
-            {{localize "WARLOCK.StaminaCost"}}
+            {{localize "WARLOCK.Tables.StaminaCost"}}
         </span>
 
         <span class="spells__header-field table__header-field">
             <a
                 class="create-item"
                 data-item-type="Spell">
-                <i class="fas fa-plus"></i> Add
+                <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
             </a>
         </span>
     </div>
@@ -26,9 +26,7 @@
         <div
             class="spells__entry table__entry table__entry--tall"
             data-item-id="{{id}}">
-            <span
-                class="spells__entry-field table__entry-field"
-                title="{{localize "WARLOCK.Spell"}}">
+            <span class="spells__entry-field table__entry-field">
                 <img
                     class="table__entry-image"
                     src="{{img}}">
@@ -38,18 +36,18 @@
                 </a>
             </span>
 
-            <span
-                class="glyphs__entry-field table__entry-field"
-                title="{{localize "WARLOCK.Test"}}">
-                <a class="test-spell">
-                    {{localize "WARLOCK.Basic"}}
+            <span class="glyphs__entry-field table__entry-field">
+                <a
+                    class="test-spell"
+                    title="{{localize "WARLOCK.Tests.TestSkill"}}">
+                    {{localize "WARLOCK.Items.Spell.Test.Basic"}}
                 </a>
             </span>
 
-            <span
-                class="spells__entry-field table__entry-field"
-                title="{{localize "WARLOCK.StaminaCost"}}">
-                <a class="pay-stamina-cost">
+            <span class="spells__entry-field table__entry-field">
+                <a
+                    class="pay-stamina-cost"
+                    title="{{localize "WARLOCK.Tables.PayStaminaCostTooltip"}}">
                     {{data.data.staminaCost}}
                 </a>
             </span>
@@ -58,26 +56,26 @@
                 class="spells__entry-field table__entry-field">
                 <a
                     class="chat-item"
-                    title="{{localize "WARLOCK.ChatSpell"}}">
+                    title="{{localize "WARLOCK.Items.ChatItem"}}">
                     <i class="fas fa-comment"></i>
                 </a>
 
                 <a
                     class="edit-item"
-                    title="{{localize "WARLOCK.EditSpell"}}">
+                    title="{{localize "WARLOCK.Items.EditItem"}}">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <a
                     class="delete-item"
-                    title="{{localize "WARLOCK.DeleteSpell"}}">
+                    title="{{localize "WARLOCK.Items.DeleteItem"}}">
                     <i class="fas fa-trash"></i>
                 </a>
             </span>
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{enrichHTML data.data.description}}}
+            {{{data.data.description}}}
         </div>
         {{/each}}
     </div>

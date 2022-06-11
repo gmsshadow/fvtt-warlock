@@ -1,7 +1,7 @@
 <form
     class="{{cssClass}} document"
     autocomplete="off">
-    <header class="header header--very-small">
+    <header class="header">
         <div class="header__body">
             <div class="header__row">
                 <input
@@ -9,7 +9,6 @@
                     type="text"
                     name="name"
                     value="{{item.name}}"
-                    title="{{localize "WARLOCK.Name"}}"
                     data-dtype="String">
             </div>
         </div>
@@ -20,16 +19,14 @@
         data-group="primary">
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.Skills"}}"
             data-tab="skills">
-            {{localize "WARLOCK.Skills"}}
+            {{localize "WARLOCK.Tabs.Skills"}}
         </a>
 
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.Description"}}"
             data-tab="description">
-            {{localize "WARLOCK.Description"}}
+            {{localize "WARLOCK.Tabs.Description"}}
         </a>
     </nav>
 
@@ -41,70 +38,57 @@
             <div class="career-skills table">
                 <div class="career-skills__header table__header">
                     <span class="career-skills__header-field table__header-field">
-                        {{localize "WARLOCK.Skill"}}
+                        {{localize "WARLOCK.Items.Career.Skill"}}
                     </span>
 
                     <span class="career-skills__header-field table__header-field">
-                        {{localize "WARLOCK.Current"}}
+                        {{localize "WARLOCK.Items.Career.Current"}}
                     </span>
 
                     <span class="career-skills__header-field table__header-field">
-                        {{localize "WARLOCK.Max"}}
+                        {{localize "WARLOCK.Items.Career.Max"}}
                     </span>
 
                     <!-- The header entries are duplicated since the body is a two-column grid. -->
                     <span class="career-skills__header-field table__header-field">
-                        {{localize "WARLOCK.Skill"}}
+                        {{localize "WARLOCK.Items.Career.Skill"}}
                     </span>
 
                     <span class="career-skills__header-field table__header-field">
-                        {{localize "WARLOCK.Current"}}
+                        {{localize "WARLOCK.Items.Career.Current"}}
                     </span>
 
                     <span class="career-skills__header-field table__header-field">
-                        {{localize "WARLOCK.Max"}}
+                        {{localize "WARLOCK.Items.Career.Max"}}
                     </span>
                 </div>
 
                 <div class="career-skills__body table__body">
-                    {{#each (lookup data.data.adventuringSkills data.data.activeSystem) as |data skill|}}
+                    {{#each data.data.adventuringSkills}}
                     <div
                         class="career-skills__entry table__entry"
-                        data-skill="{{skill}}">
-                        <span
-                            class="career-skills__entry-field table__entry-field"
-                            title="{{localize "WARLOCK.Skill"}}">
-                            {{skill}}
+                        data-skill="{{@key}}">
+                        <span class="career-skills__entry-field table__entry-field">
+                            {{@key}}
                         </span>
 
-                        <span
-                            class="career-skills__entry-field table__entry-field"
-                            title="{{localize "WARLOCK.IsCareerSkill"}}">
+                        <span class="career-skills__entry-field table__entry-field">
                             <a class="toggle-career-skill">
-                                {{#if data.isCareerSkill}}
-                                <i class="far fa-check-square"></i>
+                                {{#if isCareerSkill}}
+                                <i class="fas fa-check-square"></i>
                                 {{else}}
                                 <i class="far fa-square"></i>
                                 {{/if}}
                             </a>
                         </span>
 
-                        {{#if data.isCareerSkill}}
                         <input
                             class="edit-career-skill-level career-skills__entry-field table__entry-field field field--no-decoration"
                             type="number"
-                            name="data.adventuringSkills.{{../data.data.activeSystem}}.{{skill}}.maximumLevel"
                             value="{{maximumLevel}}"
-                            title="{{localize "WARLOCK.MaximumLevel"}}"
                             data-dtype="Number"
-                            data-career-skill="{{skill}}">
-                        {{else}}
-                        <span
-                            class="career-skills__entry-field table__entry-field"
-                            title="{{localize "WARLOCK.MaximumLevel"}}">
-                            —
-                        </span>
-                        {{/if}}
+                            data-career-skill="{{@key}}"
+                            {{#unless isCareerSkill}}disabled{{/unless}}>
                     </div>
                     {{/each}}
                 </div>

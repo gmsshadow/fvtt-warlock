@@ -1,13 +1,13 @@
-import WarlockActorSheet from "./warlock-actor-sheet.mjs";
+import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
-import Rolls from "../utils/rolls.mjs";
+import { Rolls } from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockMonsterSheet that extends the custom WarlockActorSheet.
  *
  * @extends WarlockActorSheet
  */
-export default class WarlockMonsterSheet extends WarlockActorSheet {
+export class WarlockMonsterSheet extends WarlockActorSheet {
     /**
      * @override
      * @inheritdoc
@@ -22,7 +22,7 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
                 {
                     navSelector: ".tabs",
                     contentSelector: ".body",
-                    initial: "gear",
+                    initial: "abilities",
                 },
             ],
         }
@@ -38,7 +38,8 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
         super.activateListeners(html);
 
         html.find(".test-adventuring-skills").click(this._onTestAdventuringSkills.bind(this));
-        html.find(".test-spell").click(this._onTestSpell.bind(this));
+        html.find(".test-skill").click(this._onTestWeaponSkill.bind(this));
+        html.find(".test-spell").click(this._onTestAdventuringSkills.bind(this));
         html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
     }
 
@@ -51,6 +52,10 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
     getData() {
         const context = super.getData();
 
+        context.data.data.abilities = context.actor.itemTypes["Ability"]
+            .sort((a, b) => {
+                return a.data.sort - b.data.sort;
+            });
         context.data.data.spells = context.actor.itemTypes["Spell"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
@@ -77,43 +82,14 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
 
         await Rolls.rollSkillTest(
             this.actor,
-            "Adventuring Skills",
+            game.i18n.localize("WARLOCK.Skills.AdventuringSkills"),
             this.actor.data.data.adventuringSkills,
+            {
+                showCombatOptions: true,
+                skipDialog: event.shiftKey || event.altKey,
+                isBasicTest: event.shiftKey,
+            },
         );
-    }
-
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * Roll a skill test for a spell or glyph.
-     *
-     * @param {Event} event The click event to test for a spell or glyph
-     *
-     * @private
-     */
-    async _onTestSpell(event) {
-        event.preventDefault();
-
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        switch (activeSystem) {
-            case "warlock":
-                await Rolls.rollSkillTest(
-                    this.actor,
-                    "Adventuring Skills",
-                    this.actor.data.data.adventuringSkills,
-                );
-                break;
-            case "warpstar":
-                await Rolls.rollSkillTest(
-                    this.actor,
-                    "Adventuring Skills",
-                    this.actor.data.data.adventuringSkills,
-                );
-                break;
-            default:
-                break;
-        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -130,8 +106,13 @@ export default class WarlockMonsterSheet extends WarlockActorSheet {
 
         await Rolls.rollSkillTest(
             this.actor,
-            "Weapon Skill",
+            game.i18n.localize("WARLOCK.Skills.WeaponSkill"),
             this.actor.data.data.weaponSkill,
+            {
+                showCombatOptions: true,
+                skipDialog: event.shiftKey || event.altKey,
+                isBasicTest: event.shiftKey,
+            },
         );
     }
 }

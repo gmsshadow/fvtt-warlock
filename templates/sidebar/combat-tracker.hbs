@@ -57,7 +57,7 @@
             {{#if user.isGM}}
             <a
                 class="roll-initiative"
-                title="{{localize "WARLOCK.RollInitiative"}}">
+                title="{{localize "WARLOCK.CombatTracker.RollInitiative"}}">
                 <i class="fas fa-dice"></i>
             </a>
             {{/if}}
@@ -98,7 +98,7 @@
         class="directory-list">
         {{#each turns}}
         <li
-            class="combatant actor directory-item flexrow {{this.css}} {{#if (eq this.resource.value 0)}}combat-tracker__combatant--greyed-out{{/if}}"
+            class="combatant actor directory-item flexrow combat-tracker__combatant {{this.css}} combat-tracker__combatant--{{this.disposition}} {{#if (eq this.resource.value 0)}}combat-tracker__combatant--greyed-out{{/if}}"
             data-combatant-id="{{this.id}}">
             <img
                 class="token-image"
@@ -141,7 +141,7 @@
                 {{#if this.owner}}
                 <a
                     class="modify-actions-per-round"
-                    title="{{localize "WARLOCK.ModifyActionsPerRound"}}">
+                    title="{{localize "WARLOCK.CombatTracker.ModifyActionsPerRound"}}">
                     <span class="resource">
                         {{this.resource.value}} / {{this.resource.max}}
                     </span>

@@ -5,7 +5,6 @@
         <img
             class="header__image"
             src="{{actor.img}}"
-            title="{{actor.name}}"
             data-edit="img">
 
         <div class="header__body">
@@ -15,7 +14,6 @@
                     type="text"
                     name="name"
                     value="{{actor.name}}"
-                    title="{{localize "WARLOCK.Name"}}"
                     data-dtype="String">
             </div>
 
@@ -25,33 +23,23 @@
                     type="text"
                     name="data.type"
                     value="{{data.data.type}}"
-                    placeholder="{{localize "WARLOCK.Type"}}"
-                    title="{{localize "WARLOCK.Type"}}"
-                    data-dtype="String">
-
-                <input
-                    class="header__notes field field--no-decoration field--center field--wide"
-                    type="text"
-                    name="data.biography.notes"
-                    value="{{data.data.biography.notes}}"
-                    placeholder="{{localize "WARLOCK.Notes"}}"
-                    title="{{localize "WARLOCK.Notes"}}"
+                    placeholder="{{localize "WARLOCK.Details.Type"}}"
                     data-dtype="String">
             </div>
 
             <div class="header__row header__row--align-end">
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Stamina"}}
+                        {{localize "WARLOCK.Resources.Stamina"}}
                     </label>
 
                     <div class="resource__body">
                         <input
-                            class="resource__value field field--center field--no-decoration"
+                            class="resource__value field field--right field--no-decoration"
                             type="number"
                             name="data.resources.stamina.value"
                             value="{{data.data.resources.stamina.value}}"
-                            title="{{localize "WARLOCK.CurrentStamina"}}"
+                            title="{{localize "WARLOCK.Resources.CurrentStamina"}}"
                             data-dtype="Number">
 
                         <span class="resource__separator">
@@ -59,27 +47,39 @@
                         </span>
 
                         <input
-                            class="resource__value field field--center field--no-decoration"
+                            class="resource__value field field--left field--no-decoration"
                             type="number"
                             name="data.resources.stamina.max"
                             value="{{data.data.resources.stamina.max}}"
-                            title="{{localize "WARLOCK.MaximumStamina"}}"
+                            title="{{localize "WARLOCK.Resources.MaximumStamina"}}"
                             data-dtype="Number">
                     </div>
                 </div>
 
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.ActionsPerRound"}}
+                        {{localize "WARLOCK.Resources.ActionsPerRound"}}
                     </label>
 
                     <div class="resource__body">
                         <input
-                            class="resource__value field field--center field--no-decoration"
+                            class="resource__value field field--right field--no-decoration"
+                            type="number"
+                            name="data.resources.actionsPerRound.value"
+                            value="{{data.data.resources.actionsPerRound.value}}"
+                            title="{{localize "WARLOCK.Resources.CurrentActionsPerRound"}}"
+                            data-dtype="Number">
+
+                        <span class="resource__separator">
+                            /
+                        </span>
+
+                        <input
+                            class="resource__value field field--left field--no-decoration"
                             type="number"
                             name="data.resources.actionsPerRound.max"
                             value="{{data.data.resources.actionsPerRound.max}}"
-                            title="{{localize "WARLOCK.ActionsPerRound"}}"
+                            title="{{localize "WARLOCK.Resources.MaximumActionsPerRound"}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                 <div class="resource">
                     <label class="resource__name">
                         <a class="test-weapon-skill">
-                            {{localize "WARLOCK.WeaponSkill"}}
+                            {{localize "WARLOCK.Actors.Monster.WeaponSkill"}}
                         </a>
                     </label>
 
@@ -97,7 +97,6 @@
                             type="number"
                             name="data.weaponSkill"
                             value="{{data.data.weaponSkill}}"
-                            title="{{localize "WARLOCK.WeaponSkill"}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -105,7 +104,7 @@
                 <div class="resource">
                     <label class="resource__name">
                         <a class="test-adventuring-skills">
-                            {{localize "WARLOCK.AdventuringSkills"}}
+                            {{localize "WARLOCK.Actors.Monster.AdventuringSkills"}}
                         </a>
                     </label>
 
@@ -115,7 +114,6 @@
                             type="number"
                             name="data.adventuringSkills"
                             value="{{data.data.adventuringSkills}}"
-                            title="{{localize "WARLOCK.AdventuringSkills"}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -128,35 +126,106 @@
         data-group="primary">
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.Gear"}}"
-            data-tab="gear">
-            {{localize "WARLOCK.Gear"}}
+            data-tab="abilities">
+            {{localize "WARLOCK.Tabs.Abilities"}}
         </a>
 
         <a
             class="tabs__item"
-            {{#if (eq data.data.activeSystem "warlock")}}
-            title="{{localize "WARLOCK.Spells"}}"
-            {{else}}
-            title="{{localize "WARLOCK.Glyphs"}}"
-            {{/if}}
+            data-tab="combat">
+            {{localize "WARLOCK.Tabs.Combat"}}
+        </a>
+
+        <a
+            class="tabs__item"
+            data-tab="gear">
+            {{localize "WARLOCK.Tabs.Gear"}}
+        </a>
+
+        <a
+            class="tabs__item"
             data-tab="spells">
             {{#if (eq data.data.activeSystem "warlock")}}
-            {{localize "WARLOCK.Spells"}}
+            {{localize "WARLOCK.Tabs.Spells"}}
             {{else}}
-            {{localize "WARLOCK.Glyphs"}}
+            {{localize "WARLOCK.Tabs.Glyphs"}}
             {{/if}}
         </a>
 
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.Description"}}"
             data-tab="description">
-            {{localize "WARLOCK.Description"}}
+            {{localize "WARLOCK.Tabs.Description"}}
         </a>
     </nav>
 
     <section class="body">
+        <div
+            class="tab abilities-tab"
+            data-group="primary"
+            data-tab="abilities">
+            <div class="abilities table">
+                <div class="abilities__header table__header">
+                    <span class="abilities__header-field table__header-field">
+                        {{localize "WARLOCK.Items.Ability.Name"}}
+                    </span>
+
+                    <span class="abilities__header-field table__header-field">
+                        <a
+                            class="create-item"
+                            data-item-type="Ability">
+                            <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
+                        </a>
+                    </span>
+                </div>
+
+                <div class="abilities__body table__body">
+                    {{#each data.data.abilities}}
+                    <div
+                        class="abilities__entry table__entry"
+                        data-item-id="{{id}}">
+                        <span class="abilities__entry-field table__entry-field">
+                            <a class="toggle-description">
+                                {{name}}
+                            </a>
+                        </span>
+
+                        <span class="abilities__entry-field table__entry-field">
+                            <a
+                                class="chat-item"
+                                title="{{localize "WARLOCK.Items.ChatItem"}}">
+                                <i class="fas fa-comment"></i>
+                            </a>
+
+                            <a
+                                class="edit-item"
+                                title="{{localize "WARLOCK.Items.EditItem"}}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <a
+                                class="delete-item"
+                                title="{{localize "WARLOCK.Items.DeleteItem"}}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </span>
+                    </div>
+
+                    <div class="table__entry-field--collapsible">
+                        {{{data.data.description}}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="tab combat-tab"
+            data-group="primary"
+            data-tab="combat">
+            {{> "systems/warlock/templates/actors/partials/combat-tab.hbs"}}
+        </div>
+
         <div
             class="tab gear-tab"
             data-group="primary"
