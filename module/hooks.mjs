@@ -1,27 +1,30 @@
-import WarlockActor from "./document/warlock-actor.mjs";
-import WarlockItem from "./document/warlock-item.mjs";
+import { WarlockActor } from "./document/warlock-actor.mjs";
+import { WarlockItem } from "./document/warlock-item.mjs";
 
-import WarlockCharacterSheet from "./sheet/warlock-character-sheet.mjs";
-import WarlockMonsterSheet from "./sheet/warlock-monster-sheet.mjs";
-import WarlockVehicleSheet from "./sheet/warlock-vehicle-sheet.mjs";
+import { WarlockCharacterSheet } from "./sheet/warlock-character-sheet.mjs";
+import { WarlockMonsterSheet } from "./sheet/warlock-monster-sheet.mjs";
+import { WarlockVehicleSheet } from "./sheet/warlock-vehicle-sheet.mjs";
 
-import WarlockArmourSheet from "./sheet/warlock-armour-sheet.mjs";
-import WarlockCareerSheet from "./sheet/warlock-career-sheet.mjs";
-import WarlockEquipmentSheet from "./sheet/warlock-equipment-sheet.mjs";
-import WarlockGlyphSheet from "./sheet/warlock-glyph-sheet.mjs";
-import WarlockSpellSheet from "./sheet/warlock-spell-sheet.mjs";
-import WarlockWeaponSheet from "./sheet/warlock-weapon-sheet.mjs";
+import { WarlockAbilitySheet } from "./sheet/warlock-ability-sheet.mjs";
+import { WarlockArmourSheet } from "./sheet/warlock-armour-sheet.mjs";
+import { WarlockCareerSheet } from "./sheet/warlock-career-sheet.mjs";
+import { WarlockEquipmentSheet } from "./sheet/warlock-equipment-sheet.mjs";
+import { WarlockGlyphSheet } from "./sheet/warlock-glyph-sheet.mjs";
+import { WarlockSpellSheet } from "./sheet/warlock-spell-sheet.mjs";
+import { WarlockWeaponSheet } from "./sheet/warlock-weapon-sheet.mjs";
 
-import WarlockCombat from "./combat/combat.mjs";
-import WarlockCombatTracker from "./combat/combat-tracker.mjs";
+import { WarlockCombat } from "./combat/combat.mjs";
+import { WarlockCombatTracker } from "./combat/combat-tracker.mjs";
 
-import Migrations from "./utils/migrations.mjs";
-import Rolls from "./utils/rolls.mjs";
+import { Migrations } from "./utils/migrations.mjs";
+import { Rolls } from "./utils/rolls.mjs";
 
 /**
  * Initializes the global game variable.
+ *
+ * @private
  */
- function _initializeGame() {
+ function initializeGame() {
     game.warlock = {
         migrations: Migrations,
         rolls: Rolls,
@@ -32,8 +35,10 @@ import Rolls from "./utils/rolls.mjs";
 
 /**
  * Initializes the global CONFIG variable.
+ *
+ * @private
  */
-function _initializeCONFIG() {
+function initializeCONFIG() {
     CONFIG.Actor.documentClass = WarlockActor;
     CONFIG.Combat.documentClass = WarlockCombat;
     CONFIG.Item.documentClass = WarlockItem;
@@ -44,8 +49,10 @@ function _initializeCONFIG() {
 
 /**
  * Registers and unregisters various sheets.
+ *
+ * @private
  */
-function _initializeSheets() {
+function initializeSheets() {
     Actors.unregisterSheet("core", ActorSheet);
 
     Actors.registerSheet("warlock", WarlockCharacterSheet, {
@@ -70,6 +77,13 @@ function _initializeSheets() {
     });
 
     Items.unregisterSheet("core", ItemSheet);
+
+    Items.registerSheet("warlock", WarlockAbilitySheet, {
+        types: [
+            "Ability",
+        ],
+        makeDefault: false,
+    });
 
     Items.registerSheet("warlock", WarlockArmourSheet, {
         types: [
@@ -118,10 +132,12 @@ function _initializeSheets() {
 
 /**
  * Registers game settings.
+ *
+ * @private
  */
-function _initializeSettings() {
+function initializeSettings() {
     game.settings.register("warlock", "systemMigrationVersion", {
-        name: "System Migration Version",
+        name: game.i18n.localize("WARLOCK.Settings.SystemMigrationVersion"),
         scope: "world",
         config: false,
         type: String,
@@ -129,22 +145,35 @@ function _initializeSettings() {
     });
 
     game.settings.register("warlock", "activeSystem", {
-        name: game.i18n.localize("WARLOCK.ActiveSystem"),
-        hint: game.i18n.localize("WARLOCK.ActiveSystemHint"),
+        name: game.i18n.localize("WARLOCK.Settings.ActiveSystem"),
+        hint: game.i18n.localize("WARLOCK.Settings.ActiveSystemHint"),
         scope: "world",
         config: true,
         type: String,
         choices: {
-            "warlock": "Warlock!",
-            "warpstar": "Warpstar!",
+            "warlock": game.i18n.localize("WARLOCK.Settings.ActiveSystemWarlock"),
+            "warpstar": game.i18n.localize("WARLOCK.Settings.ActiveSystemWarpstar"),
         },
         default: "warlock",
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
 
+    game.settings.register("warlock", "careerLevelCalculation", {
+        name: game.i18n.localize("WARLOCK.Settings.CareerLevelCalculation"),
+        hint: game.i18n.localize("WARLOCK.Settings.CareerLevelCalculationHint"),
+        scope: "world",
+        config: true,
+        type: String,
+        choices: {
+            "lowestSkill": game.i18n.localize("WARLOCK.Settings.CareerLevelCalculationLowestSkill"),
+            "averageSkill": game.i18n.localize("WARLOCK.Settings.CareerLevelCalculationAverageSkill"),
+        },
+        default: "lowestSkill",
+    });
+
     game.settings.register("warlock", "pluckEnabled", {
-        name: game.i18n.localize("WARLOCK.Pluck"),
-        hint: game.i18n.localize("WARLOCK.PluckHint"),
+        name: game.i18n.localize("WARLOCK.Settings.Pluck"),
+        hint: game.i18n.localize("WARLOCK.Settings.PluckHint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -153,8 +182,8 @@ function _initializeSettings() {
     });
 
     game.settings.register("warlock", "reputationEnabled", {
-        name: game.i18n.localize("WARLOCK.Reputation"),
-        hint: game.i18n.localize("WARLOCK.ReputationHint"),
+        name: game.i18n.localize("WARLOCK.Settings.Reputation"),
+        hint: game.i18n.localize("WARLOCK.Settings.ReputationHint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -163,8 +192,18 @@ function _initializeSettings() {
     });
 
     game.settings.register("warlock", "talentEnabled", {
-        name: game.i18n.localize("WARLOCK.Talent"),
-        hint: game.i18n.localize("WARLOCK.TalentHint"),
+        name: game.i18n.localize("WARLOCK.Settings.Talent"),
+        hint: game.i18n.localize("WARLOCK.Settings.TalentHint"),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
+    });
+
+    game.settings.register("warlock", "passionsEnabled", {
+        name: game.i18n.localize("WARLOCK.Settings.Passions"),
+        hint: game.i18n.localize("WARLOCK.Settings.PassionsHint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -177,14 +216,17 @@ function _initializeSettings() {
 
 /**
  * Loads Handlebars templates used as partials.
+ *
+ * @private
  */
-function _initializeHandlebarsTemplates() {
+function initializeHandlebarsTemplates() {
     loadTemplates([
         "systems/warlock/templates/actors/partials/armour-table.hbs",
         "systems/warlock/templates/actors/partials/equipment-table.hbs",
         "systems/warlock/templates/actors/partials/glyphs-table.hbs",
         "systems/warlock/templates/actors/partials/spells-table.hbs",
         "systems/warlock/templates/actors/partials/weapons-table.hbs",
+        "systems/warlock/templates/actors/partials/combat-tab.hbs",
     ]);
 }
 
@@ -192,40 +234,39 @@ function _initializeHandlebarsTemplates() {
 
 /**
  * Registers custom Handlebars helpers.
+ *
+ * @private
  */
-function _initializeHandlebarsHelpers() {
-    Handlebars.registerHelper("getSkill", (careers, skillName) => {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
+function initializeHandlebarsHelpers() {
+    Handlebars.registerHelper("getSkill", (careers, skill) => {
         const activeCareer = careers.find(career => career.data.data.isActive);
         if (activeCareer) {
-            return activeCareer.data.data.adventuringSkills[activeSystem][skillName];
+            return activeCareer.data.data.adventuringSkills[skill];
         } else {
             return {};
         }
-    });
-
-    Handlebars.registerHelper("enrichHTML", (html) => {
-        return TextEditor.enrichHTML(html);
     });
 }
 
 /* -------------------------------------------------------------------------- */
 
 Hooks.once("init", () => {
-    _initializeGame();
-    _initializeCONFIG();
-    _initializeSheets();
-    _initializeSettings();
-    _initializeHandlebarsTemplates();
-    _initializeHandlebarsHelpers();
+    initializeGame();
+    initializeCONFIG();
+    initializeSheets();
+    initializeSettings();
+    initializeHandlebarsTemplates();
+    initializeHandlebarsHelpers();
 });
 
 /* -------------------------------------------------------------------------- */
 
 /**
  * Sets the tracked resource for combatants in the combat tracker.
+ *
+ * @private
  */
-function _initializeTrackedResource() {
+function initializeTrackedResource() {
     game.settings.set("core", Combat.CONFIG_SETTING, {
         resource: "resources.actionsPerRound",
     });
@@ -235,29 +276,134 @@ function _initializeTrackedResource() {
 
 /**
  * Migrates the world and its documents if necessary.
+ *
+ * @private
  */
-function _initializeMigration() {
+function initializeMigration() {
     if (!game.user.isGM) {
         return;
     }
 
     const currentVersion = game.settings.get("warlock", "systemMigrationVersion");
-    const NEEDS_MIGRATION_VERSION = "0.2.1";
+    const needsMigrationVersion = "1.0.0";
     const needsMigration = (
         !currentVersion
-        || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)
+        || foundry.utils.isNewerVersion(needsMigrationVersion, currentVersion)
     );
 
-    if (!needsMigration) {
-        return;
+    if (needsMigration) {
+        Migrations.migrateWorld();
     }
-
-    Migrations.migrateWorld();
 }
 
 /* -------------------------------------------------------------------------- */
 
 Hooks.once("ready", () => {
-    _initializeTrackedResource();
-    _initializeMigration();
+    initializeTrackedResource();
+    initializeMigration();
+});
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Highlights a successful basic test with green and a failed basic test with
+ * red.
+ *
+ * @param {ChatMessage} message The message being rendered
+ * @param {Function} html The jQuery HTML of the message
+ * @param {Object} data Additional data associated with the message
+ *
+ * @private
+ */
+function highlightSuccessOrFailure(message, html, data) {
+    if (message.isRoll
+        && message.isContentVisible
+        && message.data.flags.isBasicTest) {
+        if (message.roll.total >= 20) {
+            html.find(".dice-total").addClass("dice-total--success");
+        } else {
+            html.find(".dice-total").addClass("dice-total--failure");
+        }
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+
+Hooks.on("renderChatMessage", (app, html, data) => {
+    highlightSuccessOrFailure(app, html, data);
+});
+
+/* -------------------------------------------------------------------------- */
+
+Hooks.on("i18nInit", () => {
+    game.warlock.skills = {
+        warlock: {
+            "Appraise": game.i18n.localize("WARLOCK.Skills.Appraise"),
+            "Athletics": game.i18n.localize("WARLOCK.Skills.Athletics"),
+            "Bargain": game.i18n.localize("WARLOCK.Skills.Bargain"),
+            "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
+            "Bow": game.i18n.localize("WARLOCK.Skills.Bow"),
+            "Brawling": game.i18n.localize("WARLOCK.Skills.Brawling"),
+            "Command": game.i18n.localize("WARLOCK.Skills.Command"),
+            "Crossbow": game.i18n.localize("WARLOCK.Skills.Crossbow"),
+            "Diplomacy": game.i18n.localize("WARLOCK.Skills.Diplomacy"),
+            "Disguise": game.i18n.localize("WARLOCK.Skills.Disguise"),
+            "Dodge": game.i18n.localize("WARLOCK.Skills.Dodge"),
+            "Endurance": game.i18n.localize("WARLOCK.Skills.Endurance"),
+            "History": game.i18n.localize("WARLOCK.Skills.History"),
+            "Incantation": game.i18n.localize("WARLOCK.Skills.Incantation"),
+            "Intimidate": game.i18n.localize("WARLOCK.Skills.Intimidate"),
+            "Language": game.i18n.localize("WARLOCK.Skills.Language"),
+            "Large blade": game.i18n.localize("WARLOCK.Skills.LargeBlade"),
+            "Lie": game.i18n.localize("WARLOCK.Skills.Lie"),
+            "Medicine": game.i18n.localize("WARLOCK.Skills.Medicine"),
+            "Navigation": game.i18n.localize("WARLOCK.Skills.Navigation"),
+            "Ostler": game.i18n.localize("WARLOCK.Skills.Ostler"),
+            "Persuasion": game.i18n.localize("WARLOCK.Skills.Persuasion"),
+            "Pole arm": game.i18n.localize("WARLOCK.Skills.PoleArm"),
+            "Repair": game.i18n.localize("WARLOCK.Skills.Repair"),
+            "Sleight of hand": game.i18n.localize("WARLOCK.Skills.SleightOfHand"),
+            "Small blade": game.i18n.localize("WARLOCK.Skills.SmallBlade"),
+            "Spot": game.i18n.localize("WARLOCK.Skills.Spot"),
+            "Stealth": game.i18n.localize("WARLOCK.Skills.Stealth"),
+            "Streetwise": game.i18n.localize("WARLOCK.Skills.Streetwise"),
+            "Survival": game.i18n.localize("WARLOCK.Skills.Survival"),
+            "Swimming": game.i18n.localize("WARLOCK.Skills.Swimming"),
+            "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
+        },
+        warpstar: {
+            "Animal handler": game.i18n.localize("WARLOCK.Skills.AnimalHandler"),
+            "Appraise": game.i18n.localize("WARLOCK.Skills.Appraise"),
+            "Astronav": game.i18n.localize("WARLOCK.Skills.Astronav"),
+            "Athletics": game.i18n.localize("WARLOCK.Skills.Athletics"),
+            "Bargain": game.i18n.localize("WARLOCK.Skills.Bargain"),
+            "Blades": game.i18n.localize("WARLOCK.Skills.Blades"),
+            "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
+            "Brawling": game.i18n.localize("WARLOCK.Skills.Brawling"),
+            "Command": game.i18n.localize("WARLOCK.Skills.Command"),
+            "Diplomacy": game.i18n.localize("WARLOCK.Skills.Diplomacy"),
+            "Disguise": game.i18n.localize("WARLOCK.Skills.Disguise"),
+            "Dodge": game.i18n.localize("WARLOCK.Skills.Dodge"),
+            "Endurance": game.i18n.localize("WARLOCK.Skills.Endurance"),
+            "History": game.i18n.localize("WARLOCK.Skills.History"),
+            "Intimidate": game.i18n.localize("WARLOCK.Skills.Intimidate"),
+            "Language": game.i18n.localize("WARLOCK.Skills.Language"),
+            "Lie": game.i18n.localize("WARLOCK.Skills.Lie"),
+            "Medicine": game.i18n.localize("WARLOCK.Skills.Medicine"),
+            "Navigation": game.i18n.localize("WARLOCK.Skills.Navigation"),
+            "Persuasion": game.i18n.localize("WARLOCK.Skills.Persuasion"),
+            "Pilot": game.i18n.localize("WARLOCK.Skills.Pilot"),
+            "Repair": game.i18n.localize("WARLOCK.Skills.Repair"),
+            "Ship gunner": game.i18n.localize("WARLOCK.Skills.ShipGunner"),
+            "Small arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
+            "Sleight of hand": game.i18n.localize("WARLOCK.Skills.SleightOfHand"),
+            "Spot": game.i18n.localize("WARLOCK.Skills.Spot"),
+            "Stealth": game.i18n.localize("WARLOCK.Skills.Stealth"),
+            "Streetwise": game.i18n.localize("WARLOCK.Skills.Streetwise"),
+            "Survival": game.i18n.localize("WARLOCK.Skills.Survival"),
+            "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
+            "Warp focus": game.i18n.localize("WARLOCK.Skills.WarpFocus"),
+            "Zero G": game.i18n.localize("WARLOCK.Skills.ZeroG"),
+        },
+    };
 });

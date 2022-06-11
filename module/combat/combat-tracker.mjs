@@ -1,10 +1,10 @@
-import Rolls from "../utils/rolls.mjs";
+import { Rolls } from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockCombatTracker class that extends the base CombatTracker
  * class.
  */
-export default class WarlockCombatTracker extends CombatTracker {
+export class WarlockCombatTracker extends CombatTracker {
     /**
      * @override
      * @inheritdoc
@@ -32,6 +32,44 @@ export default class WarlockCombatTracker extends CombatTracker {
     /**
      * @override
      * @inheritdoc
+     */
+    async getData() {
+        const context = await super.getData();
+
+        for (const turn of context.turns) {
+            // This is used for determining which CSS class to apply to turns.
+            switch (context.combat.combatants.get(turn.id).token.data.disposition) {
+                case -1: // Hostile
+                    turn.disposition = "hostile";
+                    break;
+                case 0: // Neutral
+                    turn.disposition = "neutral";
+                    break;
+                case 1: // Friendly
+                    turn.disposition = "friendly";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        context.turns.sort((a, b) => {
+            const aDisposition = context.combat.combatants.get(a.id).token.data.disposition;
+            const bDisposition = context.combat.combatants.get(b.id).token.data.disposition;
+
+            // Subtract the disposition from 0 so that friendly is -1, neutral
+            // is 0, and hostile is 1.
+            return (0 - aDisposition) - (0 - bDisposition);
+        });
+
+        return context;
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * @override
+     * @inheritdoc
      *
      * This is overridden to remove the last two buttons that handle initiative
      * by default.
@@ -52,11 +90,9 @@ export default class WarlockCombatTracker extends CombatTracker {
                 },
                 callback: li => {
                     const combatant = this.viewed.combatants.get(li.data("combatant-id"));
-                    if (combatant) {
-                        return combatant.update({
-                            initiative: null,
-                        });
-                    }
+                    return combatant?.update({
+                        initiative: null,
+                    });
                 },
             },
             {
@@ -64,9 +100,7 @@ export default class WarlockCombatTracker extends CombatTracker {
                 icon: "<i class=\"fas fa-trash\"></i>",
                 callback: li => {
                     const combatant = this.viewed.combatants.get(li.data("combatant-id"));
-                    if (combatant) {
-                        return combatant.delete();
-                    }
+                    return combatant?.delete();
                 },
             },
         ];

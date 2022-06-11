@@ -1,13 +1,13 @@
-import WarlockActorSheet from "./warlock-actor-sheet.mjs";
+import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
-import Rolls from "../utils/rolls.mjs";
+import { Rolls } from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockCharacterSheet that extends the custom WarlockActorSheet.
  *
  * @extends WarlockActorSheet
  */
-export default class WarlockCharacterSheet extends WarlockActorSheet {
+export class WarlockCharacterSheet extends WarlockActorSheet {
     /**
      * @override
      * @inheritdoc
@@ -15,6 +15,10 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     static get defaultOptions() {
         return {
             ...super.defaultOptions,
+            classes: [
+                "warlock",
+                "character",
+            ],
             template: "systems/warlock/templates/actors/character-sheet.hbs",
             width: 620,
             height: 745,
@@ -105,8 +109,9 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
             });
 
         context.data.data.resources.reputation.enabled = game.settings.get("warlock", "reputationEnabled");
-        context.data.data.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
         context.data.data.resources.pluck.enabled = game.settings.get("warlock", "pluckEnabled");
+        context.data.data.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
+        context.data.data.biography.passions.enabled = game.settings.get("warlock", "passionsEnabled");
 
         return context;
     }
@@ -208,12 +213,24 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
             return;
         }
 
-        let skill = event.currentTarget.closest(".table__entry").dataset.skill;
-        let level = parseInt(event.currentTarget.value, 10);
-        this.actor.itemTypes["Career"]
-            .forEach(async (career) => {
-                await career.updateCareerSkillLevel(skill, level);
-            });
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+        const translatedSkill = event.currentTarget.closest(".table__entry").dataset.skill;
+        const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
+            return game.warlock.skills[activeSystem][skill] === translatedSkill;
+        });
+        const level = parseInt(event.currentTarget.value, 10);
+
+        await this.actor.update({
+            data: {
+                adventuringSkills: {
+                    [untranslatedSkill]: level,
+                },
+            },
+        });
+
+        for (const career of this.actor.itemTypes["Career"]) {
+            await career.updateCareerSkillLevel(untranslatedSkill, level);
+        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -234,41 +251,38 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         // Increase the skill level.
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const activeSystem = game.settings.get("warlock", "activeSystem");
 
         await this.actor.update({
             data: {
                 adventuringSkills: {
-                    [activeSystem]: {
-                        [skill]: this.actor.data.data.adventuringSkills[activeSystem][skill] + 1,
-                    },
+                    [skill]: this.actor.data.data.adventuringSkills[skill] + 1,
                 },
             },
         });
 
         // Notify the careers of the level increase.
-        this.actor.itemTypes["Career"]
-            .forEach(async (career) => {
-                let currentLevel = career.data.data.currentLevel;
-                await career.updateCareerSkillLevel(
-                    skill,
-                    this.actor.data.data.adventuringSkills[activeSystem][skill],
-                );
+        for (const career of this.actor.itemTypes["Career"]) {
+            const currentLevel = career.data.data.currentLevel;
+            await career.updateCareerSkillLevel(
+                skill,
+                this.actor.data.data.adventuringSkills[skill],
+            );
 
-                // Check if the active career level has changed.
-                if (career.data.data.isActive && (currentLevel < career.data.data.currentLevel)) {
-                    // If it has, add the difference to the maximum stamina.
-                    await this.actor.update({
-                        data: {
-                            resources: {
-                                stamina: {
-                                    max: this.actor.data.data.resources.stamina.max + (career.data.data.currentLevel - currentLevel),
-                                },
+            // Check if the active career level has changed.
+            if (career.data.data.isActive
+                && (currentLevel < career.data.data.currentLevel)) {
+                // If it has, add the difference to the maximum stamina.
+                await this.actor.update({
+                    data: {
+                        resources: {
+                            stamina: {
+                                max: this.actor.data.data.resources.stamina.max + (career.data.data.currentLevel - currentLevel),
                             },
                         },
-                    });
-                }
-            });
+                    },
+                });
+            }
+        }
 
         // Deduct one advance.
         await this.actor.update({
@@ -277,6 +291,71 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
                     advances: this.actor.data.data.resources.advances - 1,
                 },
             },
+        });
+    }
+
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Opens the reputation configuration Dialog.
+     *
+     * @param {Event} event The click event to open the reputation configuration
+     * Dialog
+     *
+     * @private
+     */
+     async _onOpenReputationDialog(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
+        const template = "systems/warlock/templates/dialogs/reputation-configuration-dialog.hbs";
+        const content = await renderTemplate(template, {
+            description: this.actor.data.data.resources.reputation.description,
+        });
+
+        const options = await new Promise(resolve => {
+            new Dialog({
+                title: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Title"),
+                content: content,
+                buttons: {
+                    cancel: {
+                        icon: "<i class=\"fas fa-times\"></i>",
+                        label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Cancel"),
+                        callback: (html) => resolve({
+                            cancelled: true,
+                        }),
+                    },
+                    submit: {
+                        icon: "<i class=\"fas fa-check\"></i>",
+                        label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Submit"),
+                        callback: (html) => resolve({
+                            description: html[0].querySelector("form").description.value,
+                        }),
+                    },
+                },
+                default: "submit",
+                close: () => resolve({
+                    cancelled: true,
+                }),
+            }, null).render(true);
+        });
+
+        if (options.cancelled) {
+            return;
+        }
+
+        await this.actor.update({
+            data: {
+                resources: {
+                    reputation: {
+                        description: options.description,
+                    }
+                }
+            }
         });
     }
 
@@ -299,6 +378,9 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
             this.actor,
             career.name,
             career.data.data.currentLevel,
+            {
+                showCombatOptions: false,
+            },
         );
     }
 
@@ -316,7 +398,7 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         await Rolls.rollSkillTest(
             this.actor,
-            "Luck",
+            game.i18n.localize("WARLOCK.Resources.Luck"),
             this.actor.data.data.resources.luck.value,
         );
     }
@@ -342,8 +424,11 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
         } else {
             await Rolls.rollSkillTest(
                 this.actor,
-                "Pluck",
+                game.i18n.localize("WARLOCK.Resources.Pluck"),
                 this.actor.data.data.resources.pluck.value,
+                {
+                    showCombatOptions: false,
+                },
             );
         }
     }
@@ -362,8 +447,13 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         await Rolls.rollSkillTest(
             this.actor,
-            `Reputation (${this.actor.data.data.resources.reputation.description})`,
+            game.i18n.format("WARLOCK.Resources.ReputationTest", {
+                description: this.actor.data.data.resources.reputation.description,
+            }),
             this.actor.data.data.resources.reputation.value,
+            {
+                showCombatOptions: false,
+            }
         );
     }
 
@@ -379,11 +469,19 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestSkill(event) {
         event.preventDefault();
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const level = this.actor.data.data.adventuringSkills[activeSystem][skill];
+        const level = this.actor.data.data.adventuringSkills[skill];
 
-        await Rolls.rollSkillTest(this.actor, skill, level);
+        await Rolls.rollSkillTest(
+            this.actor,
+            skill,
+            level,
+            {
+                showCombatOptions: true,
+                skipDialog: event.shiftKey || event.altKey,
+                isBasicTest: event.shiftKey,
+            },
+        );
     }
 
     /* ---------------------------------------------------------------------- */
@@ -400,85 +498,29 @@ export default class WarlockCharacterSheet extends WarlockActorSheet {
 
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
-        let skill, level;
-
         switch (activeSystem) {
             case "warlock":
-                skill = "Incantation";
-                level = this.actor.data.data.adventuringSkills[activeSystem][skill];
-
-                await Rolls.rollSkillTest(this.actor, skill, level);
-                break;
-            case "warpstar":
-                skill = "Warp focus";
-                level = this.actor.data.data.adventuringSkills[activeSystem][skill];
-
                 await Rolls.rollSkillTest(
                     this.actor,
-                    skill,
-                    level,
+                    game.warlock.skills.warlock["Incantation"],
+                    this.actor.data.data.adventuringSkills[game.warlock.skills.warlock["Incantation"]],
+                    {
+                        showCombatOptions: false,
+                    },
+                );
+                break;
+            case "warpstar":
+                await Rolls.rollSkillTest(
+                    this.actor,
+                    game.warlock.skills.warlock["Warp focus"],
+                    this.actor.data.data.adventuringSkills[game.warlock.skills.warlock["Warp focus"]],
+                    {
+                        showCombatOptions: false,
+                    },
                 );
                 break;
             default:
                 break;
         }
-    }
-
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * Opens the reputation configuration Dialog.
-     *
-     * @param {Event} event The click event to open the reputation configuration
-     * Dialog
-     *
-     * @private
-     */
-    async _onOpenReputationDialog(event) {
-        event.preventDefault();
-
-        if (!this.isEditable) {
-            return;
-        }
-
-        const dialogTemplate = "systems/warlock/templates/dialogs/reputation-configuration-dialog.hbs";
-        const dialogHtml = await renderTemplate(dialogTemplate, {
-            description: this.actor.data.data.resources.reputation.description,
-        });
-
-        const options = await new Promise(resolve => {
-            new Dialog({
-                title: game.i18n.localize("WARLOCK.Reputation"),
-                content: dialogHtml,
-                buttons: {
-                    cancel: {
-                        icon: "<i class=\"fas fa-times\"></i>",
-                        label: game.i18n.localize("WARLOCK.Cancel"),
-                        callback: (html) => resolve({cancelled: true}),
-                    },
-                    submit: {
-                        icon: "<i class=\"fas fa-check\"></i>",
-                        label: game.i18n.localize("WARLOCK.Submit"),
-                        callback: (html) => resolve({description: html[0].querySelector("form").description.value}),
-                    },
-                },
-                default: "submit",
-                close: () => resolve({cancelled: true}),
-            }, null).render(true);
-        });
-
-        if (options.cancelled) {
-            return;
-        }
-
-        await this.actor.update({
-            data: {
-                resources: {
-                    reputation: {
-                        description: options.description,
-                    }
-                }
-            }
-        });
     }
 }

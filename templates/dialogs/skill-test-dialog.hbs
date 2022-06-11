@@ -1,18 +1,122 @@
 <form class="warlock">
+    {{!-- Modifier --}}
     <div class="form-group">
         <label>
-            {{localize "WARLOCK.Modifier"}}
+            {{localize "WARLOCK.Dialogs.SkillTest.Modifier"}}
         </label>
 
         <input
             class="field"
             type="number"
             name="modifier"
-            value="0"
+            value={{baseModifier}}
             data-dtype="Number">
 
         <p class="hint">
-            {{localize "WARLOCK.SkillTestModifierHint"}}
+            {{localize "WARLOCK.Dialogs.SkillTest.ModifierHint"}}
         </p>
     </div>
+
+    {{#if showVehicleCombatCapabilities}}
+    {{!-- Vehicle Combat Capabilities --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.VehicleCombatCapabilities"}}
+        </label>
+
+        <select name="vehicleCombatCapabilityChoice">
+            {{selectOptions vehicleCombatCapabilityChoices}}
+        </select>
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.VehicleCombatCapabilitiesHint"}}
+        </p>
+    </div>
+    {{/if}}
+
+    {{#if showCombatOptions}}
+    <h2>
+        {{localize "WARLOCK.Dialogs.SkillTest.CombatOptions"}}
+    </h2>
+
+    {{!-- Initiated Melee Attack --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.InitiatedMeleeAttack"}}
+        </label>
+
+        <input
+            type="checkbox"
+            name="initiatedMeleeAttack"
+            data-dtype="Boolean">
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.InitiatedMeleeAttackHint"}}
+        </p>
+    </div>
+
+    {{!-- Ranged Target Faraway --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.RangedTargetFaraway"}}
+        </label>
+
+        <input
+            type="checkbox"
+            name="rangedTargetFaraway"
+            data-dtype="Boolean">
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.RangedTargetFarawayHint"}}
+        </p>
+    </div>
+
+    {{#if (eq activeSystem "warlock")}}
+    {{!-- Dodging with Shield --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.DodgingRangedAttackWithShield"}}
+        </label>
+
+        <select name="shieldChoice">
+            {{selectOptions shieldChoices}}
+        </select>
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.DodgingRangedAttackWithShieldHint"}}
+        </p>
+    </div>
+    {{else}}
+    {{!-- Pinned --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.Pinned"}}
+        </label>
+
+        <input
+            type="checkbox"
+            name="pinned"
+            data-dtype="Boolean">
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.PinnedHint"}}
+        </p>
+    </div>
+
+    {{!-- Flanking --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.Flanking"}}
+        </label>
+
+        <select name="flankingChoice">
+            {{selectOptions flankingChoices}}
+        </select>
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.FlankingHint"}}
+        </p>
+    </div>
+    {{/if}}
+    {{/if}}
 </form>

@@ -1,43 +1,57 @@
 /**
  * Handles the migrations from the various system versions.
  */
-export default class Migrations {
+export class Migrations {
     /**
      * Migrate the world which includes actors, items, scenes, compendia, etc.
      */
-    static async migrateWorld() {
-        ui.notifications.info(`Migrating your world for version ${game.system.data.version} — Please do not close your game or shut down your server.`, {
-            permanent: true,
-        });
+    static async migrateWorld()
+    {
+        ui.notifications.info(
+            game.i18n.format("WARLOCK.Notifications.MigratingWorld", {
+                version: game.system.data.version,
+            }),
+            {
+                permanent: true,
+            });
 
         // Migrate actors.
-        for (let actor of game.actors) {
+        for (const actor of game.actors)
+        {
             const actorUpdateData = Migrations._migrateActorData(actor.data);
             await actor.update(actorUpdateData);
 
-            for (let item of actor.items) {
+            // Migrate the actor's items.
+            for (const item of actor.items)
+            {
                 const itemUpdateData = Migrations._migrateItemData(item.data);
                 await item.update(itemUpdateData);
             }
         }
 
         // Migrate items.
-        for (let item of game.items) {
+        for (const item of game.items)
+        {
             const updateData = Migrations._migrateItemData(item.data);
             await item.update(updateData);
         }
 
         // Migrate packs.
-        for (let pack of game.packs) {
+        for (const pack of game.packs)
+        {
             await Migrations._migratePackData(pack);
         }
 
         // Set the migration version for future sessions.
         game.settings.set("warlock", "systemMigrationVersion", game.system.data.version);
 
-        ui.notifications.info(`Successfully migrated your world for version ${game.system.data.version}!`, {
-            permanent: true,
-        });
+        ui.notifications.info(
+            game.i18n.format("WARLOCK.Notifications.MigratingWorldSuccess", {
+                version: game.system.data.version,
+            }),
+            {
+                permanent: true,
+            });
     }
 
     /* ---------------------------------------------------------------------- */
@@ -50,10 +64,12 @@ export default class Migrations {
      *
      * @private
      */
-    static _migrateActorData(actorData) {
+    static _migrateActorData(actorData)
+    {
         const updateData = {};
 
-        switch (actorData.type) {
+        switch (actorData.type)
+        {
             case "Character":
                 Migrations._migrateCharacterData(actorData, updateData);
                 break;
@@ -64,7 +80,6 @@ export default class Migrations {
                 Migrations._migrateVehicleData(actorData, updateData);
                 break;
             default:
-                // TODO(jcd): Log an error here.
                 break;
         }
 
@@ -76,16 +91,43 @@ export default class Migrations {
     /**
      * Migrates the ActorData for a Character.
      *
-     * This function is currently a no-op since no migrations need to occur for
-     * Characters.
-     *
      * @param {data.ActorData} actorData The data corresponding to a Character
      * @param {object} updateData The modifications to the ActorData object
      *
      * @private
      */
-    static _migrateCharacterData(actorData, updateData) {
-        // Do nothing.
+    static _migrateCharacterData(actorData, updateData)
+    {
+        Migrations._migrateCharacterSkills(actorData, updateData);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Migrates the skills for a Character.
+     *
+     * @param {data.ActorData} actorData The data corresponding to a Monster
+     * @param {object} updateData The modifications to the ActorData object
+     *
+     * @private
+     */
+    static _migrateCharacterSkills(actorData, updateData)
+    {
+        if (actorData.data.adventuringSkills.warlock !== undefined
+            && actorData.data.adventuringSkills.warpstar !== undefined)
+        {
+            const activeSystem = game.settings.get("warlock", "activeSystem");
+
+            const skills = {};
+            for (const skill of Object.keys(game.warlock.skills[activeSystem]))
+            {
+                skills[skill] = actorData.data.adventuringSkills[activeSystem][skill];
+            }
+
+            updateData["data.adventuringSkills"] = skills;
+            updateData["data.adventuringSkills.-=warlock"] = null;
+            updateData["data.adventuringSkills.-=warpstar"] = null;
+        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -98,7 +140,8 @@ export default class Migrations {
      *
      * @private
      */
-    static _migrateMonsterData(actorData, updateData) {
+    static _migrateMonsterData(actorData, updateData)
+    {
         Migrations._migrateMonsterStamina(actorData, updateData);
         Migrations._migrateMonsterActionsPerRound(actorData, updateData);
         Migrations._migrateMonsterNotesAndDescription(actorData, updateData);
@@ -115,7 +158,8 @@ export default class Migrations {
      * @private
      */
     static _migrateMonsterStamina(actorData, updateData) {
-        if (actorData.data.stamina !== undefined) {
+        if (actorData.data.stamina !== undefined)
+        {
             // Convert the old values.
             updateData["data.resources.stamina.value"] = actorData.data.stamina.value;
             updateData["data.resources.stamina.max"] = actorData.data.stamina.max;
@@ -136,7 +180,8 @@ export default class Migrations {
      * @private
      */
     static _migrateMonsterActionsPerRound(actorData, updateData) {
-        if (actorData.data.actionsPerRound !== undefined) {
+        if (actorData.data.actionsPerRound !== undefined)
+        {
             // Convert the old value.
             updateData["data.resources.actionsPerRound.value"] = actorData.data.actionsPerRound;
             updateData["data.resources.actionsPerRound.max"] = actorData.data.actionsPerRound;
@@ -157,15 +202,20 @@ export default class Migrations {
      * @private
      */
     static _migrateMonsterNotesAndDescription(actorData, updateData) {
-        if (actorData.data.notes !== undefined) {
-            // Convert the old value.
-            updateData["data.biography.notes"] = actorData.data.notes;
-
+        if (actorData.data.notes !== undefined)
+        {
             // Delete the old value.
             updateData["data.-=notes"] = null;
         }
 
-        if (actorData.data.description !== undefined) {
+        if (actorData.data.biography.notes !== undefined)
+        {
+            // Delete the old value.
+            updateData["data.biography.-=notes"] = null;
+        }
+
+        if (actorData.data.description !== undefined)
+        {
             // Convert the old value.
             updateData["data.biography.description"] = actorData.data.description;
 
@@ -184,7 +234,8 @@ export default class Migrations {
      *
      * @private
      */
-    static _migrateVehicleData(actorData, updateData) {
+    static _migrateVehicleData(actorData, updateData)
+    {
         // Migrate description.
         Migrations._migrateVehicleDescription(actorData, updateData);
     }
@@ -199,8 +250,10 @@ export default class Migrations {
      *
      * @private
      */
-    static _migrateVehicleDescription(actorData, updateData) {
-        if (actorData.data.description !== undefined) {
+    static _migrateVehicleDescription(actorData, updateData)
+    {
+        if (actorData.data.description !== undefined)
+        {
             // Convert the old value.
             updateData["data.biography.description"] = actorData.data.description;
 
@@ -214,16 +267,115 @@ export default class Migrations {
     /**
      * Migrates the ItemData for an Item.
      *
-     * This function is currently a no-op since no migrations need to occur for
-     * Items.
-     *
      * @param {ItemData} itemData The data corresponding to an Item
+     * @returns {object} The modifications to the ItemData object
+     *
+     * @private
+     */
+    static _migrateItemData(itemData)
+    {
+        const updateData = {};
+
+        switch (itemData.type)
+        {
+            case "Career":
+                Migrations._migrateCareerData(itemData, updateData);
+                break;
+            case "Weapon":
+                Migrations._migrateWeaponData(itemData, updateData);
+                break;
+            default:
+                break;
+        }
+
+        return updateData;
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Migrates the ItemData for a Career.
+     *
+     * @param {data.ItemData} itemData The data corresponding to an Item
      * @param {object} updateData The modifications to the ItemData object
      *
      * @private
      */
-    static _migrateItemData(itemData, updateData) {
-        // Do nothing.
+     static _migrateCareerData(itemData, updateData)
+     {
+        Migrations._migrateCareerSkills(itemData, updateData);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Migrates the skills for a Career.
+     *
+     * @param {data.ItemData} itemData The data corresponding to an Item
+     * @param {object} updateData The modifications to the ItemData object
+     *
+     * @private
+     */
+     static _migrateCareerSkills(itemData, updateData)
+     {
+        if (itemData.data.adventuringSkills.warlock
+            && itemData.data.adventuringSkills.warpstar)
+        {
+            const activeSystem = game.settings.get("warlock", "activeSystem");
+
+            const skills = {};
+            for (const skill of Object.keys(game.warlock.skills[activeSystem]))
+            {
+                skills[skill] = {
+                    isCareerSkill: itemData.data.adventuringSkills[activeSystem][skill].isCareerSkill,
+                    maximumLevel: itemData.data.adventuringSkills[activeSystem][skill].maximumLevel,
+                };
+            }
+
+            updateData["data.adventuringSkills"] = skills;
+            updateData["data.adventuringSkills.-=warlock"] = null;
+            updateData["data.adventuringSkills.-=warpstar"] = null;
+        }
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Migrates the ItemData for a Weapon.
+     *
+     * @param {data.ItemData} itemData The data corresponding to an Item
+     * @param {object} updateData The modifications to the ItemData object
+     *
+     * @private
+     */
+    static _migrateWeaponData(itemData, updateData)
+    {
+        Migrations._migrateWeaponType(itemData, updateData);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Migrates the type for a Weapon.
+     *
+     * @param {data.ItemData} itemData The data corresponding to an Item
+     * @param {object} updateData The modifications to the ItemData object
+     *
+     * @private
+     */
+    static _migrateWeaponType(itemData, updateData)
+    {
+        // Convert "Heavy" to "Large".
+        if (itemData.data.type?.value === "Heavy")
+        {
+            updateData["data.type.value"] = "Large";
+        }
+
+        // Remove "Heavy" from the choices.
+        if (itemData.data.type?.choices?.warpstar?.["Heavy"] !== undefined)
+        {
+            updateData["data.type.choices.warpstar.-=Heavy"] = null;
+        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -235,9 +387,11 @@ export default class Migrations {
      *
      * @private
      */
-    static async _migratePackData(pack) {
-        if ((pack.metadata.package !== "world")
-            || (!["Actor", "Item"].includes(pack.documentName))) {
+    static async _migratePackData(pack)
+    {
+        if ((pack.metadata.system !== "warlock")
+            || (!["Actor", "Item"].includes(pack.documentName)))
+        {
             return;
         }
 
@@ -249,13 +403,22 @@ export default class Migrations {
         await pack.migrate();
 
         const documents = await pack.getDocuments();
-        for (let document of documents) {
+        for (const document of documents) {
             let updateData = {};
 
-            switch (pack.documentName) {
+            switch (pack.documentName)
+            {
                 case "Actor":
                     updateData = Migrations._migrateActorData(document.data);
                     await document.update(updateData);
+
+                    // Migrate the actor's items.
+                    for (const item of document.items)
+                    {
+                        updateData = Migrations._migrateItemData(item.data);
+                        await item.update(updateData);
+                    }
+
                     break;
                 case "Item":
                     updateData = Migrations._migrateItemData(document.data);

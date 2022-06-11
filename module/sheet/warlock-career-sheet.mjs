@@ -1,11 +1,11 @@
-import WarlockItemSheet from "./warlock-item-sheet.mjs";
+import { WarlockItemSheet } from "./warlock-item-sheet.mjs";
 
 /**
  * The custom WarlockCareerSheet that extends the custom WarlockItemSheet.
  *
  * @extends WarlockItemSheet
  */
-export default class WarlockCareerSheet extends WarlockItemSheet {
+export class WarlockCareerSheet extends WarlockItemSheet {
     /**
      * @override
      * @inheritdoc
@@ -62,6 +62,7 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        html.find(".edit-career-skill-level").change(this._onEditCareerSkillLevel.bind(this));
         html.find(".toggle-career-skill").click(this._onToggleCareerSkill.bind(this));
 
         // Save the last focused skill level input element.
@@ -70,18 +71,29 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
         });
     }
 
-    /* ---------------------------------------------------------------------- */
+    async _onEditCareerSkillLevel(event) {
+        event.preventDefault();
 
-    /**
-     * @override
-     * @inheritdoc
-     */
-    async getData() {
-        const context = super.getData();
+        if (!this.isEditable) {
+            return;
+        }
 
-        context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+        const translatedSkill = event.currentTarget.closest(".table__entry").dataset.skill;
+        const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
+            return game.warlock.skills[activeSystem][skill] === translatedSkill;
+        });
+        const level = parseInt(event.currentTarget.value, 10);
 
-        return context;
+        await this.item.update({
+            data: {
+                adventuringSkills: {
+                    [untranslatedSkill]: {
+                        maximumLevel: level,
+                    },
+                },
+            },
+        });
     }
 
     /* ---------------------------------------------------------------------- */
@@ -100,17 +112,18 @@ export default class WarlockCareerSheet extends WarlockItemSheet {
             return;
         }
 
-        const skillName = event.currentTarget.closest(".table__entry").dataset.skill;
         const activeSystem = game.settings.get("warlock", "activeSystem");
-        const isCareerSkill = this.item.data.data.adventuringSkills[activeSystem][skillName].isCareerSkill;
+        const translatedSkill = event.currentTarget.closest(".table__entry").dataset.skill;
+        const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
+            return game.warlock.skills[activeSystem][skill] === translatedSkill;
+        });
+        const isCareerSkill = this.item.data.data.adventuringSkills[translatedSkill].isCareerSkill;
 
         await this.item.update({
             data: {
                 adventuringSkills: {
-                    [activeSystem]: {
-                        [skillName]: {
-                            isCareerSkill: !isCareerSkill,
-                        },
+                    [untranslatedSkill]: {
+                        isCareerSkill: !isCareerSkill,
                     },
                 },
             },

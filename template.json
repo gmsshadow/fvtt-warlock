@@ -5,6 +5,7 @@
             "Monster",
             "Vehicle"
         ],
+
         "templates": {
             "Actions per Round": {
                 "resources": {
@@ -14,19 +15,13 @@
                     }
                 }
             },
+
             "Biography": {
                 "biography": {
-                    "notes": "",
                     "description": ""
                 }
             },
-            "Common Gear": {
-                "gear": {
-                    "weapons": [],
-                    "armour": [],
-                    "equipment": []
-                }
-            },
+
             "Stamina": {
                 "resources": {
                     "stamina": {
@@ -36,20 +31,22 @@
                 }
             }
         },
+
         "Character": {
             "templates": [
                 "Actions per Round",
                 "Biography",
-                "Common Gear",
                 "Stamina"
             ],
-            "activeSystem": "warlock",
             "biography": {
                 "community": "",
+                "notes": "",
                 "traits": "",
                 "talent": {
-                    "enabled": false,
                     "name": "",
+                    "description": ""
+                },
+                "passions": {
                     "description": ""
                 }
             },
@@ -60,111 +57,36 @@
                 },
                 "advances": 0,
                 "reputation": {
-                    "enabled": false,
                     "value": 0,
                     "description": ""
                 },
                 "pluck": {
-                    "enabled": false,
                     "value": 0
                 }
             },
-            "careers": [],
-            "spells": [],
-            "glyphs": [],
             "gear": {
                 "money": {
                     "gold": 0,
                     "silver": 0,
                     "pennies": 0
                 }
-            },
-            "adventuringSkills": {
-                "warlock": {
-                    "Appraise": 0,
-                    "Athletics": 0,
-                    "Bargain": 0,
-                    "Blunt": 0,
-                    "Bow": 0,
-                    "Brawling": 0,
-                    "Command": 0,
-                    "Crossbow": 0,
-                    "Diplomacy": 0,
-                    "Disguise": 0,
-                    "Dodge": 0,
-                    "Endurance": 0,
-                    "History": 0,
-                    "Incantation": 0,
-                    "Intimidate": 0,
-                    "Language": 0,
-                    "Large blade": 0,
-                    "Lie": 0,
-                    "Medicine": 0,
-                    "Navigation": 0,
-                    "Ostler": 0,
-                    "Persuasion": 0,
-                    "Pole arm": 0,
-                    "Repair": 0,
-                    "Sleight of hand": 0,
-                    "Small blade": 0,
-                    "Spot": 0,
-                    "Stealth": 0,
-                    "Streetwise": 0,
-                    "Survival": 0,
-                    "Swimming": 0,
-                    "Thrown": 0
-                },
-                "warpstar": {
-                    "Animal handler": 0,
-                    "Appraise": 0,
-                    "Astronav": 0,
-                    "Athletics": 0,
-                    "Bargain": 0,
-                    "Blades": 0,
-                    "Blunt": 0,
-                    "Brawling": 0,
-                    "Command": 0,
-                    "Diplomacy": 0,
-                    "Disguise": 0,
-                    "Dodge": 0,
-                    "Endurance": 0,
-                    "History": 0,
-                    "Intimidate": 0,
-                    "Language": 0,
-                    "Lie": 0,
-                    "Medicine": 0,
-                    "Navigation": 0,
-                    "Persuasion": 0,
-                    "Pilot": 0,
-                    "Repair": 0,
-                    "Ship gunner": 0,
-                    "Small arms": 0,
-                    "Sleight of hand": 0,
-                    "Spot": 0,
-                    "Stealth": 0,
-                    "Streetwise": 0,
-                    "Survival": 0,
-                    "Thrown": 0,
-                    "Warp focus": 0,
-                    "Zero G": 0
-                }
             }
         },
+
         "Monster": {
             "templates": [
                 "Actions per Round",
                 "Biography",
-                "Common Gear",
                 "Stamina"
             ],
             "type": "",
             "weaponSkill": 0,
             "adventuringSkills": 0
         },
+
         "Vehicle": {
             "templates": [
-                "Biography",
-                "Common Gear"
+                "Biography"
             ],
             "capabilities": {
                 "manoeuvrability": 0,
@@ -179,8 +101,10 @@
             }
         }
     },
+
     "Item": {
         "types": [
+            "Ability",
             "Armour",
             "Career",
             "Equipment",
@@ -188,394 +112,82 @@
             "Spell",
             "Weapon"
         ],
+
         "templates": {
             "Description": {
                 "description": ""
             },
+
             "Stamina Cost": {
                 "staminaCost": 0
             }
         },
+
+        "Ability": {
+            "templates": [
+                "Description"
+            ]
+        },
+
         "Armour": {
             "templates": [
                 "Description"
             ],
             "isEquipped": false,
             "type": {
-                "value": "",
-                "choices": {
-                    "": "",
-                    "Light": "Light",
-                    "Modest": "Modest",
-                    "Heavy": "Heavy"
-                }
+                "value": ""
             },
             "reductionRoll": ""
         },
+
         "Career": {
             "templates": [
                 "Description"
             ],
-            "activeSystem": "warlock",
             "isActive": false,
-            "currentLevel": 0,
-            "adventuringSkills": {
-                "warlock": {
-                    "Appraise": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Athletics": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Bargain": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Blunt": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Bow": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Brawling": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Command": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Crossbow": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Diplomacy": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Disguise": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Dodge": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Endurance": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "History": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Incantation": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Intimidate": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Language": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Large blade": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Lie": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Medicine": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Navigation": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Ostler": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Persuasion": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Pole arm": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Repair": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Sleight of hand": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Small blade": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Spot": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Stealth": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Streetwise": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Survival": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Swimming": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Thrown": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    }
-                },
-                "warpstar": {
-                    "Animal handler": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Appraise": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Astronav": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Athletics": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Bargain": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Blades": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Blunt": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Brawling": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Command": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Diplomacy": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Disguise": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Dodge": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Endurance": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "History": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Intimidate": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Language": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Lie": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Medicine": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Navigation": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Persuasion": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Pilot": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Repair": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Ship gunner": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Small arms": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Sleight of hand": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Spot": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Stealth": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Streetwise": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Survival": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Thrown": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Warp focus": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    },
-                    "Zero G": {
-                        "maximumLevel": 0,
-                        "isCareerSkill": false
-                    }
-                }
-            }
+            "currentLevel": 0
         },
+
         "Equipment": {
             "templates": [
                 "Description"
             ],
             "quantity": 1
         },
+
         "Glyph": {
             "templates": [
                 "Description",
                 "Stamina Cost"
             ],
             "test": {
-                "value": "Basic",
-                "choices": {
-                    "Basic": "Basic",
-                    "Opposed": "Opposed"
-                }
+                "value": "Basic"
             }
         },
+
         "Spell": {
             "templates": [
                 "Description",
                 "Stamina Cost"
             ]
         },
+
         "Weapon": {
             "templates": [
                 "Description"
             ],
-            "activeSystem": "warlock",
             "isEquipped": false,
             "type": {
-                "value": "",
-                "choices": {
-                    "warlock": {
-                        "": "",
-                        "Casual": "Casual",
-                        "Martial": "Martial"
-                    },
-                    "warpstar": {
-                        "": "",
-                        "Small": "Small",
-                        "Medium": "Medium",
-                        "Heavy": "Heavy"
-                    }
-                }
+                "value": ""
             },
             "damage": {
                 "roll": "",
                 "type": {
-                    "value": "",
-                    "choices": {
-                        "warlock": {
-                            "": "",
-                            "Crushing": "Crushing",
-                            "Piercing": "Piercing",
-                            "Slashing": "Slashing",
-                            "Blast": "Blast"
-                        },
-                        "warpstar": {
-                            "": "",
-                            "Crushing": "Crushing",
-                            "Piercing": "Piercing",
-                            "Slashing": "Slashing",
-                            "Energy": "Energy",
-                            "Ship": "Ship"
-                        }
-                    }
+                    "value": ""
                 }
             },
             "skill": {
-                "value": "—",
-                "choices": {
-                    "warlock": {
-                        "—": "—",
-                        "Blunt": "Blunt",
-                        "Bow": "Bow",
-                        "Brawling": "Brawling",
-                        "Crossbow": "Crossbow",
-                        "Large blade": "Large blade",
-                        "Pole arm": "Pole arm",
-                        "Small blade": "Small blade",
-                        "Thrown": "Thrown"
-                    },
-                    "warpstar": {
-                        "—": "—",
-                        "Blades": "Blades",
-                        "Blunt": "Blunt",
-                        "Brawling": "Brawling",
-                        "Ship gunner": "Ship gunner",
-                        "Small arms": "Small arms",
-                        "Thrown": "Thrown"
-                    }
-                }
+                "value": "—"
             }
         }
     }

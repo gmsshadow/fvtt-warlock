@@ -1,4 +1,4 @@
-export default class WarlockItemSheet extends ItemSheet {
+export class WarlockItemSheet extends ItemSheet {
     /**
      * @override
      * @inheritdoc

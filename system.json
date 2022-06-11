@@ -3,13 +3,13 @@
     "title": "Warlock! & Warpstar!",
     "description": "A system for playing Warlock! and Warpstar! in Foundry VTT.",
     "author": "Azarvel",
-    "version": "0.3.10",
+    "version": "1.0.0",
 
     "esmodules": [
         "module/warlock.mjs"
     ],
     "styles": [
-        "styles/warlock.css"
+        "css/warlock.css"
     ],
     "languages": [
         {
@@ -24,15 +24,34 @@
             "name": "bestiary-warlock",
             "path": "packs/bestiary-warlock.db",
             "system": "warlock",
-            "entity": "Actor",
             "type": "Actor"
+        },
+        {
+          "label": "Bestiary (Warpstar!)",
+          "name": "bestiary-warpstar",
+          "path": "packs/bestiary-warpstar.db",
+          "system": "warlock",
+          "type": "Actor"
+        },
+        {
+          "label": "Abilities (Warlock!)",
+          "name": "abilities-warlock",
+          "path": "packs/abilities-warlock.db",
+          "system": "warlock",
+          "type": "Item"
+        },
+        {
+          "label": "Abilities (Warpstar!)",
+          "name": "abilities-warpstar",
+          "path": "packs/abilities-warpstar.db",
+          "system": "warlock",
+          "type": "Item"
         },
         {
             "label": "Armour (Warlock!)",
             "name": "armour-warlock",
             "path": "packs/armour-warlock.db",
             "system": "warlock",
-            "entity": "Item",
             "type": "Item"
         },
         {
@@ -40,7 +59,6 @@
             "name": "careers-basic-warlock",
             "path": "packs/careers-basic-warlock.db",
             "system": "warlock",
-            "entity": "Item",
             "type": "Item"
         },
         {
@@ -48,7 +66,6 @@
             "name": "careers-advanced-warlock",
             "path": "packs/careers-advanced-warlock.db",
             "system": "warlock",
-            "entity": "Item",
             "type": "Item"
         },
         {
@@ -56,7 +73,6 @@
             "name": "spells-warlock",
             "path": "packs/spells-warlock.db",
             "system": "warlock",
-            "entity": "Item",
             "type": "Item"
         },
         {
@@ -64,7 +80,6 @@
             "name": "weapons-warlock",
             "path": "packs/weapons-warlock.db",
             "system": "warlock",
-            "entity": "Item",
             "type": "Item"
         },
         {
@@ -72,7 +87,6 @@
             "name": "macros-warlock",
             "path": "packs/macros-warlock.db",
             "system": "warlock",
-            "entity": "Macro",
             "type": "Macro"
         },
         {
@@ -80,9 +94,64 @@
             "name": "rollable-tables-warlock",
             "path": "packs/rollable-tables-warlock.db",
             "system": "warlock",
-            "entity": "RollTable",
             "type": "RollTable"
-        }
+        },
+        {
+            "label": "Vehicles (Warpstar!)",
+            "name": "vehicles-warpstar",
+            "path": "packs/vehicles-warpstar.db",
+            "system": "warlock",
+            "type": "Actor"
+          },
+          {
+            "label": "Armour (Warpstar!)",
+            "name": "armour-warpstar",
+            "path": "packs/armour-warpstar.db",
+            "system": "warlock",
+            "type": "Item"
+          },
+          {
+            "label": "Careers, Advanced (Warpstar!)",
+            "name": "careers-advanced-warpstar",
+            "path": "packs/careers-advanced-warpstar.db",
+            "system": "warlock",
+            "type": "Item"
+          },
+          {
+            "label": "Careers, Basic (Warpstar!)",
+            "name": "careers-basic-warpstar",
+            "path": "packs/careers-basic-warpstar.db",
+            "system": "warlock",
+            "type": "Item"
+          },
+          {
+            "label": "Glyphs (Warpstar!)",
+            "name": "glyphs-warpstar",
+            "path": "packs/glyphs-warpstar.db",
+            "system": "warlock",
+            "type": "Item"
+          },
+          {
+            "label": "Weapons (Warpstar!)",
+            "name": "weapons-warpstar",
+            "path": "packs/weapons-warpstar.db",
+            "system": "warlock",
+            "type": "Item"
+          },
+          {
+            "label": "Rollable Tables (Warpstar!)",
+            "name": "rollable-tables-warpstar",
+            "path": "packs/rollable-tables-warpstar.db",
+            "system": "warlock",
+            "type": "RollTable"
+          },
+          {
+            "label": "Macros (Warpstar!)",
+            "name": "macros-warpstar",
+            "path": "packs/macros-warpstar.db",
+            "system": "warlock",
+            "type": "Macro"
+          }
     ],
 
     "minimumCoreVersion": "0.8.9",

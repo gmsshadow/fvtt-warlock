@@ -6,6 +6,34 @@ Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Support for Passions optional rule from Compendium 2.
+- All Warpstar! compendia except for the bestiary.
+- Confirmation dialog before deleting items.
+- Actions per round sheet counter for Characters.
+- Abilities for Monsters.
+- Functionality to assign and roll Monster Weapon Skill for weapons.
+- Convenient skill test dialog controls.
+- Ability to roll from a Vehicle sheet and incorporate its modifiers into the
+  roll.
+- Combat tab to show equipped weapons, equipped armour, and critical effects.
+
+### Changed
+- Simplified logic and reduced redundancy across the system.
+- Made skills static once document is created.
+- Organized localization file structure.
+- Increased localization across system.
+- Made actions per round a counter on Monster sheets.
+- Combat tracker combatants are now color coded and sorted by token disposition.
+
+### Fixed
+- Changed Sleep stamina cost to 3 instead of 4.
+- Changed Warpstar! "Heavy" weapon type to "Large".
+- Increased migration version so that it runs properly.
+- Added functionality to migrate pack actor items.
+
+### Removed
+- Notes for Monsters (replaced by abilities).
 
 ## [0.3.10]
 ### Changed

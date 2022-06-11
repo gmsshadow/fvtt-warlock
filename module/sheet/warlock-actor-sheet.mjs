@@ -1,12 +1,11 @@
-import Chat from "../utils/chat.mjs";
-import Rolls from "../utils/rolls.mjs";
+import { Rolls } from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockActorSheet that extends the base ActorSheet.
  *
  * @extends ActorSheet
  */
-export default class WarlockActorSheet extends ActorSheet {
+export class WarlockActorSheet extends ActorSheet {
     /**
      * @override
      * @inheritdoc
@@ -18,6 +17,9 @@ export default class WarlockActorSheet extends ActorSheet {
                 "warlock",
             ],
             dragDrop: [
+                {
+                    dragSelector: ".abilities__entry",
+                },
                 {
                     dragSelector: ".careers__entry",
                 },
@@ -54,9 +56,13 @@ export default class WarlockActorSheet extends ActorSheet {
             event.currentTarget.select();
         });
 
+        html.find(".chat-effect").click(this._onChatActiveEffect.bind(this));
         html.find(".chat-item").click(this._onChatItem.bind(this));
+        html.find(".create-effect").click(this._onCreateActiveEffect.bind(this));
         html.find(".create-item").click(this._onCreateItem.bind(this));
+        html.find(".delete-effect").click(this._onDeleteActiveEffect.bind(this));
         html.find(".delete-item").click(this._onDeleteItem.bind(this));
+        html.find(".edit-effect").click(this._onEditActiveEffect.bind(this));
         html.find(".edit-item").click(this._onEditItem.bind(this));
         html.find(".equip-item").click(this._onEquipItem.bind(this));
         html.find(".modify-quantity").click(this._onIncreaseQuantity.bind(this));
@@ -78,6 +84,10 @@ export default class WarlockActorSheet extends ActorSheet {
 
         context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
 
+        if (!context.data.data.gear) {
+            context.data.data.gear = {};
+        }
+
         context.data.data.gear.weapons = context.actor.itemTypes["Weapon"]
             .sort((a, b) => {
                 return a.data.sort - b.data.sort;
@@ -97,7 +107,40 @@ export default class WarlockActorSheet extends ActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
-     * Displays an item card in the chat log.
+     * Displays an ActiveEffect card in the chat log.
+     *
+     * @param {Event} event The click event to send the ActiveEffect to chat
+     *
+     * @private
+     */
+    async _onChatActiveEffect(event) {
+        event.preventDefault();
+
+        const effectId = event.currentTarget.closest(".table__entry").dataset.effectId;
+        const effect = this.actor.effects.get(effectId);
+
+        const content = await renderTemplate(
+            "systems/warlock/templates/chat/item-card.hbs",
+            {
+                name: effect.data.label,
+                img: effect.data.icon,
+            },
+        );
+
+        await ChatMessage.create({
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            content: content,
+            sound: CONFIG.sounds.notification,
+            speaker: ChatMessage.getSpeaker({
+                actor: this.actor,
+            }),
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Displays an Item card in the chat log.
      *
      * @param {Event} event The click event to send the Item to chat
      *
@@ -109,16 +152,55 @@ export default class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        await Chat.createItemCardMessage(
-            item,
-            item.generateDetails(),
+        const content = await renderTemplate(
+            "systems/warlock/templates/chat/item-card.hbs",
+            {
+                name: item.name,
+                img: item.img,
+                description: item.data.data.description,
+                details: item.generateDetails(),
+            },
         );
+
+        await ChatMessage.create({
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            content: content,
+            sound: CONFIG.sounds.notification,
+            speaker: ChatMessage.getSpeaker({
+                actor: this.actor,
+            }),
+        });
     }
 
     /* ---------------------------------------------------------------------- */
 
     /**
-     * Creates an Item and embeds it within the Actor.
+     * Creates an embedded ActiveEffect within the Actor.
+     *
+     * @param {Event} event The click event to create an ActiveEffect
+     *
+     * @private
+     */
+    async _onCreateActiveEffect(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
+        const label = game.i18n.localize("WARLOCK.ActiveEffect.NewActiveEffect");
+
+        await this.actor.createEmbeddedDocuments("ActiveEffect", [{
+            label: label,
+            icon: "icons/svg/aura.svg",
+            origin: this.actor.uuid,
+        }]);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Creates an embedded Item within the Actor.
      *
      * @param {Event} event The click event to create an Item
      *
@@ -132,41 +214,15 @@ export default class WarlockActorSheet extends ActorSheet {
         }
 
         const itemType = event.currentTarget.dataset.itemType;
-        let itemName = "";
+        const itemName = game.i18n.format("WARLOCK.Items.NewItem", {
+            item: game.i18n.localize(`WARLOCK.Items.${itemType}.Name`),
+        });
 
-        switch (itemType) {
-            case "Armour":
-                itemName = game.i18n.localize("WARLOCK.NewArmour");
-                break;
-            case "Career":
-                itemName = game.i18n.localize("WARLOCK.NewCareer");
-                break;
-            case "Equipment":
-                itemName = game.i18n.localize("WARLOCK.NewEquipment");
-                break;
-            case "Glyph":
-                itemName = game.i18n.localize("WARLOCK.NewGlyph");
-                break;
-            case "Spell":
-                itemName = game.i18n.localize("WARLOCK.NewSpell");
-                break;
-            case "Weapon":
-                itemName = game.i18n.localize("WARLOCK.NewWeapon");
-                break;
-            default:
-                // TODO(jcd) Log an error.
-                return;
-        }
-
-        const item = await Item.create(
-            {
-                type: itemType,
-                name: itemName,
-            },
-            {
-                parent: this.actor,
-            },
-        );
+        const items = await this.actor.createEmbeddedDocuments("Item", [{
+            type: itemType,
+            name: itemName,
+        }]);
+        const item = items[0];
 
         // Activate the new career if it's the only one.
         if (item.type === "Career") {
@@ -214,6 +270,35 @@ export default class WarlockActorSheet extends ActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
+     * Deletes an ActiveEffect from the Actor.
+     *
+     * @param {Event} event The click event to delete an ActiveEffect
+     *
+     * @private
+     */
+    async _onDeleteActiveEffect(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
+        }
+
+        const effectId = event.currentTarget.closest(".table__entry").dataset.effectId;
+        const effect = this.actor.effects.get(effectId);
+
+        await Dialog.confirm({
+            title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
+                item: effect.data.label,
+            }),
+            yes: async () => {
+                await effect.delete();
+            },
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
      * Deletes an Item from the Actor.
      *
      * @param {Event} event The click event to delete an Item
@@ -230,18 +315,46 @@ export default class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        await item.delete();
+        await Dialog.confirm({
+            title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
+                item: item.name,
+            }),
+            yes: async () => {
+                await item.delete();
 
-        // Activate the "next" career if the deleted career was the active one.
-        if (item.type === "Career" && item.data.data.isActive) {
-            if (this.actor.itemTypes["Career"].length > 0) {
-                await this.actor.itemTypes["Career"][0].update({
-                    data: {
-                        isActive: true,
-                    },
-                });
-            }
+                // Activate the "next" career if the deleted career was the active one.
+                if (item.type === "Career" && item.data.data.isActive) {
+                    if (this.actor.itemTypes["Career"].length > 0) {
+                        await this.actor.itemTypes["Career"][0].update({
+                            data: {
+                                isActive: true,
+                            },
+                        });
+                    }
+                }
+            },
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Opens the corresponding sheet for an ActiveEffect.
+     *
+     * @param {Event} event The click event to edit the ActiveEffect
+     *
+     * @private
+     */
+    async _onEditActiveEffect(event) {
+        event.preventDefault();
+
+        if (!this.isEditable) {
+            return;
         }
+
+        const effectId = event.currentTarget.closest(".table__entry").dataset.effectId;
+        const effect = this.actor.effects.get(effectId);
+        effect.sheet.render(true);
     }
 
     /* ---------------------------------------------------------------------- */
@@ -348,55 +461,26 @@ export default class WarlockActorSheet extends ActorSheet {
         const currentStamina = this.actor.data.data.resources.stamina.value;
 
         if (staminaCost >= currentStamina) {
-            ui.notifications.error("The stamina cost is equal to or greater than your current stamina!");
+            ui.notifications.error(game.i18n.localize("WARLOCK.Notifications.StaminaCost"));
             return;
         }
 
-        // TODO(jcd) Move this dialog code somewhere else.
-
-        const dialogTemplate = "systems/warlock/templates/dialogs/stamina-cost-dialog.hbs";
-        const dialogHtml = await renderTemplate(dialogTemplate, {
-            staminaCost: staminaCost,
-        });
-
-        const options = await new Promise(resolve => {
-            new Dialog({
-                title: game.i18n.localize("WARLOCK.StaminaCost"),
-                content: dialogHtml,
-                buttons: {
-                    cancel: {
-                        icon: "<i class=\"fas fa-times\"></i>",
-                        label: game.i18n.localize("WARLOCK.Cancel"),
-                        callback: (html) => resolve({
-                            cancelled: true,
-                        }),
-                    },
-                    pay: {
-                        icon: "<i class=\"fas fa-tint\"></i>",
-                        label: game.i18n.localize("WARLOCK.PayStaminaCost") + ` (${staminaCost})`,
-                        callback: (html) => resolve({
-                            cancelled: false,
-                        }),
-                    },
-                },
-                close: () => resolve({
-                    cancelled: true,
-                }),
-            }, null).render(true);
-        });
-
-        if (options.cancelled) {
-            return;
-        }
-
-        await this.actor.update({
-            data: {
-                resources: {
-                    stamina: {
-                        value: currentStamina - staminaCost,
+        const payStaminaCost = await Dialog.prompt({
+            title: game.i18n.localize("WARLOCK.Dialogs.StaminaCost.Title"),
+            label: game.i18n.format("WARLOCK.Dialogs.StaminaCost.PayStaminaCost", {
+                cost: staminaCost,
+            }),
+            callback: async () => {
+                await this.actor.update({
+                    data: {
+                        resources: {
+                            stamina: {
+                                value: currentStamina - staminaCost,
+                            }
+                        }
                     }
-                }
-            }
+                });
+            },
         });
     }
 

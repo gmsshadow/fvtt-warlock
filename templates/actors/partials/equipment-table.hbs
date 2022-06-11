@@ -1,18 +1,18 @@
 <div class="equipment table">
     <div class="equipment__header table__header">
         <span class="equipment__header-field table__header-field">
-            {{localize "WARLOCK.Equipment"}}
+            {{localize "WARLOCK.Items.Equipment.Name"}}
         </span>
 
         <span class="equipment__header-field table__header-field">
-            {{localize "WARLOCK.Quantity"}}
+            {{localize "WARLOCK.Tables.Quantity"}}
         </span>
 
         <span class="equipment__header-field table__header-field">
             <a
                 class="create-item"
                 data-item-type="Equipment">
-                <i class="fas fa-plus"></i> Add
+                <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
             </a>
         </span>
     </div>
@@ -22,9 +22,7 @@
         <div
             class="equipment__entry table__entry table__entry--tall"
             data-item-id="{{id}}">
-            <span
-                class="equipment__entry-field table__entry-field"
-                title="{{localize "WARLOCK.Equipment"}}">
+            <span class="equipment__entry-field table__entry-field">
                 <img
                     class="table__entry-image"
                     src="{{img}}">
@@ -34,10 +32,10 @@
                 </a>
             </span>
 
-            <span
-                class="equipment__entry-field table__entry-field"
-                title="{{localize "WARLOCK.Quantity"}}">
-                <a class="modify-quantity">
+            <span class="equipment__entry-field table__entry-field">
+                <a
+                    class="modify-quantity"
+                    title="{{localize "WARLOCK.Tables.ModifyQuantityTooltip"}}">
                     {{data.data.quantity}}
                 </a>
             </span>
@@ -45,26 +43,26 @@
             <span class="equipment__entry-field table__entry-field">
                 <a
                     class="chat-item"
-                    title="{{localize "WARLOCK.ChatEquipment"}}">
+                    title="{{localize "WARLOCK.Items.ChatItem"}}">
                     <i class="fas fa-comment"></i>
                 </a>
 
                 <a
                     class="edit-item"
-                    title="{{localize "WARLOCK.EditEquipment"}}">
+                    title="{{localize "WARLOCK.Items.EditItem"}}">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <a
                     class="delete-item"
-                    title="{{localize "WARLOCK.DeleteEquipment"}}">
+                    title="{{localize "WARLOCK.Items.DeleteItem"}}">
                     <i class="fas fa-trash"></i>
                 </a>
             </span>
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{enrichHTML data.data.description}}}
+            {{{data.data.description}}}
         </div>
         {{/each}}
     </div>

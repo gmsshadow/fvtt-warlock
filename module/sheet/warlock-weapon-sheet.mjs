@@ -1,11 +1,11 @@
-import WarlockItemSheet from "./warlock-item-sheet.mjs";
+import { WarlockItemSheet } from "./warlock-item-sheet.mjs";
 
 /**
  * The custom WarlockWeaponSheet that extends the custom WarlockItemSheet.
  *
  * @extends WarlockItemSheet
  */
-export default class WarlockWeaponSheet extends WarlockItemSheet {
+export class WarlockWeaponSheet extends WarlockItemSheet {
     /**
      * @override
      * @inheritdoc

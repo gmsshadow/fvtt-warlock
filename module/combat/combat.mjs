@@ -1,9 +1,9 @@
-import Rolls from "../utils/rolls.mjs";
+import { Rolls } from "../utils/rolls.mjs";
 
 /**
  * The custom WarlockCombat class that extends the base Combat class.
  */
-export default class WarlockCombat extends Combat {
+export class WarlockCombat extends Combat {
     /**
      * @override
      * @inheritdoc
@@ -43,7 +43,7 @@ export default class WarlockCombat extends Combat {
      * value.
      */
     async refreshActionsPerRound() {
-        this.combatants.forEach(async (combatant) => {
+        for (const combatant of this.combatants) {
             await combatant.actor.update({
                 data: {
                     resources: {
@@ -53,6 +53,6 @@ export default class WarlockCombat extends Combat {
                     },
                 },
             });
-        });
+        }
     }
 }

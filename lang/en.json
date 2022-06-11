@@ -1,124 +1,358 @@
 {
     "WARLOCK": {
-        "ActionsPerRound": "Actions per Round",
-        "AdventuringSkills": "Adventuring Skills",
-        "ActiveSystem": "Active System",
-        "ActiveSystemHint": "Choose the active rules system.",
-        "Advances": "Advances",
-        "Amount": "Amount",
-        "AntiPersonnelGun": "Anti-Personnel Gun",
-        "Armour": "Armour",
-        "Astronav": "Astronav",
-        "Basic": "Basic",
-        "BasicTest": "Basic Test",
-        "Biography": "Biography",
-        "Cancel": "Cancel",
-        "Career": "Career",
-        "CareerLevel": "Career Level",
-        "CareerSkills": "Career Skills",
-        "ChatArmour": "Chat Armour",
-        "ChatCareer": "Chat Career",
-        "ChatEquipment": "Chat Equipment",
-        "ChatGlyph": "Chat Glyph",
-        "ChatSpell": "Chat Spell",
-        "ChatWeapon": "Chat Weapon",
-        "Community": "Community",
-        "ConsolidateMoneyHint": "Consolidate Money",
-        "Controls": "Controls",
-        "Current": "Current",
-        "CurrentLevel": "Current Level",
-        "CurrentLuck": "Current Luck",
-        "CurrentStamina": "Current Stamina",
-        "CurrentStructure": "Current Structure",
-        "Damage": "Damage",
-        "DamageRoll": "Damage Roll",
-        "DamageType": "Damage Type",
-        "DeleteArmour": "Delete Armour",
-        "DeleteCareer": "Delete Career",
-        "DeleteEquipment": "Delete Equipment",
-        "DeleteGlyph": "Delete Glyph",
-        "DeleteSpell": "Delete Spell",
-        "DeleteWeapon": "Delete Weapon",
-        "Description": "Description",
-        "EditArmour": "Edit Armour",
-        "EditCareer": "Edit Career",
-        "EditEquipment": "Edit Equipment",
-        "EditGlyph": "Edit Glyph",
-        "EditSpell": "Edit Spell",
-        "EditWeapon": "Edit Weapon",
-        "Equipment": "Equipment",
-        "Equipped": "Equipped",
-        "Failure!": "Failure!",
-        "Frags": "Frags",
-        "Gear": "Gear",
-        "Glyph": "Glyph",
-        "Glyphs": "Glyphs",
-        "Gold": "Gold",
-        "IncrementSkillLevel": "Increment Skill Level",
-        "IsActiveCareer": "Is Active Career?",
-        "IsCareerSkill": "Is Career Skill?",
-        "IsEquipped": "Is Equipped?",
-        "Jades": "Jades",
-        "Level": "Level",
-        "Luck": "Luck",
-        "Manoeuvrability": "Manoeuvrability",
-        "Max": "Max",
-        "MaximumLevel": "Maximum Level",
-        "MaximumLuck": "Maximum Luck",
-        "MaximumStamina": "Maximum Stamina",
-        "MaximumStructure": "Maximum Structure",
-        "Modifier": "Modifier",
-        "ModifyActionsPerRound": "Left click to increase actions remaining in the round, right click to decrease actions remaining in the round",
-        "Money": "Money",
-        "Name": "Name",
-        "NewArmour": "New Armour",
-        "NewCareer": "New Career",
-        "NewEquipment": "New Equipment",
-        "NewGlyph": "New Glyph",
-        "NewSpell": "New Spell",
-        "NewWeapon": "New Weapon",
-        "Notes": "Notes",
-        "Opposed": "Opposed",
-        "OpposedTest": "Opposed Test",
-        "Pay": "Pay",
-        "PayStaminaCost": "Pay Stamina Cost",
-        "Pennies": "Pennies",
-        "Pluck": "Pluck",
-        "PluckHint": "Enable or disable the optional Pluck rule.",
-        "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event.",
-        "Quantity": "Quantity",
-        "Reduction": "Reduction",
-        "ReductionRoll": "Reduction Roll",
-        "Reputation": "Reputation",
-        "ReputationConfigurationHint": "Enter the event or group with which the reputation is associated.",
-        "ReputationHint": "Enable or disable the optional Reputation rule.",
-        "RollInitiative": "Roll initiative for each side",
-        "Scanners": "Scanners",
-        "Shards": "Shards",
-        "ShipGun": "Ship Gun",
-        "Silver": "Silver",
-        "Skill": "Skill",
-        "SkillLevel": "Skill Level",
-        "Skills": "Skills",
-        "SkillTest": "Skill Test",
-        "SkillTestModifierHint": "Enter any situational modifiers to the roll.",
-        "Spell": "Spell",
-        "Spells": "Spells",
-        "Stamina": "Stamina",
-        "StaminaCost": "Stamina Cost",
-        "StaminaLossReduction": "Stamina Loss Reduction",
-        "Structure": "Structure",
-        "Submit": "Submit",
-        "Success!": "Success!",
-        "Talent": "Talent",
-        "TalentHint": "Enable or disable the optional Talent rule.",
-        "TalentName": "Talent Name",
-        "Test": "Test",
-        "TestCareer": "Test Career",
-        "TestSkill": "Test Skill",
-        "Traits": "Traits",
-        "Type": "Type",
-        "Weapon": "Weapon",
-        "WeaponSkill": "Weapon Skill"
+        "ActiveEffect": {
+            "NewActiveEffect": "New Active Effect",
+
+            "AddEffect": "Add Effect",
+            "ChatEffect": "Chat Effect",
+            "DeleteEffect": "Delete Effect",
+            "EditEffect": "Edit Effect"
+        },
+
+        "Actors": {
+            "Character": {
+                "Biography": "Biography",
+                "Notes": "Notes",
+                "Passions": "Passions",
+                "Talent": "Talent"
+            },
+
+            "Monster": {
+                "AdventuringSkills": "Adventuring Skills",
+                "WeaponSkill": "Weapon Skill"
+            },
+
+            "Vehicle": {
+                "AntiPersonnelGun": "Anti-Personnel Gun",
+                "Astronav": "Astronav",
+                "Manoeuvrability": "Manoeuvrability",
+                "Scanners": "Scanners",
+                "ShipGun": "Ship Gun",
+                "Structure": "Structure",
+
+                "CurrentStructure": "Current Structure",
+                "MaximumStructure": "Maximum Structure"
+            }
+        },
+
+        "Chat": {
+            "Roll": {
+                "Damage": "Damage Roll - {weapon} - {damageType}",
+                "InitiativePlayers": "Initiative Roll - Players",
+                "InitiativeGamesMaster": "Initiative Roll - Games Master",
+                "PluckEvent": "Pluck Event",
+                "SkillTestBasic": "Basic Skill Test - {name} - Level {level}",
+                "SkillTestOpposed": "Opposed Skill Test - {name} - Level {level}",
+                "StaminaLossReduction": "Stamina Loss Reduction Roll - {armour}"
+            }
+        },
+
+        "CombatTracker": {
+            "ModifyActionsPerRound": "Left click to increase actions remaining in the round, right click to decrease actions remaining in the round",
+            "RollInitiative": "Roll initiative for each side"
+        },
+
+        "Details": {
+            "Community": "Community",
+            "Name": "Name",
+            "Notes": "Notes",
+            "Test": "Test",
+            "Traits": "Traits",
+            "Type": "Type"
+        },
+
+        "Dialogs": {
+            "DeleteItem": {
+                "Title": "Delete {item}"
+            },
+
+            "ReputationConfiguration": {
+                "Title": "Reputation",
+                "Description": "Description",
+                "DescriptionHint": "Enter the event or group with which the reputation is associated.",
+
+                "Cancel": "Cancel",
+                "Submit": "Submit"
+            },
+
+            "SkillTest": {
+                "Title": "Skill Test: {skill}",
+                "Modifier": "Modifier",
+                "ModifierHint": "Enter any situational modifiers to the roll.",
+                "VehicleCombatCapabilities": "Vehicle Combat Capabilities",
+                "VehicleCombatCapabilitiesHint": "Choose the vehicle combat capability modifier to use.",
+                "CombatOptions": "Combat Options",
+                "InitiatedMeleeAttack": "Initiated Melee Attack?",
+                "InitiatedMeleeAttackHint": "Add 5 to the roll if you initiated a melee attack.",
+                "RangedTargetFaraway": "Ranged Target Faraway?",
+                "RangedTargetFarawayHint": "Subtract 5 from the roll if the target of your ranged attack is faraway.",
+                "DodgingRangedAttackWithShield": "Dodging Ranged Attack with Shield?",
+                "DodgingRangedAttackWithShieldHint": "Select the size of the shield, if any, to add the bonus to the roll.",
+                "Pinned": "Pinned?",
+                "PinnedHint": "While pinned, you subtract 5 from any tests that require you to look out from cover.",
+                "Flanking": "Flanking",
+                "FlankingHint": "If flanking, you add 5 to your ranged attack. If flanked, you subtract 5 from any dodge test until the start of your next round.",
+
+                "OpposedTest": "Opposed Test",
+                "Cancel": "Cancel",
+                "BasicTest": "Basic Test",
+
+                "VehicleCombatCapabilityChoices": {
+                    "None": "None",
+                    "ShipGun": "Ship Gun",
+                    "AntiPersonnelGun":"Anti-Personnel Gun"
+                },
+
+                "ShieldChoices": {
+                    "None": "None (+0)",
+                    "Small": "Small (+3)",
+                    "Large": "Large (+5)"
+                },
+
+                "FlankingChoices": {
+                    "None": "None (+0)",
+                    "Flanking": "Flanking (+5)",
+                    "Flanked": "Flanked (-5)"
+                }
+            },
+
+            "StaminaCost": {
+                "Title": "Stamina Cost",
+
+                "Cancel": "Cancel",
+                "PayStaminaCost": "Pay Stamina Cost ({cost})"
+            }
+        },
+
+        "Items": {
+            "Ability": {
+                "Name": "Ability"
+            },
+
+            "Armour": {
+                "Name": "Armour",
+                "Type": "Type",
+                "ReductionRoll": "Reduction Roll",
+                "Description": "Description",
+                "Types": {
+                    "Light": "Light",
+                    "Modest": "Modest",
+                    "Heavy": "Heavy"
+                }
+            },
+
+            "Career": {
+                "Name": "Career",
+                "Skill": "Skill",
+                "Current": "Current",
+                "Max": "Max"
+            },
+
+            "CriticalEffect": {
+                "Name": "Critical Effect"
+            },
+
+            "Equipment": {
+                "Name": "Equipment",
+                "Quantity": "Quantity",
+                "Description": "Description"
+            },
+
+            "Glyph": {
+                "Name": "Glyph",
+                "StaminaCost": "Stamina Cost",
+                "Test": {
+                    "Basic": "Basic",
+                    "Opposed": "Opposed"
+                }
+            },
+
+            "Money": {
+                "Name": "Money",
+                "ConsolidateMoneyHint": "Consolidate money to the highest note",
+                "Types": {
+                    "Pennies": "Pennies",
+                    "Silver": "Silver",
+                    "Gold": "Gold",
+
+                    "Frags": "Frags",
+                    "Shards": "Shards",
+                    "Jades": "Jades"
+                }
+            },
+
+            "Spell": {
+                "Name": "Spell",
+                "StaminaCost": "Stamina Cost",
+                "Test": {
+                    "Basic": "Basic"
+                }
+            },
+
+            "Weapon": {
+                "Name": "Weapon",
+                "Skill": "Skill",
+                "Type": "Type",
+                "DamageRoll": "Damage Roll",
+                "DamageType": "Damage Type",
+                "Description": "Description",
+                "Damage": {
+                    "Blast": "Blast",
+                    "Crushing": "Crushing",
+                    "Energy": "Energy",
+                    "Piercing": "Piercing",
+                    "Ship": "Ship",
+                    "Slashing": "Slashing"
+                },
+                "Types": {
+                    "Casual": "Casual",
+                    "Martial": "Martial",
+
+                    "Small": "Small",
+                    "Medium": "Medium",
+                    "Large": "Large"
+                }
+            },
+
+            "AddItem": "Add",
+            "ChatItem": "Chat Item",
+            "DeleteItem": "Delete Item",
+            "EditItem": "Edit Item",
+            "EquipItem": "Equip Item",
+
+            "NewItem": "New {item}"
+        },
+
+        "Notifications": {
+            "MigratingWorld": "Migrating your world for version {version} — Please do not close your game or shut down your server.",
+            "MigratingWorldSuccess": "Successfully migrated your world for version {version}!",
+            "StaminaCost": "The stamina cost is equal to or greater than your current stamina!"
+        },
+
+        "Resources": {
+            "ActionsPerRound": "Actions Per Round",
+            "Advances": "Advances",
+            "Luck": "Luck",
+            "Pluck": "Pluck",
+            "Reputation": "Reputation",
+            "Stamina": "Stamina",
+
+            "CurrentLuck": "Current Luck",
+            "MaximumLuck": "Maximum Luck",
+
+            "CurrentStamina": "Current Stamina",
+            "MaximumStamina": "Maximum Stamina",
+
+            "CurrentActionsPerRound": "Current Actions Per Round",
+            "MaximumActionsPerRound": "Maximum Actions Per Round",
+
+            "ReputationTest": "Reputation ({description})",
+
+            "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event."
+        },
+
+        "Settings": {
+            "SystemMigrationVersion": "System Migration Version",
+            "ActiveSystem": "Active System",
+            "ActiveSystemHint": "Choose the active rules system. Note: existing actors and items must be recreated in order to function properly if this setting is changed.",
+            "ActiveSystemWarlock": "Warlock!",
+            "ActiveSystemWarpstar": "Warpstar!",
+            "CareerLevelCalculation": "Career Level Calculation",
+            "CareerLevelCalculationHint": "Choose the method for calculating career levels.",
+            "CareerLevelCalculationLowestSkill": "Warlock!: Use the career's lowest skill as the level",
+            "CareerLevelCalculationAverageSkill": "Warpstar!: Use the career's skill average as the level",
+            "Pluck": "Pluck",
+            "PluckHint": "Enable or disable the optional Pluck rule from Warlock! Compendium 2.",
+            "Reputation": "Reputation",
+            "ReputationHint": "Enable or disable the optional Reputation rule from Warlock! Compendium 2.",
+            "Talent": "Talent",
+            "TalentHint": "Enable or disable the optional Talent rule from Warlock! Compendium 2.",
+            "Passions": "Passions",
+            "PassionsHint": "Enable or disable the optional Passions rule from Warlock! Compendium 2."
+        },
+
+        "Skills": {
+            "AnimalHandler": "Animal handler",
+            "Appraise": "Appraise",
+            "Astronav": "Astronav",
+            "Athletics": "Athletics",
+            "Bargain": "Bargain",
+            "Blades": "Blades",
+            "Blunt": "Blunt",
+            "Bow": "Bow",
+            "Brawling": "Brawling",
+            "Command": "Command",
+            "Crossbow": "Crossbow",
+            "Diplomacy": "Diplomacy",
+            "Disguise": "Disguise",
+            "Dodge": "Dodge",
+            "Endurance": "Endurance",
+            "History": "History",
+            "Incantation": "Incantation",
+            "Intimidate": "Intimidate",
+            "Language": "Language",
+            "LargeBlade": "Large blade",
+            "Lie": "Lie",
+            "Medicine": "Medicine",
+            "Navigation": "Navigation",
+            "Ostler": "Ostler",
+            "Persuasion": "Persuasion",
+            "Pilot": "Pilot",
+            "PoleArm": "Pole arm",
+            "Repair": "Repair",
+            "ShipGunner": "Ship gunner",
+            "SleightOfHand": "Sleight of hand",
+            "SmallArms": "Small arms",
+            "SmallBlade": "Small blade",
+            "Spot": "Spot",
+            "Stealth": "Stealth",
+            "Streetwise": "Streetwise",
+            "Survival": "Survival",
+            "Swimming": "Swimming",
+            "Thrown": "Thrown",
+            "WarpFocus": "Warp focus",
+            "ZeroG": "Zero G",
+
+            "AdventuringSkills": "Adventuring Skills",
+            "WeaponSkill": "Weapon Skill"
+        },
+
+        "Tables": {
+            "EquippedWeapons": "Equipped Weapons",
+            "EquippedArmour": "Equipped Armour",
+            "CriticalEffects": "Critical Effects",
+
+            "Current": "Current",
+            "Damage": "Damage",
+            "Level": "Level",
+            "Max": "Max",
+            "Quantity": "Quantity",
+            "Reduction": "Reduction",
+            "Skill": "Skill",
+            "StaminaCost": "Stamina Cost",
+            "Test": "Test",
+            "Type": "Type",
+
+            "ModifyQuantityTooltip": "Left-click to increase quantity, right-click to decrease quantity",
+            "PayStaminaCostTooltip": "Pay Stamina Cost",
+            "RollArmourReductionTooltip": "Roll Armour Reduction",
+            "RollWeaponDamageTooltip": "Roll Weapon Damage"
+        },
+
+        "Tabs": {
+            "Abilities": "Abilities",
+            "Combat": "Combat",
+            "Description": "Description",
+            "Gear": "Gear",
+            "Glyphs": "Glyphs",
+            "Notes": "Notes",
+            "Skills": "Skills",
+            "Spells": "Spells"
+        },
+
+        "Tests": {
+            "TestCareer": "Test Career",
+            "TestSkill": "Test Skill"
+        }
     }
 }

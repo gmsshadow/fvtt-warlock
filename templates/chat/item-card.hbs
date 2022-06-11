@@ -1,17 +1,20 @@
 <div class="warlock chat-card">
     <div class="chat-card__header">
-        <img class="chat-card__image" src="{{item.img}}">
+        <img class="chat-card__image" src="{{img}}">
         <div class="chat-card__name">
-            {{item.name}}
+            {{name}}
         </div>
     </div>
 
+    {{#if description}}
     <hr>
 
     <div class="chat-card__description">
-        {{{item.data.data.description}}}
+        {{{description}}}
     </div>
+    {{/if}}
 
+    {{#if details}}
     <hr>
 
     <div class="chat-card__details">
@@ -21,4 +24,5 @@
         </span>
         {{/each}}
     </div>
+    {{/if}}
 </div>

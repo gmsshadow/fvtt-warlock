@@ -1,11 +1,10 @@
 <form
     class="{{cssClass}} document"
     autocomplete="off">
-    <div class="header header--large">
+    <div class="header">
         <img
             class="header__image header__image--large"
             src="{{actor.img}}"
-            title="{{actor.name}}"
             data-edit="img">
 
         <div class="header__body">
@@ -15,23 +14,22 @@
                     type="text"
                     name="name"
                     value="{{actor.name}}"
-                    title="{{localize "WARLOCK.Name"}}"
                     data-dtype="String">
             </div>
 
             <div class="header__row header__row--align-end">
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Structure"}}
+                        {{localize "WARLOCK.Actors.Vehicle.Structure"}}
                     </label>
 
                     <div class="resource__body">
                         <input
-                            class="resource__value field field--center field--no-decoration"
+                            class="resource__value field field--right field--no-decoration"
                             type="number"
                             name="data.structure.value"
                             value="{{data.data.structure.value}}"
-                            title="{{localize "WARLOCK.CurrentStructure"}}"
+                            title="{{localize "WARLOCK.Actors.Vehicle.CurrentStructure"}}"
                             data-dtype="Number">
 
                         <span class="resource__separator">
@@ -39,18 +37,23 @@
                         </span>
 
                         <input
-                            class="resource__value field field--center field--no-decoration"
+                            class="resource__value field field--left field--no-decoration"
                             type="number"
                             name="data.structure.max"
                             value="{{data.data.structure.max}}"
-                            title="{{localize "WARLOCK.MaximumStructure"}}"
+                            title="{{localize "WARLOCK.Actors.Vehicle.MaximumStructure"}}"
                             data-dtype="Number">
                     </div>
                 </div>
 
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.ShipGun"}}
+                        <a
+                            class="test-skill"
+                            data-skill="{{localize "WARLOCK.Skills.ShipGunner"}}"
+                            data-capability="shipGun">
+                            {{localize "WARLOCK.Actors.Vehicle.ShipGun"}}
+                        </a>
                     </label>
 
                     <div class="resource__body">
@@ -59,14 +62,18 @@
                             type="number"
                             name="data.capabilities.shipGun"
                             value="{{data.data.capabilities.shipGun}}"
-                            title="{{localize "WARLOCK.ShipGun"}}"
                             data-dtype="Number">
                     </div>
                 </div>
 
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.AntiPersonnelGun"}}
+                        <a
+                            class="test-skill"
+                            data-skill="{{localize "WARLOCK.Skills.ShipGunner"}}"
+                            data-capability="antiPersonnelGun">
+                            {{localize "WARLOCK.Actors.Vehicle.AntiPersonnelGun"}}
+                        </a>
                     </label>
 
                     <div class="resource__body">
@@ -75,7 +82,6 @@
                             type="number"
                             name="data.capabilities.antiPersonnelGun"
                             value="{{data.data.capabilities.antiPersonnelGun}}"
-                            title="{{localize "WARLOCK.AntiPersonnelGun"}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -84,7 +90,12 @@
             <div class="header__row header__row--align-end">
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Manoeuvrability"}}
+                        <a
+                            class="test-skill"
+                            data-skill="{{localize "WARLOCK.Skills.Pilot"}}"
+                            data-capability="manoeuvrability">
+                            {{localize "WARLOCK.Actors.Vehicle.Manoeuvrability"}}
+                        </a>
                     </label>
 
                     <div class="resource__body">
@@ -93,14 +104,18 @@
                             type="number"
                             name="data.capabilities.manoeuvrability"
                             value="{{data.data.capabilities.manoeuvrability}}"
-                            title="{{localize "WARLOCK.Manoeuvrability"}}"
                             data-dtype="Number">
                     </div>
                 </div>
 
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Scanners"}}
+                        <a
+                            class="test-skill"
+                            data-skill="{{localize "WARLOCK.Skills.Pilot"}}"
+                            data-capability="scanners">
+                            {{localize "WARLOCK.Actors.Vehicle.Scanners"}}
+                        </a>
                     </label>
 
                     <div class="resource__body">
@@ -109,14 +124,18 @@
                             type="number"
                             name="data.capabilities.scanners"
                             value="{{data.data.capabilities.scanners}}"
-                            title="{{localize "WARLOCK.Scanners"}}"
                             data-dtype="Number">
                     </div>
                 </div>
 
                 <div class="resource">
                     <label class="resource__name">
-                        {{localize "WARLOCK.Astronav"}}
+                        <a
+                            class="test-skill"
+                            data-skill="{{localize "WARLOCK.Skills.Astronav"}}"
+                            data-capability="astronav">
+                            {{localize "WARLOCK.Actors.Vehicle.Astronav"}}
+                        </a>
                     </label>
 
                     <div class="resource__body">
@@ -125,7 +144,6 @@
                             type="number"
                             name="data.capabilities.astronav"
                             value="{{data.data.capabilities.astronav}}"
-                            title="{{localize "WARLOCK.Astronav"}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -138,20 +156,31 @@
         data-group="primary">
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.Gear"}}"
-            data-tab="gear">
-            {{localize "WARLOCK.Gear"}}
+            data-tab="combat">
+            {{localize "WARLOCK.Tabs.Combat"}}
         </a>
 
         <a
             class="tabs__item"
-            title="{{localize "WARLOCK.Description"}}"
+            data-tab="gear">
+            {{localize "WARLOCK.Tabs.Gear"}}
+        </a>
+
+        <a
+            class="tabs__item"
             data-tab="description">
-            {{localize "WARLOCK.Description"}}
+            {{localize "WARLOCK.Tabs.Description"}}
         </a>
     </nav>
 
     <div class="body">
+        <div
+            class="tab combat-tab"
+            data-group="primary"
+            data-tab="combat">
+            {{> "systems/warlock/templates/actors/partials/combat-tab.hbs"}}
+        </div>
+
         <div
             class="tab gear-tab"
             data-group="primary"
