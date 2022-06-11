@@ -17,7 +17,7 @@ build:           # This job runs in the build stage which runs first.
     - echo "Building..."
     - apt-get update
     - apt-get install -y zip
-    - zip $ZIP_FILE_NAME -r assets lang module packs styles templates LICENSE system.json template.json
+    - zip $ZIP_FILE_NAME -r assets css lang module packs templates LICENSE system.json template.json
   artifacts:     # Include the system.json and created zip file as artifacts of the job.
     paths:
       - $ZIP_FILE_NAME
