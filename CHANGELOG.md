@@ -6,9 +6,11 @@ Changelog](https://keepachangelog.com/en/1.0.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0]
 ### Added
 - Support for Passions optional rule from Compendium 2.
-- All Warpstar! compendia except for the bestiary.
+- All Warpstar! compendia.
 - Confirmation dialog before deleting items.
 - Actions per round sheet counter for Characters.
 - Abilities for Monsters.

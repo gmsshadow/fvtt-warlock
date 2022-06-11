@@ -159,5 +159,5 @@
 
     "url": "https://gitlab.com/azarvel/fvtt-warlock",
     "manifest": "https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json",
-    "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v0.3.10/downloads/warlock-v0.3.10.zip"
+    "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v1.0.0/downloads/warlock-v1.0.0.zip"
 }
