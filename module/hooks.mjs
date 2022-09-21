@@ -239,9 +239,9 @@ function initializeHandlebarsTemplates() {
  */
 function initializeHandlebarsHelpers() {
     Handlebars.registerHelper("getSkill", (careers, skill) => {
-        const activeCareer = careers.find(career => career.data.data.isActive);
+        const activeCareer = careers.find(career => career.system.isActive);
         if (activeCareer) {
-            return activeCareer.data.data.adventuringSkills[skill];
+            return activeCareer.system.adventuringSkills[skill];
         } else {
             return {};
         }
@@ -268,7 +268,7 @@ Hooks.once("init", () => {
  */
 function initializeTrackedResource() {
     game.settings.set("core", Combat.CONFIG_SETTING, {
-        resource: "resources.actionsPerRound",
+        resource: "resources.actionsPerRound.value",
     });
 }
 
@@ -285,7 +285,7 @@ function initializeMigration() {
     }
 
     const currentVersion = game.settings.get("warlock", "systemMigrationVersion");
-    const needsMigrationVersion = "1.0.0";
+    const needsMigrationVersion = "2.0.0";
     const needsMigration = (
         !currentVersion
         || foundry.utils.isNewerVersion(needsMigrationVersion, currentVersion)
@@ -318,8 +318,8 @@ Hooks.once("ready", () => {
 function highlightSuccessOrFailure(message, html, data) {
     if (message.isRoll
         && message.isContentVisible
-        && message.data.flags.isBasicTest) {
-        if (message.roll.total >= 20) {
+        && message.flags.isBasicTest) {
+        if (message.rolls[0].total >= 20) {
             html.find(".dice-total").addClass("dice-total--success");
         } else {
             html.find(".dice-total").addClass("dice-total--failure");
@@ -331,6 +331,50 @@ function highlightSuccessOrFailure(message, html, data) {
 
 Hooks.on("renderChatMessage", (app, html, data) => {
     highlightSuccessOrFailure(app, html, data);
+});
+
+/* -------------------------------------------------------------------------- */
+
+Hooks.on("renderSidebarTab", (app, html) => {
+    if (app.options.id === "settings") {
+        const text = $(`<p>${game.i18n.localize("WARLOCK.Sidebar.Settings.Blurb")}</p>`);
+        text.insertAfter(html.find("#game-details .modules"));
+    } else if (app.options.id === "combat"
+               && game.combat) {
+        // Hide the irrelevant combat controls.
+        html.find(`.combat-control[data-control="rollAll"]`).css("visibility", "hidden");
+        html.find(`.combat-control[data-control="rollNPC"]`).css("visibility", "hidden");
+        html.find(`.combat-control[data-control="resetAll"]`).css("visibility", "hidden");
+        html.find(`.combat-control[data-control="previousTurn"]`).css("visibility", "hidden");
+        html.find(`.combat-control[data-control="nextTurn"]`).css("visibility", "hidden");
+        html.find(".token-initiative").hide();
+
+        for (const [_, combatant] of game.combat.combatants.entries()) {
+            // Add the class to turns to show the token's disposition.
+            if (combatant.token?.disposition) {
+                const element = html.find(`.combatant[data-combatant-id=${combatant.id}]`);
+                switch (combatant.token.disposition) {
+                    case -1: // Hostile
+                        element.addClass("combat-tracker__combatant--hostile");
+                        break;
+                    case 0: // Neutral
+                        element.addClass("combat-tracker__combatant--neutral");
+                        break;
+                    case 1: // Friendly
+                        element.addClass("combat-tracker__combatant--friendly");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            // Add the class to turns to show the amount of actions left per
+            // round.
+            if (combatant.actor.system.resources?.actionsPerRound?.value === 0) {
+                element.addClass("combat-tracker__combatant--greyed-out");
+            }
+        }
+    }
 });
 
 /* -------------------------------------------------------------------------- */

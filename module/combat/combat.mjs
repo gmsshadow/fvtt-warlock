@@ -44,15 +44,19 @@ export class WarlockCombat extends Combat {
      */
     async refreshActionsPerRound() {
         for (const combatant of this.combatants) {
-            await combatant.actor.update({
-                data: {
-                    resources: {
-                        actionsPerRound: {
-                            value: combatant.actor.data.data.resources.actionsPerRound.max,
+            if (combatant.actor.system.resources?.actionsPerRound) {
+                await combatant.actor.update({
+                    system: {
+                        resources: {
+                            actionsPerRound: {
+                                value: combatant.actor.system.resources.actionsPerRound.max,
+                            },
                         },
                     },
-                },
-            });
+                });
+            }
+
+            combatant.updateResource();
         }
     }
 }

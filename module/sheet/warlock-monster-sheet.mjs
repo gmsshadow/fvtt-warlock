@@ -49,21 +49,28 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
      * @override
      * @inheritdoc
      */
-    getData() {
+    async getData() {
         const context = super.getData();
 
-        context.data.data.abilities = context.actor.itemTypes["Ability"]
+        context.data.system.abilities = context.actor.itemTypes["Ability"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
-        context.data.data.spells = context.actor.itemTypes["Spell"]
+        context.data.system.spells = context.actor.itemTypes["Spell"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
-        context.data.data.glyphs = context.actor.itemTypes["Glyph"]
+        context.data.system.glyphs = context.actor.itemTypes["Glyph"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
+
+        context.data.system.biography.description = await TextEditor.enrichHTML(
+            context.data.system.biography.description,
+            {
+                async: true,
+            },
+        );
 
         return context;
     }
@@ -83,7 +90,7 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
         await Rolls.rollSkillTest(
             this.actor,
             game.i18n.localize("WARLOCK.Skills.AdventuringSkills"),
-            this.actor.data.data.adventuringSkills,
+            this.actor.system.adventuringSkills,
             {
                 showCombatOptions: true,
                 skipDialog: event.shiftKey || event.altKey,
@@ -107,7 +114,7 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
         await Rolls.rollSkillTest(
             this.actor,
             game.i18n.localize("WARLOCK.Skills.WeaponSkill"),
-            this.actor.data.data.weaponSkill,
+            this.actor.system.weaponSkill,
             {
                 showCombatOptions: true,
                 skipDialog: event.shiftKey || event.altKey,

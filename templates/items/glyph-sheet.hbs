@@ -26,10 +26,10 @@
                     <div class="resource__body">
                         <select
                             class="field field--no-decoration"
-                            name="data.test.value">
+                            name="system.test.value">
                             {{selectOptions
-                                data.data.test.choices
-                                selected=data.data.test.value}}
+                                data.system.test.choices
+                                selected=data.system.test.value}}
                         </select>
                     </div>
                 </div>
@@ -43,8 +43,8 @@
                         <input
                             class="field field--center field--no-decoration"
                             type="number"
-                            name="data.staminaCost"
-                            value="{{data.data.staminaCost}}"
+                            name="system.staminaCost"
+                            value="{{data.system.staminaCost}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -59,8 +59,8 @@
             </h1>
 
             {{editor
-                content=data.data.description
-                target="data.description"
+                data.system.description
+                target="system.description"
                 button=true
                 owner=owner
                 editable=editable}}

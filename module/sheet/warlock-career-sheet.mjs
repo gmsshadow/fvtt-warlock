@@ -86,7 +86,7 @@ export class WarlockCareerSheet extends WarlockItemSheet {
         const level = parseInt(event.currentTarget.value, 10);
 
         await this.item.update({
-            data: {
+            system: {
                 adventuringSkills: {
                     [untranslatedSkill]: {
                         maximumLevel: level,
@@ -117,10 +117,10 @@ export class WarlockCareerSheet extends WarlockItemSheet {
         const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
             return game.warlock.skills[activeSystem][skill] === translatedSkill;
         });
-        const isCareerSkill = this.item.data.data.adventuringSkills[translatedSkill].isCareerSkill;
+        const isCareerSkill = this.item.system.adventuringSkills[translatedSkill].isCareerSkill;
 
         await this.item.update({
-            data: {
+            system: {
                 adventuringSkills: {
                     [untranslatedSkill]: {
                         isCareerSkill: !isCareerSkill,

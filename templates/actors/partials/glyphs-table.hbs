@@ -22,7 +22,7 @@
     </div>
 
     <div class="glyphs__body table__body">
-        {{#each data.data.glyphs}}
+        {{#each data.system.glyphs}}
         <div
             class="glyphs__entry table__entry table__entry--tall"
             data-item-id="{{id}}">
@@ -40,7 +40,7 @@
                 <a
                     class="test-spell"
                     title="{{localize "WARLOCK.Tests.TestSkill"}}">
-                    {{data.data.test.value}}
+                    {{system.test.value}}
                 </a>
             </span>
 
@@ -48,7 +48,7 @@
                 <a
                     class="pay-stamina-cost"
                     title="{{localize "WARLOCK.Tables.PayStaminaCostTooltip"}}">
-                    {{data.data.staminaCost}}
+                    {{system.staminaCost}}
                 </a>
             </span>
 
@@ -75,7 +75,7 @@
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{data.data.description}}}
+            {{{system.description}}}
         </div>
         {{/each}}
     </div>

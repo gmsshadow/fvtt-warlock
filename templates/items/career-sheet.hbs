@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="career-skills__body table__body">
-                    {{#each data.data.adventuringSkills}}
+                    {{#each data.system.adventuringSkills}}
                     <div
                         class="career-skills__entry table__entry"
                         data-skill="{{@key}}">
@@ -101,8 +101,8 @@
             data-tab="description">
             <div class="flex flex--column flex--no-gap">
                 {{editor
-                    content=data.data.description
-                    target="data.description"
+                    data.system.description
+                    target="system.description"
                     button=true
                     owner=owner
                     editable=editable}}

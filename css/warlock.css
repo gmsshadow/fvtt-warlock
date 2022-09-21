@@ -1,10 +1,6 @@
 /* -------------------------------------------------------------------------- */
 /* Global                                                                     */
 /* -------------------------------------------------------------------------- */
-#combat #combat-round .encounters h3.encounter-title {
-    margin-left: 0;
-}
-
 #combat li.combatant.combat-tracker__combatant {
     border-top: none;
     border-bottom: none;

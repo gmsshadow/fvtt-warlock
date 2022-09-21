@@ -18,18 +18,4 @@ export class WarlockWeaponSheet extends WarlockItemSheet {
             height: 275,
         }
     }
-
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * @override
-     * @inheritdoc
-     */
-    getData() {
-        const context = super.getData();
-
-        context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
-
-        return context;
-    }
 }
