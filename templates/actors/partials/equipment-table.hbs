@@ -18,7 +18,7 @@
     </div>
 
     <div class="equipment__body table__body">
-        {{#each data.data.gear.equipment}}
+        {{#each data.system.gear.equipment}}
         <div
             class="equipment__entry table__entry table__entry--tall"
             data-item-id="{{id}}">
@@ -36,7 +36,7 @@
                 <a
                     class="modify-quantity"
                     title="{{localize "WARLOCK.Tables.ModifyQuantityTooltip"}}">
-                    {{data.data.quantity}}
+                    {{system.quantity}}
                 </a>
             </span>
 
@@ -62,7 +62,7 @@
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{data.data.description}}}
+            {{{system.description}}}
         </div>
         {{/each}}
     </div>

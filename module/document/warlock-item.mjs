@@ -13,7 +13,7 @@ export class WarlockItem extends Item {
 
         switch (this.type) {
             case "Career":
-                await this._createCareer();
+                this._createCareer();
                 break;
             default:
                 break;
@@ -22,10 +22,10 @@ export class WarlockItem extends Item {
 
     /* ---------------------------------------------------------------------- */
 
-    async _createCareer() {
+    _createCareer() {
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
-        if (this.data.data.adventuringSkills === undefined) {
+        if (this.system.adventuringSkills === undefined) {
             const skills = {};
             for (const skill of Object.keys(game.warlock.skills[activeSystem])) {
                 skills[skill] = {
@@ -34,8 +34,8 @@ export class WarlockItem extends Item {
                 };
             }
 
-            await this.data.update({
-                data: {
+            this.updateSource({
+                system: {
                     adventuringSkills: skills,
                 }
             });
@@ -49,31 +49,26 @@ export class WarlockItem extends Item {
      * @inheritdoc
      */
     prepareDerivedData() {
+        super.prepareDerivedData();
+
         switch (this.type)
         {
             case "Ability":
-                this._prepareDescription();
                 break;
             case "Armour":
                 this._prepareArmourType();
-                this._prepareDescription();
                 break;
             case "Career":
                 this._prepareCareerSkills();
-                this._prepareDescription();
                 break;
             case "Equipment":
-                this._prepareDescription();
                 break;
             case "Glyph":
-                this._prepareDescription();
                 this._prepareGlyphTest();
                 break;
             case "Spell":
-                this._prepareDescription();
                 break;
             case "Weapon":
-                this._prepareDescription();
                 this._prepareWeaponDamageType();
                 this._prepareWeaponSkill();
                 this._prepareWeaponType();
@@ -84,7 +79,7 @@ export class WarlockItem extends Item {
     /* ---------------------------------------------------------------------- */
 
     _prepareArmourType() {
-        this.data.data.type.choices = {
+        this.system.type.choices = {
             "": "",
             "Light": game.i18n.localize("WARLOCK.Items.Armour.Types.Light"),
             "Modest": game.i18n.localize("WARLOCK.Items.Armour.Types.Modest"),
@@ -95,36 +90,30 @@ export class WarlockItem extends Item {
     /* ---------------------------------------------------------------------- */
 
     _prepareCareerSkills() {
-        if (this.data.data.adventuringSkills
-            && this.data.data.adventuringSkills.warlock === undefined
-            && this.data.data.adventuringSkills.warpstar === undefined)
+        if (this.system.adventuringSkills
+            && this.system.adventuringSkills.warlock === undefined
+            && this.system.adventuringSkills.warpstar === undefined)
         {
             // Translate skill names.
             const translatedSkills = {};
-            for (const skill of Object.keys(this.data.data.adventuringSkills))
+            for (const skill of Object.keys(this.system.adventuringSkills))
             {
                 // Title-case the skill name and remove spaces.
                 const skillName = skill
                     .split(" ")
                     .map(word => word[0].toUpperCase() + word.substring(1))
                     .join("");
-                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.data.data.adventuringSkills[skill];
+                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.system.adventuringSkills[skill];
             }
 
-            this.data.data.adventuringSkills = translatedSkills;
+            this.system.adventuringSkills = translatedSkills;
         }
     }
 
     /* ---------------------------------------------------------------------- */
 
-    _prepareDescription() {
-        this.data.data.description = TextEditor.enrichHTML(this.data.data.description);
-    }
-
-    /* ---------------------------------------------------------------------- */
-
     _prepareGlyphTest() {
-        this.data.data.test.choices = {
+        this.system.test.choices = {
             "Basic": game.i18n.localize("WARLOCK.Items.Glyph.Test.Basic"),
             "Opposed": game.i18n.localize("WARLOCK.Items.Glyph.Test.Opposed"),
         };
@@ -136,7 +125,7 @@ export class WarlockItem extends Item {
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
         if (activeSystem === "warlock") {
-            this.data.data.damage.type.choices = {
+            this.system.damage.type.choices = {
                 "—": "—",
                 "Crushing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Crushing"),
                 "Piercing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Piercing"),
@@ -144,7 +133,7 @@ export class WarlockItem extends Item {
                 "Blast": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Blast"),
             };
         } else if (activeSystem === "warpstar") {
-            this.data.data.damage.type.choices = {
+            this.system.damage.type.choices = {
                 "—": "—",
                 "Crushing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Crushing"),
                 "Piercing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Piercing"),
@@ -161,7 +150,7 @@ export class WarlockItem extends Item {
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
         if (activeSystem === "warlock") {
-            this.data.data.skill.choices = {
+            this.system.skill.choices = {
                 "—": "—",
                 "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
                 "Bow": game.i18n.localize("WARLOCK.Skills.Bow"),
@@ -173,7 +162,7 @@ export class WarlockItem extends Item {
                 "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
             };
         } else if (activeSystem === "warpstar") {
-            this.data.data.skill.choices = {
+            this.system.skill.choices = {
                 "—": "—",
                 "Blades": game.i18n.localize("WARLOCK.Skills.Blades"),
                 "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
@@ -184,26 +173,26 @@ export class WarlockItem extends Item {
             };
         }
 
-        if (this.actor?.data) {
+        if (this.actor?.system) {
             if (this.actor?.type === "Character") {
-                if (this.data.data.skill.value !== "—") {
-                    this.data.data.skill.value = game.warlock.skills[activeSystem][this.data.data.skill.value];
+                if (this.system.skill.value !== "—") {
+                    this.system.skill.value = game.warlock.skills[activeSystem][this.system.skill.value];
                 }
             } else if (this.actor?.type === "Monster") {
-                if (this.data.data.skill.value !== "—") {
-                    this.data.data.skill.value = game.i18n.localize("WARLOCK.Skills.WeaponSkill");
+                if (this.system.skill.value !== "—") {
+                    this.system.skill.value = game.i18n.localize("WARLOCK.Skills.WeaponSkill");
                 }
 
-                this.data.data.skill.choices = {
+                this.system.skill.choices = {
                     "—": "—",
                     "Weapon Skill": game.i18n.localize("WARLOCK.Skills.WeaponSkill"),
                 };
             } else if (this.actor?.type === "Vehicle") {
-                if (this.data.data.skill.value !== "—") {
-                    this.data.data.skill.value = game.warlock.skills.warpstar[this.data.data.skill.value];
+                if (this.system.skill.value !== "—") {
+                    this.system.skill.value = game.warlock.skills.warpstar[this.system.skill.value];
                 }
 
-                this.data.data.skill.choices = {
+                this.system.skill.choices = {
                     "—": "—",
                     "Ship gunner": game.i18n.localize("WARLOCK.Skills.ShipGunner"),
                 };
@@ -217,13 +206,13 @@ export class WarlockItem extends Item {
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
         if (activeSystem === "warlock") {
-            this.data.data.type.choices = {
+            this.system.type.choices = {
                 "—": "—",
                 "Casual": game.i18n.localize("WARLOCK.Items.Weapon.Types.Casual"),
                 "Martial": game.i18n.localize("WARLOCK.Items.Weapon.Types.Martial"),
             };
         } else if (activeSystem === "warpstar") {
-            this.data.data.type.choices = {
+            this.system.type.choices = {
                 "—": "—",
                 "Small": game.i18n.localize("WARLOCK.Items.Weapon.Types.Small"),
                 "Medium": game.i18n.localize("WARLOCK.Items.Weapon.Types.Medium"),
@@ -245,15 +234,15 @@ export class WarlockItem extends Item {
         switch (this.type) {
             case "Armour":
                 details.push(
-                    `Type: ${this.data.data.type.value}`,
-                    `Roll: ${this.data.data.reductionRoll}`,
+                    `Type: ${this.system.type.value}`,
+                    `Roll: ${this.system.reductionRoll}`,
                 );
                 break;
             case "Career":
                 let careerSkills = "";
 
                 Object
-                    .entries(this.data.data.adventuringSkills)
+                    .entries(this.system.adventuringSkills)
                     .forEach(([key, value]) => {
                         if (value.isCareerSkill) {
                             if (careerSkills.length !== 0) {
@@ -265,31 +254,31 @@ export class WarlockItem extends Item {
                     });
 
                 details.push(
-                    `Level: ${this.data.data.currentLevel}`,
+                    `Level: ${this.system.currentLevel}`,
                     `Adventuring Skills: ${careerSkills === "" ? "None" : careerSkills}`,
                 );
                 break;
             case "Equipment":
                 details.push(
-                    `Quantity: ${this.data.data.quantity}`,
+                    `Quantity: ${this.system.quantity}`,
                 );
                 break;
             case "Glyph":
                 details.push(
-                    `Test: ${this.data.data.test.value}`,
-                    `Stamina Cost: ${this.data.data.staminaCost}`,
+                    `Test: ${this.system.test.value}`,
+                    `Stamina Cost: ${this.system.staminaCost}`,
                 );
                 break;
             case "Spell":
                 details.push(
-                    `Stamina Cost: ${this.data.data.staminaCost}`,
+                    `Stamina Cost: ${this.system.staminaCost}`,
                 );
                 break;
             case "Weapon":
                 details.push(
-                    `Type: ${this.data.data.type.value}`,
-                    `Damage: ${this.data.data.damage.roll} ${(this.data.data.damage.type.value).toLowerCase()}`,
-                    `Skill: ${this.data.data.skill.value}`,
+                    `Type: ${this.system.type.value}`,
+                    `Damage: ${this.system.damage.roll} ${(this.system.damage.type.value).toLowerCase()}`,
+                    `Skill: ${this.system.skill.value}`,
                 );
                 break;
             default:
@@ -323,7 +312,7 @@ export class WarlockItem extends Item {
         }
 
         const careerLevel = Object
-            .entries(this.data.data.adventuringSkills)
+            .entries(this.system.adventuringSkills)
             .filter(([name, data]) => {
                 return data.isCareerSkill;
             })
@@ -336,7 +325,7 @@ export class WarlockItem extends Item {
                 if (careerSkill[0] === skill) {
                     skillLevel = level;
                 } else {
-                    skillLevel = this.parent.data.data.adventuringSkills[careerSkill[0]];
+                    skillLevel = this.parent.system.adventuringSkills[careerSkill[0]];
                 }
 
                 if (careerLevelCalculation === "lowestSkill") {
@@ -347,7 +336,7 @@ export class WarlockItem extends Item {
             }, initialValue);
 
         await this.update({
-            data: {
+            system: {
                 // Round the career level up if it's a fraction.
                 currentLevel: careerLevel === Infinity ? 0 : Math.ceil(careerLevel),
             },

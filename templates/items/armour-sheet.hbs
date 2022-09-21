@@ -26,10 +26,10 @@
                     <div class="resource__body">
                         <select
                             class="field field--no-decoration"
-                            name="data.type.value">
+                            name="system.type.value">
                             {{selectOptions
-                                data.data.type.choices
-                                selected=data.data.type.value}}
+                                data.system.type.choices
+                                selected=data.system.type.value}}
                         </select>
                     </div>
                 </div>
@@ -43,8 +43,8 @@
                         <input
                             class="field field--center field--no-decoration"
                             type="text"
-                            name="data.reductionRoll"
-                            value="{{data.data.reductionRoll}}"
+                            name="system.reductionRoll"
+                            value="{{data.system.reductionRoll}}"
                             data-dtype="String">
                     </div>
                 </div>
@@ -59,8 +59,8 @@
             </h1>
 
             {{editor
-                content=data.data.description
-                target="data.description"
+                data.system.description
+                target="system.description"
                 button=true
                 owner=owner
                 editable=editable}}

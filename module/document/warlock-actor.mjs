@@ -11,7 +11,8 @@ export class WarlockActor extends Actor {
     async _preCreate(data, options, user) {
         await super._preCreate(data, options, user);
 
-        switch (this.type) {
+        switch (this.type)
+        {
             case "Character":
                 await this._createCharacter();
                 break;
@@ -29,41 +30,69 @@ export class WarlockActor extends Actor {
     /* ---------------------------------------------------------------------- */
 
     /**
+     * @override
+     * @inheritdoc
+     */
+    _applyDefaultTokenSettings(data, options) {
+        super._applyDefaultTokenSettings(data, options);
+
+        let prototypeToken = this.prototypeToken;
+
+        switch (this.type) {
+            case "Character":
+                prototypeToken.vision = true;
+                prototypeToken.actorLink = true;
+                prototypeToken.disposition = 1;
+                break;
+            case "Monster":
+                prototypeToken.vision = false;
+                prototypeToken.actorLink = false;
+                prototypeToken.disposition = -1;
+                break;
+            case "Vehicle":
+                prototypeToken.actorLink = true;
+                prototypeToken.disposition = 0;
+                break;
+            default:
+                break;
+        }
+
+        return this.updateSource({prototypeToken});
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
      * Creates the preliminary data for a Character.
      *
      * @private
      */
-    async _createCharacter()
-    {
+    async _createCharacter() {
         // Add system-appropriate skills.
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
         const skills = {};
-        for (const skill of Object.keys(game.warlock.skills[activeSystem]))
-        {
+        for (const skill of Object.keys(game.warlock.skills[activeSystem])) {
             skills[skill] = 0;
         }
 
-        await this.data.update({
-            data: {
+        await this.updateSource({
+            system: {
                 adventuringSkills: skills,
             }
         });
 
         // Add an unarmed weapon.
         let weaponsPack;
-        if (activeSystem === "warlock")
-        {
+        if (activeSystem === "warlock") {
             weaponsPack = game.packs.find(pack => pack.metadata.label === "Weapons (Warlock!)");
         }
-        else if (activeSystem === "warpstar")
-        {
+        else if (activeSystem === "warpstar") {
             weaponsPack = game.packs.find(pack => pack.metadata.label === "Weapons (Warpstar!)");
         }
 
         const wasLocked = weaponsPack.locked;
-        if (wasLocked)
-        {
+        if (wasLocked) {
             await weaponsPack.configure({
                 locked: false,
             });
@@ -71,9 +100,9 @@ export class WarlockActor extends Actor {
 
         const weapons = await weaponsPack.getDocuments();
         const unarmedWeapon = weapons.find(weapon => weapon.name === "Unarmed").toObject();
-        unarmedWeapon.data.isEquipped = true;
+        unarmedWeapon.system.isEquipped = true;
 
-        await this.data.update({
+        await this.updateSource({
             items: [
                 unarmedWeapon,
             ],
@@ -81,13 +110,6 @@ export class WarlockActor extends Actor {
 
         await weaponsPack.configure({
             locked: wasLocked,
-        });
-
-        // Set token defaults.
-        this.data.token.update({
-            vision: true,
-            actorLink: true,
-            disposition: 1,
         });
     }
 
@@ -98,14 +120,7 @@ export class WarlockActor extends Actor {
      *
      * @private
      */
-    async _createMonster()
-    {
-        // Set token defaults.
-        this.data.token.update({
-            vision: false,
-            actorLink: false,
-            disposition: -1,
-        });
+    async _createMonster() {
     }
 
     /* ---------------------------------------------------------------------- */
@@ -115,39 +130,30 @@ export class WarlockActor extends Actor {
      *
      * @private
      */
-    async _createVehicle()
-    {
-        // Set token defaults.
-        this.data.token.update({
-            actorLink: true,
-            disposition: 0,
-        });
+    async _createVehicle() {
     }
 
     /**
      * @override
      * @inheritdoc
      */
-    prepareDerivedData()
-    {
-        if (this.data.data.adventuringSkills
-            && !(this.data.data.adventuringSkills.warlock
-                 || this.data.data.adventuringSkills.warpstar)
-            && this.type === "Character")
-        {
+    prepareDerivedData() {
+        if (this.system.adventuringSkills
+            && !(this.system.adventuringSkills.warlock
+                 || this.system.adventuringSkills.warpstar)
+            && this.type === "Character") {
             // Translate skill names.
             const translatedSkills = {};
-            for (const skill of Object.keys(this.data.data.adventuringSkills))
-            {
+            for (const skill of Object.keys(this.system.adventuringSkills)) {
                 // Title-case the skill name and remove spaces.
                 const skillName = skill
                     .split(" ")
                     .map(word => word[0].toUpperCase() + word.substring(1))
                     .join("");
-                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.data.data.adventuringSkills[skill];
+                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.system.adventuringSkills[skill];
             }
 
-            this.data.data.adventuringSkills = translatedSkills;
+            this.system.adventuringSkills = translatedSkills;
         }
     }
 }

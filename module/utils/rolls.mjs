@@ -11,7 +11,7 @@ export class Rolls {
      */
     static async rollStaminaLossReduction(actor, armour) {
         const roll = new Roll(
-            `${armour.data.data.reductionRoll}`,
+            `${armour.system.reductionRoll}`,
             {},
         );
 
@@ -173,7 +173,7 @@ export class Rolls {
      */
     static async rollDamage(actor, weapon) {
         const roll = new Roll(
-            `max(${weapon.data.data.damage.roll}, 1)`,
+            `max(${weapon.system.damage.roll}, 1)`,
             {},
         );
 
@@ -187,7 +187,7 @@ export class Rolls {
             }),
             flavor: game.i18n.format("WARLOCK.Chat.Roll.Damage", {
                 weapon: weapon.name,
-                damageType: weapon.data.data.damage.type.value,
+                damageType: weapon.system.damage.type.value,
             }),
         });
     }

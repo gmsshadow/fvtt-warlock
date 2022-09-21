@@ -9,7 +9,7 @@ export class Migrations {
     {
         ui.notifications.info(
             game.i18n.format("WARLOCK.Notifications.MigratingWorld", {
-                version: game.system.data.version,
+                version: game.system.version,
             }),
             {
                 permanent: true,
@@ -18,13 +18,13 @@ export class Migrations {
         // Migrate actors.
         for (const actor of game.actors)
         {
-            const actorUpdateData = Migrations._migrateActorData(actor.data);
+            const actorUpdateData = Migrations._migrateActorData(actor.system);
             await actor.update(actorUpdateData);
 
             // Migrate the actor's items.
             for (const item of actor.items)
             {
-                const itemUpdateData = Migrations._migrateItemData(item.data);
+                const itemUpdateData = Migrations._migrateItemData(item.system);
                 await item.update(itemUpdateData);
             }
         }
@@ -32,7 +32,7 @@ export class Migrations {
         // Migrate items.
         for (const item of game.items)
         {
-            const updateData = Migrations._migrateItemData(item.data);
+            const updateData = Migrations._migrateItemData(item.system);
             await item.update(updateData);
         }
 
@@ -43,11 +43,11 @@ export class Migrations {
         }
 
         // Set the migration version for future sessions.
-        game.settings.set("warlock", "systemMigrationVersion", game.system.data.version);
+        game.settings.set("warlock", "systemMigrationVersion", game.system.version);
 
         ui.notifications.info(
             game.i18n.format("WARLOCK.Notifications.MigratingWorldSuccess", {
-                version: game.system.data.version,
+                version: game.system.version,
             }),
             {
                 permanent: true,
@@ -113,20 +113,20 @@ export class Migrations {
      */
     static _migrateCharacterSkills(actorData, updateData)
     {
-        if (actorData.data.adventuringSkills.warlock !== undefined
-            && actorData.data.adventuringSkills.warpstar !== undefined)
+        if (actorData.adventuringSkills.warlock !== undefined
+            && actorData.adventuringSkills.warpstar !== undefined)
         {
             const activeSystem = game.settings.get("warlock", "activeSystem");
 
             const skills = {};
             for (const skill of Object.keys(game.warlock.skills[activeSystem]))
             {
-                skills[skill] = actorData.data.adventuringSkills[activeSystem][skill];
+                skills[skill] = actorData.adventuringSkills[activeSystem][skill];
             }
 
-            updateData["data.adventuringSkills"] = skills;
-            updateData["data.adventuringSkills.-=warlock"] = null;
-            updateData["data.adventuringSkills.-=warpstar"] = null;
+            updateData["system.adventuringSkills"] = skills;
+            updateData["system.adventuringSkills.-=warlock"] = null;
+            updateData["system.adventuringSkills.-=warpstar"] = null;
         }
     }
 
@@ -158,14 +158,14 @@ export class Migrations {
      * @private
      */
     static _migrateMonsterStamina(actorData, updateData) {
-        if (actorData.data.stamina !== undefined)
+        if (actorData.stamina !== undefined)
         {
             // Convert the old values.
-            updateData["data.resources.stamina.value"] = actorData.data.stamina.value;
-            updateData["data.resources.stamina.max"] = actorData.data.stamina.max;
+            updateData["system.resources.stamina.value"] = actorData.stamina.value;
+            updateData["system.resources.stamina.max"] = actorData.stamina.max;
 
             // Delete the old values.
-            updateData["data.-=stamina"] = null;
+            updateData["system.-=stamina"] = null;
         }
     }
 
@@ -180,14 +180,14 @@ export class Migrations {
      * @private
      */
     static _migrateMonsterActionsPerRound(actorData, updateData) {
-        if (actorData.data.actionsPerRound !== undefined)
+        if (actorData.actionsPerRound !== undefined)
         {
             // Convert the old value.
-            updateData["data.resources.actionsPerRound.value"] = actorData.data.actionsPerRound;
-            updateData["data.resources.actionsPerRound.max"] = actorData.data.actionsPerRound;
+            updateData["system.resources.actionsPerRound.value"] = actorData.actionsPerRound;
+            updateData["system.resources.actionsPerRound.max"] = actorData.actionsPerRound;
 
             // Delete the old value.
-            updateData["data.-=actionsPerRound"] = null;
+            updateData["system.-=actionsPerRound"] = null;
         }
     }
 
@@ -202,25 +202,25 @@ export class Migrations {
      * @private
      */
     static _migrateMonsterNotesAndDescription(actorData, updateData) {
-        if (actorData.data.notes !== undefined)
+        if (actorData.notes !== undefined)
         {
             // Delete the old value.
-            updateData["data.-=notes"] = null;
+            updateData["system.-=notes"] = null;
         }
 
-        if (actorData.data.biography.notes !== undefined)
+        if (actorData.biography.notes !== undefined)
         {
             // Delete the old value.
-            updateData["data.biography.-=notes"] = null;
+            updateData["system.biography.-=notes"] = null;
         }
 
-        if (actorData.data.description !== undefined)
+        if (actorData.description !== undefined)
         {
             // Convert the old value.
-            updateData["data.biography.description"] = actorData.data.description;
+            updateData["system.biography.description"] = actorData.description;
 
             // Delete the old value.
-            updateData["data.-=biography"] = null;
+            updateData["system.-=description"] = null;
         }
     }
 
@@ -252,13 +252,13 @@ export class Migrations {
      */
     static _migrateVehicleDescription(actorData, updateData)
     {
-        if (actorData.data.description !== undefined)
+        if (actorData.description !== undefined)
         {
             // Convert the old value.
-            updateData["data.biography.description"] = actorData.data.description;
+            updateData["system.biography.description"] = actorData.description;
 
             // Delete the old value.
-            updateData["data.-=biography"] = null;
+            updateData["system.-=description"] = null;
         }
     }
 
@@ -318,8 +318,8 @@ export class Migrations {
      */
      static _migrateCareerSkills(itemData, updateData)
      {
-        if (itemData.data.adventuringSkills.warlock
-            && itemData.data.adventuringSkills.warpstar)
+        if (itemData.adventuringSkills.warlock
+            && itemData.adventuringSkills.warpstar)
         {
             const activeSystem = game.settings.get("warlock", "activeSystem");
 
@@ -327,14 +327,14 @@ export class Migrations {
             for (const skill of Object.keys(game.warlock.skills[activeSystem]))
             {
                 skills[skill] = {
-                    isCareerSkill: itemData.data.adventuringSkills[activeSystem][skill].isCareerSkill,
-                    maximumLevel: itemData.data.adventuringSkills[activeSystem][skill].maximumLevel,
+                    isCareerSkill: itemData.adventuringSkills[activeSystem][skill].isCareerSkill,
+                    maximumLevel: itemData.adventuringSkills[activeSystem][skill].maximumLevel,
                 };
             }
 
-            updateData["data.adventuringSkills"] = skills;
-            updateData["data.adventuringSkills.-=warlock"] = null;
-            updateData["data.adventuringSkills.-=warpstar"] = null;
+            updateData["system.adventuringSkills"] = skills;
+            updateData["system.adventuringSkills.-=warlock"] = null;
+            updateData["system.adventuringSkills.-=warpstar"] = null;
         }
     }
 
@@ -366,15 +366,15 @@ export class Migrations {
     static _migrateWeaponType(itemData, updateData)
     {
         // Convert "Heavy" to "Large".
-        if (itemData.data.type?.value === "Heavy")
+        if (itemData.type?.value === "Heavy")
         {
-            updateData["data.type.value"] = "Large";
+            updateData["system.type.value"] = "Large";
         }
 
         // Remove "Heavy" from the choices.
-        if (itemData.data.type?.choices?.warpstar?.["Heavy"] !== undefined)
+        if (itemData.type?.choices?.warpstar?.["Heavy"] !== undefined)
         {
-            updateData["data.type.choices.warpstar.-=Heavy"] = null;
+            updateData["system.type.choices.warpstar.-=Heavy"] = null;
         }
     }
 
@@ -409,19 +409,19 @@ export class Migrations {
             switch (pack.documentName)
             {
                 case "Actor":
-                    updateData = Migrations._migrateActorData(document.data);
+                    updateData = Migrations._migrateActorData(document.system);
                     await document.update(updateData);
 
                     // Migrate the actor's items.
                     for (const item of document.items)
                     {
-                        updateData = Migrations._migrateItemData(item.data);
+                        updateData = Migrations._migrateItemData(item.system);
                         await item.update(updateData);
                     }
 
                     break;
                 case "Item":
-                    updateData = Migrations._migrateItemData(document.data);
+                    updateData = Migrations._migrateItemData(document.system);
                     await document.update(updateData);
                     break;
                 default:

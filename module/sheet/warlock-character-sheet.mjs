@@ -92,26 +92,45 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
      * @override
      * @inheritdoc
      */
-    getData() {
-        const context = super.getData();
+    async getData() {
+        const context = await super.getData();
 
-        context.data.data.careers = context.actor.itemTypes["Career"]
+        context.data.system.careers = context.actor.itemTypes["Career"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
-        context.data.data.spells = context.actor.itemTypes["Spell"]
+        context.data.system.spells = context.actor.itemTypes["Spell"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
-        context.data.data.glyphs = context.actor.itemTypes["Glyph"]
+        context.data.system.glyphs = context.actor.itemTypes["Glyph"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
 
-        context.data.data.resources.reputation.enabled = game.settings.get("warlock", "reputationEnabled");
-        context.data.data.resources.pluck.enabled = game.settings.get("warlock", "pluckEnabled");
-        context.data.data.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
-        context.data.data.biography.passions.enabled = game.settings.get("warlock", "passionsEnabled");
+        context.data.system.resources.reputation.enabled = game.settings.get("warlock", "reputationEnabled");
+        context.data.system.resources.pluck.enabled = game.settings.get("warlock", "pluckEnabled");
+        context.data.system.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
+        context.data.system.biography.passions.enabled = game.settings.get("warlock", "passionsEnabled");
+
+        context.data.system.biography.description = await TextEditor.enrichHTML(
+            context.data.system.biography.description,
+            {
+                async: true,
+            },
+        );
+        context.data.system.biography.notes = await TextEditor.enrichHTML(
+            context.data.system.biography.notes,
+            {
+                async: true,
+            },
+        );
+        context.data.system.biography.talent.description = await TextEditor.enrichHTML(
+            context.data.system.biography.talent.description,
+            {
+                async: true,
+            },
+        );
 
         return context;
     }
@@ -152,7 +171,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         this.actor.updateEmbeddedDocuments("Item", [
             {
                 _id: itemId,
-                data: {
+                system: {
                     isActive: true,
                 }
             }
@@ -175,9 +194,9 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             return;
         }
 
-        let gold = this.actor.data.data.gear.money.gold;
-        let silver = this.actor.data.data.gear.money.silver;
-        let pennies = this.actor.data.data.gear.money.pennies;
+        let gold = this.actor.system.gear.money.gold;
+        let silver = this.actor.system.gear.money.silver;
+        let pennies = this.actor.system.gear.money.pennies;
 
         silver += Math.floor(pennies / 10);
         pennies %= 10;
@@ -185,7 +204,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         silver %= 10;
 
         await this.actor.update({
-            data: {
+            system: {
                 gear: {
                     money: {
                         gold: gold,
@@ -221,7 +240,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         const level = parseInt(event.currentTarget.value, 10);
 
         await this.actor.update({
-            data: {
+            system: {
                 adventuringSkills: {
                     [untranslatedSkill]: level,
                 },
@@ -253,30 +272,30 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
 
         await this.actor.update({
-            data: {
+            system: {
                 adventuringSkills: {
-                    [skill]: this.actor.data.data.adventuringSkills[skill] + 1,
+                    [skill]: this.actor.system.adventuringSkills[skill] + 1,
                 },
             },
         });
 
         // Notify the careers of the level increase.
         for (const career of this.actor.itemTypes["Career"]) {
-            const currentLevel = career.data.data.currentLevel;
+            const currentLevel = career.system.currentLevel;
             await career.updateCareerSkillLevel(
                 skill,
-                this.actor.data.data.adventuringSkills[skill],
+                this.actor.system.adventuringSkills[skill],
             );
 
             // Check if the active career level has changed.
-            if (career.data.data.isActive
-                && (currentLevel < career.data.data.currentLevel)) {
+            if (career.system.isActive
+                && (currentLevel < career.system.currentLevel)) {
                 // If it has, add the difference to the maximum stamina.
                 await this.actor.update({
-                    data: {
+                    system: {
                         resources: {
                             stamina: {
-                                max: this.actor.data.data.resources.stamina.max + (career.data.data.currentLevel - currentLevel),
+                                max: this.actor.system.resources.stamina.max + (career.system.currentLevel - currentLevel),
                             },
                         },
                     },
@@ -286,9 +305,9 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
 
         // Deduct one advance.
         await this.actor.update({
-            data: {
+            system: {
                 resources: {
-                    advances: this.actor.data.data.resources.advances - 1,
+                    advances: this.actor.system.resources.advances - 1,
                 },
             },
         });
@@ -314,7 +333,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
 
         const template = "systems/warlock/templates/dialogs/reputation-configuration-dialog.hbs";
         const content = await renderTemplate(template, {
-            description: this.actor.data.data.resources.reputation.description,
+            description: this.actor.system.resources.reputation.description,
         });
 
         const options = await new Promise(resolve => {
@@ -349,7 +368,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         }
 
         await this.actor.update({
-            data: {
+            system: {
                 resources: {
                     reputation: {
                         description: options.description,
@@ -377,7 +396,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         await Rolls.rollSkillTest(
             this.actor,
             career.name,
-            career.data.data.currentLevel,
+            career.system.currentLevel,
             {
                 showCombatOptions: false,
             },
@@ -399,7 +418,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         await Rolls.rollSkillTest(
             this.actor,
             game.i18n.localize("WARLOCK.Resources.Luck"),
-            this.actor.data.data.resources.luck.value,
+            this.actor.system.resources.luck.value,
         );
     }
 
@@ -419,13 +438,13 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         if (event.shiftKey) {
             await Rolls.rollPluckEvent(
                 this.actor,
-                this.actor.data.data.resources.pluck.value,
+                this.actor.system.resources.pluck.value,
             );
         } else {
             await Rolls.rollSkillTest(
                 this.actor,
                 game.i18n.localize("WARLOCK.Resources.Pluck"),
-                this.actor.data.data.resources.pluck.value,
+                this.actor.system.resources.pluck.value,
                 {
                     showCombatOptions: false,
                 },
@@ -448,9 +467,9 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         await Rolls.rollSkillTest(
             this.actor,
             game.i18n.format("WARLOCK.Resources.ReputationTest", {
-                description: this.actor.data.data.resources.reputation.description,
+                description: this.actor.system.resources.reputation.description,
             }),
-            this.actor.data.data.resources.reputation.value,
+            this.actor.system.resources.reputation.value,
             {
                 showCombatOptions: false,
             }
@@ -470,7 +489,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         event.preventDefault();
 
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const level = this.actor.data.data.adventuringSkills[skill];
+        const level = this.actor.system.adventuringSkills[skill];
 
         await Rolls.rollSkillTest(
             this.actor,
@@ -503,7 +522,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
                 await Rolls.rollSkillTest(
                     this.actor,
                     game.warlock.skills.warlock["Incantation"],
-                    this.actor.data.data.adventuringSkills[game.warlock.skills.warlock["Incantation"]],
+                    this.actor.system.adventuringSkills[game.warlock.skills.warlock["Incantation"]],
                     {
                         showCombatOptions: false,
                     },
@@ -513,7 +532,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
                 await Rolls.rollSkillTest(
                     this.actor,
                     game.warlock.skills.warlock["Warp focus"],
-                    this.actor.data.data.adventuringSkills[game.warlock.skills.warlock["Warp focus"]],
+                    this.actor.system.adventuringSkills[game.warlock.skills.warlock["Warp focus"]],
                     {
                         showCombatOptions: false,
                     },

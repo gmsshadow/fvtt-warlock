@@ -21,8 +21,8 @@
                 <input
                     class="header__type field field--no-decoration field--center"
                     type="text"
-                    name="data.type"
-                    value="{{data.data.type}}"
+                    name="system.type"
+                    value="{{data.system.type}}"
                     placeholder="{{localize "WARLOCK.Details.Type"}}"
                     data-dtype="String">
             </div>
@@ -37,8 +37,8 @@
                         <input
                             class="resource__value field field--right field--no-decoration"
                             type="number"
-                            name="data.resources.stamina.value"
-                            value="{{data.data.resources.stamina.value}}"
+                            name="system.resources.stamina.value"
+                            value="{{data.system.resources.stamina.value}}"
                             title="{{localize "WARLOCK.Resources.CurrentStamina"}}"
                             data-dtype="Number">
 
@@ -49,8 +49,8 @@
                         <input
                             class="resource__value field field--left field--no-decoration"
                             type="number"
-                            name="data.resources.stamina.max"
-                            value="{{data.data.resources.stamina.max}}"
+                            name="system.resources.stamina.max"
+                            value="{{data.system.resources.stamina.max}}"
                             title="{{localize "WARLOCK.Resources.MaximumStamina"}}"
                             data-dtype="Number">
                     </div>
@@ -65,8 +65,8 @@
                         <input
                             class="resource__value field field--right field--no-decoration"
                             type="number"
-                            name="data.resources.actionsPerRound.value"
-                            value="{{data.data.resources.actionsPerRound.value}}"
+                            name="system.resources.actionsPerRound.value"
+                            value="{{data.system.resources.actionsPerRound.value}}"
                             title="{{localize "WARLOCK.Resources.CurrentActionsPerRound"}}"
                             data-dtype="Number">
 
@@ -77,8 +77,8 @@
                         <input
                             class="resource__value field field--left field--no-decoration"
                             type="number"
-                            name="data.resources.actionsPerRound.max"
-                            value="{{data.data.resources.actionsPerRound.max}}"
+                            name="system.resources.actionsPerRound.max"
+                            value="{{data.system.resources.actionsPerRound.max}}"
                             title="{{localize "WARLOCK.Resources.MaximumActionsPerRound"}}"
                             data-dtype="Number">
                     </div>
@@ -95,8 +95,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.weaponSkill"
-                            value="{{data.data.weaponSkill}}"
+                            name="system.weaponSkill"
+                            value="{{data.system.weaponSkill}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -112,8 +112,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.adventuringSkills"
-                            value="{{data.data.adventuringSkills}}"
+                            name="system.adventuringSkills"
+                            value="{{data.system.adventuringSkills}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -145,7 +145,7 @@
         <a
             class="tabs__item"
             data-tab="spells">
-            {{#if (eq data.data.activeSystem "warlock")}}
+            {{#if (eq data.system.activeSystem "warlock")}}
             {{localize "WARLOCK.Tabs.Spells"}}
             {{else}}
             {{localize "WARLOCK.Tabs.Glyphs"}}
@@ -180,7 +180,7 @@
                 </div>
 
                 <div class="abilities__body table__body">
-                    {{#each data.data.abilities}}
+                    {{#each data.system.abilities}}
                     <div
                         class="abilities__entry table__entry"
                         data-item-id="{{id}}">
@@ -212,7 +212,7 @@
                     </div>
 
                     <div class="table__entry-field--collapsible">
-                        {{{data.data.description}}}
+                        {{{system.description}}}
                     </div>
                     {{/each}}
                 </div>
@@ -241,7 +241,7 @@
             class="tab spells-tab"
             data-group="primary"
             data-tab="spells">
-            {{#if (eq data.data.activeSystem "warlock")}}
+            {{#if (eq data.system.activeSystem "warlock")}}
             {{> "systems/warlock/templates/actors/partials/spells-table.hbs"}}
             {{else}}
             {{> "systems/warlock/templates/actors/partials/glyphs-table.hbs"}}
@@ -253,8 +253,8 @@
             data-group="primary"
             data-tab="description">
             {{editor
-                content=data.data.biography.description
-                target="data.biography.description"
+                data.system.biography.description
+                target="system.biography.description"
                 button=true
                 owner=owner
                 editable=editable}}

@@ -22,11 +22,11 @@
     </div>
 
     <div class="weapons__body table__body">
-        {{#each data.data.gear.weapons}}
-        {{#if data.data.isEquipped}}
+        {{#each data.system.gear.weapons}}
+        {{#if system.isEquipped}}
         <div
             class="weapons__entry table__entry table__entry--tall"
-            data-skill="{{data.data.skill.value}}"
+            data-skill="{{system.skill.value}}"
             data-item-id="{{id}}">
             <span class="weapons__entry-field table__entry-field">
                 <img
@@ -39,26 +39,26 @@
             </span>
 
             <span class="weapons__entry-field table__entry-field">
-                {{#if (eq data.data.skill.value "—")}}
+                {{#if (eq system.skill.value "—")}}
                 —
                 {{else}}
                 <a
                     class="test-skill"
                     title="{{localize "WARLOCK.Tests.TestSkill"}}">
-                    {{data.data.skill.value}}
+                    {{system.skill.value}}
                 </a>
                 {{/if}}
             </span>
 
             <span class="weapons__entry-field table__entry-field">
-                {{data.data.type.value}}
+                {{system.type.value}}
             </span>
 
             <span class="weapons__entry-field table__entry-field">
                 <a
                     class="roll-weapon"
                     title="{{localize "WARLOCK.Tables.RollWeaponDamageTooltip"}}">
-                    {{data.data.damage.roll}} {{data.data.damage.type.value}}
+                    {{system.damage.roll}} {{system.damage.type.value}}
                 </a>
             </span>
 
@@ -84,7 +84,7 @@
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{data.data.description}}}
+            {{{system.description}}}
         </div>
         {{/if}}
         {{/each}}
@@ -111,8 +111,8 @@
     </div>
 
     <div class="armour__body table__body">
-        {{#each data.data.gear.armour}}
-        {{#if data.data.isEquipped}}
+        {{#each data.system.gear.armour}}
+        {{#if system.isEquipped}}
         <div
             class="armour__entry table__entry table__entry--tall"
             data-item-id="{{id}}">
@@ -126,14 +126,14 @@
             </span>
 
             <span class="armour__entry-field table__entry-field">
-                {{data.data.type.value}}
+                {{system.type.value}}
             </span>
 
             <span class="armour__entry-field table__entry-field">
                 <a
                     class="roll-armour"
                     title="{{localize "WARLOCK.Tables.RollArmourReductionTooltip"}}">
-                    {{data.data.reductionRoll}}
+                    {{system.reductionRoll}}
                 </a>
             </span>
 
@@ -159,7 +159,7 @@
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{data.data.description}}}
+            {{{system.description}}}
         </div>
         {{/if}}
         {{/each}}
@@ -216,7 +216,7 @@
         </div>
 
         <div class="table__entry-field--collapsible">
-            {{{data.data.description}}}
+            {{{system.description}}}
         </div>
         {{/each}}
     </div>

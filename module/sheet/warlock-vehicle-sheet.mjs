@@ -68,21 +68,21 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
         }
 
         const skill = event.currentTarget.dataset.skill ?? event.currentTarget.closest(".table__entry").dataset.skill;
-        const baseModifier = event.currentTarget.dataset.capability ? this.actor.data.data.capabilities[event.currentTarget.dataset.capability] : 0;
+        const baseModifier = event.currentTarget.dataset.capability ? this.actor.system.capabilities[event.currentTarget.dataset.capability] : 0;
 
         if (actor.type === "Character") {
             await Rolls.rollSkillTest(
                 actor,
                 skill,
-                actor.data.data.adventuringSkills[skill],
+                actor.system.adventuringSkills[skill],
                 {
                     baseModifier: baseModifier,
                     showCombatOptions: true,
                     skipDialog: event.shiftKey || event.altKey,
                     isBasicTest: event.shiftKey,
                     showVehicleCombatCapabilities: !event.currentTarget.dataset.capability,
-                    shipGun: this.actor.data.data.capabilities.shipGun,
-                    antiPersonnelGun: this.actor.data.data.capabilities.antiPersonnelGun,
+                    shipGun: this.actor.system.capabilities.shipGun,
+                    antiPersonnelGun: this.actor.system.capabilities.antiPersonnelGun,
                 },
             );
         } else if (actor.type === "Monster") {
@@ -90,7 +90,7 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
                 await Rolls.rollSkillTest(
                     actor,
                     game.i18n.localize("WARLOCK.Skills.WeaponSkill"),
-                    actor.data.data.weaponSkill,
+                    actor.system.weaponSkill,
                     {
                         baseModifier: baseModifier,
                         showCombatOptions: true,
@@ -102,7 +102,7 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
                 await Rolls.rollSkillTest(
                     actor,
                     game.i18n.localize("WARLOCK.Skills.AdventuringSkills"),
-                    actor.data.data.adventuringSkills,
+                    actor.system.adventuringSkills,
                     {
                         baseModifier: baseModifier,
                         showCombatOptions: true,

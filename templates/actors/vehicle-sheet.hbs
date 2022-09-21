@@ -27,8 +27,8 @@
                         <input
                             class="resource__value field field--right field--no-decoration"
                             type="number"
-                            name="data.structure.value"
-                            value="{{data.data.structure.value}}"
+                            name="system.structure.value"
+                            value="{{data.system.structure.value}}"
                             title="{{localize "WARLOCK.Actors.Vehicle.CurrentStructure"}}"
                             data-dtype="Number">
 
@@ -39,8 +39,8 @@
                         <input
                             class="resource__value field field--left field--no-decoration"
                             type="number"
-                            name="data.structure.max"
-                            value="{{data.data.structure.max}}"
+                            name="system.structure.max"
+                            value="{{data.system.structure.max}}"
                             title="{{localize "WARLOCK.Actors.Vehicle.MaximumStructure"}}"
                             data-dtype="Number">
                     </div>
@@ -60,8 +60,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.capabilities.shipGun"
-                            value="{{data.data.capabilities.shipGun}}"
+                            name="system.capabilities.shipGun"
+                            value="{{data.system.capabilities.shipGun}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -80,8 +80,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.capabilities.antiPersonnelGun"
-                            value="{{data.data.capabilities.antiPersonnelGun}}"
+                            name="system.capabilities.antiPersonnelGun"
+                            value="{{data.system.capabilities.antiPersonnelGun}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -102,8 +102,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.capabilities.manoeuvrability"
-                            value="{{data.data.capabilities.manoeuvrability}}"
+                            name="system.capabilities.manoeuvrability"
+                            value="{{data.system.capabilities.manoeuvrability}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -122,8 +122,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.capabilities.scanners"
-                            value="{{data.data.capabilities.scanners}}"
+                            name="system.capabilities.scanners"
+                            value="{{data.system.capabilities.scanners}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -142,8 +142,8 @@
                         <input
                             class="resource__value field field--center field--no-decoration"
                             type="number"
-                            name="data.capabilities.astronav"
-                            value="{{data.data.capabilities.astronav}}"
+                            name="system.capabilities.astronav"
+                            value="{{data.system.capabilities.astronav}}"
                             data-dtype="Number">
                     </div>
                 </div>
@@ -195,8 +195,8 @@
             data-group="primary"
             data-tab="description">
             {{editor
-                content=data.data.biography.description
-                target="data.biography.description"
+                data.system.biography.description
+                target="system.biography.description"
                 button=true
                 owner=owner
                 editable=editable}}

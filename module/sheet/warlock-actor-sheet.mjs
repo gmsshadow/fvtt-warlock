@@ -82,23 +82,23 @@ export class WarlockActorSheet extends ActorSheet {
     getData() {
         const context = super.getData();
 
-        context.data.data.activeSystem = game.settings.get("warlock", "activeSystem");
+        context.data.system.activeSystem = game.settings.get("warlock", "activeSystem");
 
-        if (!context.data.data.gear) {
-            context.data.data.gear = {};
+        if (!context.data.system.gear) {
+            context.data.system.gear = {};
         }
 
-        context.data.data.gear.weapons = context.actor.itemTypes["Weapon"]
+        context.data.system.gear.weapons = context.actor.itemTypes["Weapon"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
-        context.data.data.gear.armour = context.actor.itemTypes["Armour"]
+        context.data.system.gear.armour = context.actor.itemTypes["Armour"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
-        context.data.data.gear.equipment = context.actor.itemTypes["Equipment"]
+        context.data.system.gear.equipment = context.actor.itemTypes["Equipment"]
             .sort((a, b) => {
-                return a.data.sort - b.data.sort;
+                return a.sort - b.sort;
             });
 
         return context;
@@ -157,7 +157,7 @@ export class WarlockActorSheet extends ActorSheet {
             {
                 name: item.name,
                 img: item.img,
-                description: item.data.data.description,
+                description: item.system.description,
                 details: item.generateDetails(),
             },
         );
@@ -228,7 +228,7 @@ export class WarlockActorSheet extends ActorSheet {
         if (item.type === "Career") {
             if (this.actor.itemTypes["Career"].length === 1) {
                 await item.update({
-                    data: {
+                    system: {
                         isActive: true,
                     },
                 });
@@ -256,13 +256,13 @@ export class WarlockActorSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         if ((item.data.type !== "Equipment")
-            || ((item.data.data.quantity - 1) < 0)) {
+            || ((item.system.quantity - 1) < 0)) {
             return;
         }
 
         await item.update({
-            data: {
-                quantity: item.data.data.quantity - 1,
+            system: {
+                quantity: item.system.quantity - 1,
             },
         });
     }
@@ -323,10 +323,10 @@ export class WarlockActorSheet extends ActorSheet {
                 await item.delete();
 
                 // Activate the "next" career if the deleted career was the active one.
-                if (item.type === "Career" && item.data.data.isActive) {
+                if (item.type === "Career" && item.system.isActive) {
                     if (this.actor.itemTypes["Career"].length > 0) {
                         await this.actor.itemTypes["Career"][0].update({
-                            data: {
+                            system: {
                                 isActive: true,
                             },
                         });
@@ -397,13 +397,13 @@ export class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        if (item.data.type !== "Armour" && item.data.type !== "Weapon") {
+        if (item.type !== "Armour" && item.type !== "Weapon") {
             return;
         }
 
         await item.update({
-            data: {
-                isEquipped: !item.data.data.isEquipped,
+            system: {
+                isEquipped: !item.system.isEquipped,
             },
         });
     }
@@ -427,13 +427,13 @@ export class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        if (item.data.type !== "Equipment") {
+        if (item.type !== "Equipment") {
             return;
         }
 
         await item.update({
-            data: {
-                quantity: item.data.data.quantity + 1,
+            system: {
+                quantity: item.system.quantity + 1,
             },
         });
     }
@@ -457,8 +457,8 @@ export class WarlockActorSheet extends ActorSheet {
 
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
-        const staminaCost = item.data.data.staminaCost;
-        const currentStamina = this.actor.data.data.resources.stamina.value;
+        const staminaCost = item.system.staminaCost;
+        const currentStamina = this.actor.system.resources.stamina.value;
 
         if (staminaCost >= currentStamina) {
             ui.notifications.error(game.i18n.localize("WARLOCK.Notifications.StaminaCost"));
@@ -472,7 +472,7 @@ export class WarlockActorSheet extends ActorSheet {
             }),
             callback: async () => {
                 await this.actor.update({
-                    data: {
+                    system: {
                         resources: {
                             stamina: {
                                 value: currentStamina - staminaCost,
