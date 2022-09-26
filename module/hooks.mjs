@@ -210,6 +210,16 @@ function initializeSettings() {
         default: false,
         onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
     });
+
+    game.settings.register("warlock", "automaticStaminaGain", {
+        name: game.i18n.localize("WARLOCK.Settings.AutomaticStaminaGain"),
+        hint: game.i18n.localize("WARLOCK.Settings.AutomaticStaminaGainHint"),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: true,
+        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
+    })
 }
 
 /* -------------------------------------------------------------------------- */

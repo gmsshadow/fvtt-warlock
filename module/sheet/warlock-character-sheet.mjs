@@ -288,7 +288,9 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             );
 
             // Check if the active career level has changed.
-            if (career.system.isActive
+            const isAutomaticStaminaGainEnabled = game.settings.get("warlock", "automaticStaminaGain");
+            if (isAutomaticStaminaGainEnabled
+                && career.system.isActive
                 && (currentLevel < career.system.currentLevel)) {
                 // If it has, add the difference to the maximum stamina.
                 await this.actor.update({
