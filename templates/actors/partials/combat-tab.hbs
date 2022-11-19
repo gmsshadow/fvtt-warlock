@@ -45,20 +45,20 @@
                 <a
                     class="test-skill"
                     title="{{localize "WARLOCK.Tests.TestSkill"}}">
-                    {{system.skill.value}}
+                    {{lookup system.skill.choices system.skill.value}}
                 </a>
                 {{/if}}
             </span>
 
             <span class="weapons__entry-field table__entry-field">
-                {{system.type.value}}
+                {{lookup system.type.choices system.type.value}}
             </span>
 
             <span class="weapons__entry-field table__entry-field">
                 <a
                     class="roll-weapon"
                     title="{{localize "WARLOCK.Tables.RollWeaponDamageTooltip"}}">
-                    {{system.damage.roll}} {{system.damage.type.value}}
+                    {{system.damage.roll}} {{lookup system.damage.type.choices system.damage.type.value}}
                 </a>
             </span>
 
@@ -126,7 +126,7 @@
             </span>
 
             <span class="armour__entry-field table__entry-field">
-                {{system.type.value}}
+                {{lookup system.type.choices system.type.value}}
             </span>
 
             <span class="armour__entry-field table__entry-field">

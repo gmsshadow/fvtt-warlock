@@ -59,7 +59,6 @@ export class WarlockItem extends Item {
                 this._prepareArmourType();
                 break;
             case "Career":
-                this._prepareCareerSkills();
                 break;
             case "Equipment":
                 break;
@@ -85,29 +84,6 @@ export class WarlockItem extends Item {
             "Modest": game.i18n.localize("WARLOCK.Items.Armour.Types.Modest"),
             "Heavy": game.i18n.localize("WARLOCK.Items.Armour.Types.Heavy"),
         };
-    }
-
-    /* ---------------------------------------------------------------------- */
-
-    _prepareCareerSkills() {
-        if (this.system.adventuringSkills
-            && this.system.adventuringSkills.warlock === undefined
-            && this.system.adventuringSkills.warpstar === undefined)
-        {
-            // Translate skill names.
-            const translatedSkills = {};
-            for (const skill of Object.keys(this.system.adventuringSkills))
-            {
-                // Title-case the skill name and remove spaces.
-                const skillName = skill
-                    .split(" ")
-                    .map(word => word[0].toUpperCase() + word.substring(1))
-                    .join("");
-                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.system.adventuringSkills[skill];
-            }
-
-            this.system.adventuringSkills = translatedSkills;
-        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -174,24 +150,12 @@ export class WarlockItem extends Item {
         }
 
         if (this.actor?.system) {
-            if (this.actor?.type === "Character") {
-                if (this.system.skill.value !== "—") {
-                    this.system.skill.value = game.warlock.skills[activeSystem][this.system.skill.value];
-                }
-            } else if (this.actor?.type === "Monster") {
-                if (this.system.skill.value !== "—") {
-                    this.system.skill.value = game.i18n.localize("WARLOCK.Skills.WeaponSkill");
-                }
-
+            if (this.actor?.type === "Monster") {
                 this.system.skill.choices = {
                     "—": "—",
                     "Weapon Skill": game.i18n.localize("WARLOCK.Skills.WeaponSkill"),
                 };
             } else if (this.actor?.type === "Vehicle") {
-                if (this.system.skill.value !== "—") {
-                    this.system.skill.value = game.warlock.skills.warpstar[this.system.skill.value];
-                }
-
                 this.system.skill.choices = {
                     "—": "—",
                     "Ship gunner": game.i18n.localize("WARLOCK.Skills.ShipGunner"),
