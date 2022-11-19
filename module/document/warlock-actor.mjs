@@ -73,7 +73,8 @@ export class WarlockActor extends Actor {
 
         const skills = {};
         for (const skill of Object.keys(game.warlock.skills[activeSystem])) {
-            skills[skill] = 0;
+            // Start all skills off at level 4.
+            skills[skill] = 4;
         }
 
         await this.updateSource({
@@ -131,29 +132,5 @@ export class WarlockActor extends Actor {
      * @private
      */
     async _createVehicle() {
-    }
-
-    /**
-     * @override
-     * @inheritdoc
-     */
-    prepareDerivedData() {
-        if (this.system.adventuringSkills
-            && !(this.system.adventuringSkills.warlock
-                 || this.system.adventuringSkills.warpstar)
-            && this.type === "Character") {
-            // Translate skill names.
-            const translatedSkills = {};
-            for (const skill of Object.keys(this.system.adventuringSkills)) {
-                // Title-case the skill name and remove spaces.
-                const skillName = skill
-                    .split(" ")
-                    .map(word => word[0].toUpperCase() + word.substring(1))
-                    .join("");
-                translatedSkills[game.i18n.localize(`WARLOCK.Skills.${skillName}`)] = this.system.adventuringSkills[skill];
-            }
-
-            this.system.adventuringSkills = translatedSkills;
-        }
     }
 }

@@ -256,6 +256,11 @@ function initializeHandlebarsHelpers() {
             return {};
         }
     });
+
+    Handlebars.registerHelper("localizeSkill", (skill) => {
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+        return game.warlock.skills[activeSystem][skill]
+    });
 }
 
 /* -------------------------------------------------------------------------- */

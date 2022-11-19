@@ -187,7 +187,7 @@ export class Rolls {
             }),
             flavor: game.i18n.format("WARLOCK.Chat.Roll.Damage", {
                 weapon: weapon.name,
-                damageType: weapon.system.damage.type.value,
+                damageType: weapon.system.damage.type.choices[weapon.system.damage.type.value],
             }),
         });
     }

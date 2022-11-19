@@ -490,12 +490,13 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestSkill(event) {
         event.preventDefault();
 
+        const activeSystem = game.settings.get("warlock", "activeSystem");
         const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = this.actor.system.adventuringSkills[skill];
 
         await Rolls.rollSkillTest(
             this.actor,
-            skill,
+            game.warlock.skills[activeSystem][skill],
             level,
             {
                 showCombatOptions: true,
@@ -524,7 +525,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
                 await Rolls.rollSkillTest(
                     this.actor,
                     game.warlock.skills.warlock["Incantation"],
-                    this.actor.system.adventuringSkills[game.warlock.skills.warlock["Incantation"]],
+                    this.actor.system.adventuringSkills["Incantation"],
                     {
                         showCombatOptions: false,
                     },
@@ -533,8 +534,8 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             case "warpstar":
                 await Rolls.rollSkillTest(
                     this.actor,
-                    game.warlock.skills.warlock["Warp focus"],
-                    this.actor.system.adventuringSkills[game.warlock.skills.warlock["Warp focus"]],
+                    game.warlock.skills.warpstar["Warp focus"],
+                    this.actor.system.adventuringSkills["Warp focus"],
                     {
                         showCombatOptions: false,
                     },
