@@ -232,23 +232,19 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             return;
         }
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        const translatedSkill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
-            return game.warlock.skills[activeSystem][skill] === translatedSkill;
-        });
+        const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = parseInt(event.currentTarget.value, 10);
 
         await this.actor.update({
             system: {
                 adventuringSkills: {
-                    [untranslatedSkill]: level,
+                    [skill]: level,
                 },
             },
         });
 
         for (const career of this.actor.itemTypes["Career"]) {
-            await career.updateCareerSkillLevel(untranslatedSkill, level);
+            await career.updateCareerSkillLevel(skill, level);
         }
     }
 
