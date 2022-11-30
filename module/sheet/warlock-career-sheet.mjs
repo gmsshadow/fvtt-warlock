@@ -78,17 +78,13 @@ export class WarlockCareerSheet extends WarlockItemSheet {
             return;
         }
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        const translatedSkill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
-            return game.warlock.skills[activeSystem][skill] === translatedSkill;
-        });
+        const skill = event.currentTarget.closest(".table__entry").dataset.skill;
         const level = parseInt(event.currentTarget.value, 10);
 
         await this.item.update({
             system: {
                 adventuringSkills: {
-                    [untranslatedSkill]: {
+                    [skill]: {
                         maximumLevel: level,
                     },
                 },
@@ -112,17 +108,13 @@ export class WarlockCareerSheet extends WarlockItemSheet {
             return;
         }
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        const translatedSkill = event.currentTarget.closest(".table__entry").dataset.skill;
-        const untranslatedSkill = Object.keys(game.warlock.skills[activeSystem]).find((skill) => {
-            return game.warlock.skills[activeSystem][skill] === translatedSkill;
-        });
-        const isCareerSkill = this.item.system.adventuringSkills[translatedSkill].isCareerSkill;
+        const skill = event.currentTarget.closest(".table__entry").dataset.skill;
+        const isCareerSkill = this.item.system.adventuringSkills[skill].isCareerSkill;
 
         await this.item.update({
             system: {
                 adventuringSkills: {
-                    [untranslatedSkill]: {
+                    [skill]: {
                         isCareerSkill: !isCareerSkill,
                     },
                 },

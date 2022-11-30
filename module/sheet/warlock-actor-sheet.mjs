@@ -188,10 +188,8 @@ export class WarlockActorSheet extends ActorSheet {
             return;
         }
 
-        const label = game.i18n.localize("WARLOCK.ActiveEffect.NewActiveEffect");
-
         await this.actor.createEmbeddedDocuments("ActiveEffect", [{
-            label: label,
+            label: game.i18n.localize("WARLOCK.ActiveEffect.NewActiveEffect"),
             icon: "icons/svg/aura.svg",
             origin: this.actor.uuid,
         }]);
