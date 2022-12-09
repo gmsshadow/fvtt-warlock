@@ -95,6 +95,17 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     async getData() {
         const context = await super.getData();
 
+        // Sort skills by their localized names.
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+        const localizedSkills = game.warlock.skills[activeSystem];
+        context.data.system.adventuringSkills = Object.fromEntries(
+            Object
+                .entries(context.data.system.adventuringSkills)
+                .sort(([a,], [b,]) => {
+                    return localizedSkills[a].localeCompare(localizedSkills[b]);
+                })
+        );
+
         context.data.system.careers = context.actor.itemTypes["Career"]
             .sort((a, b) => {
                 return a.sort - b.sort;
