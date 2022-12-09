@@ -85,11 +85,14 @@ export class WarlockActor extends Actor {
 
         // Add an unarmed weapon.
         let weaponsPack;
+        let unarmedWeaponId;
         if (activeSystem === "warlock") {
-            weaponsPack = game.packs.find(pack => pack.metadata.label === "Weapons (Warlock!)");
+            weaponsPack = game.packs.get("warlock.weapons-warlock");
+            unarmedWeaponId = "yeHpzUBivahsQLOE";
         }
         else if (activeSystem === "warpstar") {
-            weaponsPack = game.packs.find(pack => pack.metadata.label === "Weapons (Warpstar!)");
+            weaponsPack = game.packs.get("warlock.weapons-warpstar");
+            unarmedWeaponId = "qoU38GyqIbB5i38w";
         }
 
         const wasLocked = weaponsPack.locked;
@@ -100,7 +103,7 @@ export class WarlockActor extends Actor {
         }
 
         const weapons = await weaponsPack.getDocuments();
-        const unarmedWeapon = weapons.find(weapon => weapon.name === "Unarmed").toObject();
+        const unarmedWeapon = weapons.find(weapon => weapon.id === unarmedWeaponId).toObject();
         unarmedWeapon.system.isEquipped = true;
 
         await this.updateSource({
