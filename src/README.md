@@ -21,9 +21,9 @@ Fire Ruby Designs' Discord server [here](https://discord.com/invite/xjFgkxWEup).
 
 ## Reporting Issues, Errors, and Suggestions
 
-File a new issue [here](https://gitlab.com/azarvel/fvtt-warlock/-/issues) or
+File a new issue [here](https://gitlab.com/gmsshadow2/fvtt-warlock/-/issues) or
 contact me through the official Foundry VTT Discord server in the
-`#other-game-systems` channel (`Azarvel#6970`).
+`#other-game-systems` channel (`gmsshadow`).
 
 ## Credits
 
