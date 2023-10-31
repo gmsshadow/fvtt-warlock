@@ -10,15 +10,15 @@
     }
   ],
 
-  "version": "2.1.2",
+  "version": "2.1.3",
   "compatibility": {
     "minimum": 10,
     "verified": 10
   },
 
   "url": "https://gitlab.com/gmsshadow2/fvtt-warlock",
-  "manifest": "https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json",
-  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/package/warlock-v2.1.2.zip",
+  "manifest": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/blob/master/src/system.json",
+  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/package/warlock-v2.1.3.zip",
 
   "esmodules": [
     "module/warlock.mjs"
