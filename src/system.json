@@ -16,9 +16,9 @@
     "verified": 10
   },
 
-  "url": "https://gitlab.com/azarvel/fvtt-warlock",
+  "url": "https://gitlab.com/gmsshadow2/fvtt-warlock",
   "manifest": "https://gitlab.com/api/v4/projects/azarvel%2Ffvtt-warlock/packages/generic/fvtt-warlock/latest/system.json",
-  "download": "https://gitlab.com/azarvel/fvtt-warlock/-/releases/v2.1.2/downloads/warlock-v2.1.2.zip",
+  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/package/warlock-v2.1.2.zip",
 
   "esmodules": [
     "module/warlock.mjs"
