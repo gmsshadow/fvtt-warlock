@@ -18,7 +18,7 @@
 
   "url": "https://gitlab.com/gmsshadow2/fvtt-warlock",
   "manifest": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/src/system.json",
-  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/archive/master/fvtt-warlock-master.zip",
+  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/package/warlock-v2.1.3.zip",
 
   "esmodules": [
     "module/warlock.mjs"
