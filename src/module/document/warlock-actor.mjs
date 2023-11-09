@@ -90,6 +90,10 @@ export class WarlockActor extends Actor {
             weaponsPack = game.packs.get("warlock.weapons-warlock");
             unarmedWeaponId = "yeHpzUBivahsQLOE";
         }
+        if (activeSystem == "wetwired") {
+            weaponsPack = game.packs.get("warlock.weapons-warpstar");
+            unarmedWeaponId = "qoU38GyqIbB5i38w";            
+        }
         else if (activeSystem === "warpstar") {
             weaponsPack = game.packs.get("warlock.weapons-warpstar");
             unarmedWeaponId = "qoU38GyqIbB5i38w";

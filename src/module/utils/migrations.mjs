@@ -114,7 +114,8 @@ export class Migrations {
     static _migrateCharacterSkills(actorData, updateData)
     {
         if (actorData.adventuringSkills.warlock !== undefined
-            && actorData.adventuringSkills.warpstar !== undefined)
+            && actorData.adventuringSkills.warpstar !== undefined 
+            && actorData.adventuringSkills.wetwired !== undefined)
         {
             const activeSystem = game.settings.get("warlock", "activeSystem");
 
@@ -127,6 +128,7 @@ export class Migrations {
             updateData["system.adventuringSkills"] = skills;
             updateData["system.adventuringSkills.-=warlock"] = null;
             updateData["system.adventuringSkills.-=warpstar"] = null;
+            updateData["system.adventuringSkills.-=wetwired"] = null;
         }
     }
 
@@ -319,7 +321,8 @@ export class Migrations {
      static _migrateCareerSkills(itemData, updateData)
      {
         if (itemData.adventuringSkills.warlock
-            && itemData.adventuringSkills.warpstar)
+            && itemData.adventuringSkills.warpstar 
+            && itemData.adventuringSkills.wetwired)
         {
             const activeSystem = game.settings.get("warlock", "activeSystem");
 
@@ -335,6 +338,7 @@ export class Migrations {
             updateData["system.adventuringSkills"] = skills;
             updateData["system.adventuringSkills.-=warlock"] = null;
             updateData["system.adventuringSkills.-=warpstar"] = null;
+            updateData["system.adventuringSkills.-=wetwired"] = null;
         }
     }
 
