@@ -257,6 +257,7 @@
             "ActiveSystemHint": "Choose the active rules system. Note: existing actors and items must be recreated in order to function properly if this setting is changed.",
             "ActiveSystemWarlock": "Warlock!",
             "ActiveSystemWarpstar": "Warpstar!",
+            "ActiveSystemWetwired": "Wetwired",
             "AutomaticStaminaGain": "Automatic Stamina Gain",
             "AutomaticStaminaGainHint": "Enable or disable automatically gaining stamina when the active career level increases.",
             "CareerLevelCalculation": "Career Level Calculation",
