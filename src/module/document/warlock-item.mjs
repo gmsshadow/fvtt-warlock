@@ -149,20 +149,20 @@ export class WarlockItem extends Item {
         } if (activeSystem === "wetwired") {
             this.system.skill.choices = {
                 "—": "—",
+                "Melee": game.i18n.localize("WARLOCK.Skills.Melee"),
+                "Gunnery": game.i18n.localize("WARLOCK.Skills.Gunnery"),
+                "Primitive Ranged": game.i18n.localize("WARLOCK.Skills.PrimitiveRanged"),
+                "Small Arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
+            };
+        } else if (activeSystem === "warpstar") {
+            this.system.skill.choices = {
+                "—": "—",
                 "Blades": game.i18n.localize("WARLOCK.Skills.Blades"),
                 "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
                 "Brawling": game.i18n.localize("WARLOCK.Skills.Brawling"),
                 "Ship gunner": game.i18n.localize("WARLOCK.Skills.ShipGunner"),
                 "Small arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
                 "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
-            };
-        } else if (activeSystem === "warpstar") {
-            this.system.skill.choices = {
-                "—": "—",
-                "Melee": game.i18n.localize("WARLOCK.Skills.Melee"),
-                "Gunnery": game.i18n.localize("WARLOCK.Skills.Gunnery"),
-                "Primitive Ranged": game.i18n.localize("WARLOCK.Skills.PrimitiveRanged"),
-                "Small Arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
             };
         }
 
