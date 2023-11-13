@@ -262,7 +262,7 @@
             "AutomaticStaminaGainHint": "Enable or disable automatically gaining stamina when the active career level increases.",
             "CareerLevelCalculation": "Career Level Calculation",
             "CareerLevelCalculationHint": "Choose the method for calculating career levels.",
-            "CareerLevelCalculationLowestSkill": "Warlock!: Use the career's lowest skill as the level",
+            "CareerLevelCalculationLowestSkill": "Warlock! & Wetwired: Use the career's lowest skill as the level",
             "CareerLevelCalculationAverageSkill": "Warpstar!: Use the career's skill average as the level",
             "Pluck": "Pluck",
             "PluckHint": "Enable or disable the optional Pluck rule from Warlock! Compendium 2.",
@@ -276,7 +276,7 @@
 
         "Sidebar": {
             "Settings": {
-                "Blurb": "Purchase <a href='https://www.drivethrurpg.com/product/383512/Warlock-Traitors-Edition'>Warlock!</a> and <a href='https://www.drivethrurpg.com/product/330123/Warpstar'>Warpstar!</a>, and join the <a href='https://l.facebook.com/l.php?u=https%3A%2F%2Fdiscord.gg%2FxjFgkxWEup&h=AT30OjhfBQj8j2-smQCn9GjZkhiqtTeNTZi64BIuKQXneJNL-dHdV1T1cOrj0uwxhCgSOEhezycVHCXMsdbLENLe1ekb6f2OItzyGZEiM7gRpudfxIVP4CfJl7pZO2WDjZ_urIS7xzWOOc5OpbbuNQGcUyKDFkJ3EYrHA6464PPJ95eqOT5zAGuaPH3n6hN3DfIkzvs3srI34JhpGa1BRHLXoRytjE61HHZhfj-OpqeIhzC0zcB2PJCu2RCCNiVU55GNqSV69cfTSe9McmR1KB8iBIryeHksksrxWWiMr_Xd5MCeetAXaRonvZTZn6Ug_yFf177SR0EOp9vrgUzPXwvVlgHxoIzo_S40T29LUJcCYl4WlD7w7xvA9LewFnZcRLfhoYJPjgllhFZOXA77E-tAQbzdfBV1chaLxo4Ya779fUeesfGECQmPtp632HSCEbZwYh-xwM08b2ZaYlFULTIYWaDfqQOdhxAio3KEyWwchdWbKytELNJltxfd21jAPUNf7t21KHClUKaHgQCm5W0pB8CE5XARF2R4ulC1SE20dVqEUl0P9gZYLJH8D3AYipRhdImaQnTpobzTEKdv62vUGRZFgdMEHH4kIsQsV4k1-WVl0asY'>Discord community</a>!"
+                "Blurb": "Purchase <a href='https://www.drivethrurpg.com/product/383512/Warlock-Traitors-Edition'>Warlock!</a>, <a href='https://www.drivethrurpg.com/product/330123/Warpstar'>Warpstar!</a> and <a href='https://www.drivethrurpg.com/product/444344/Wetwired'>Wetwired</a>, and join the <a href='https://l.facebook.com/l.php?u=https%3A%2F%2Fdiscord.gg%2FxjFgkxWEup&h=AT30OjhfBQj8j2-smQCn9GjZkhiqtTeNTZi64BIuKQXneJNL-dHdV1T1cOrj0uwxhCgSOEhezycVHCXMsdbLENLe1ekb6f2OItzyGZEiM7gRpudfxIVP4CfJl7pZO2WDjZ_urIS7xzWOOc5OpbbuNQGcUyKDFkJ3EYrHA6464PPJ95eqOT5zAGuaPH3n6hN3DfIkzvs3srI34JhpGa1BRHLXoRytjE61HHZhfj-OpqeIhzC0zcB2PJCu2RCCNiVU55GNqSV69cfTSe9McmR1KB8iBIryeHksksrxWWiMr_Xd5MCeetAXaRonvZTZn6Ug_yFf177SR0EOp9vrgUzPXwvVlgHxoIzo_S40T29LUJcCYl4WlD7w7xvA9LewFnZcRLfhoYJPjgllhFZOXA77E-tAQbzdfBV1chaLxo4Ya779fUeesfGECQmPtp632HSCEbZwYh-xwM08b2ZaYlFULTIYWaDfqQOdhxAio3KEyWwchdWbKytELNJltxfd21jAPUNf7t21KHClUKaHgQCm5W0pB8CE5XARF2R4ulC1SE20dVqEUl0P9gZYLJH8D3AYipRhdImaQnTpobzTEKdv62vUGRZFgdMEHH4kIsQsV4k1-WVl0asY'>Discord community</a>!"
             }
         },
 
