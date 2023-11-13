@@ -145,10 +145,10 @@
         <a
             class="tabs__item"
             data-tab="spells">
-            {{#if (eq data.system.activeSystem "warlock")}}
-            {{localize "WARLOCK.Tabs.Spells"}}
-            {{else}}
+            {{#if (eq data.system.activeSystem "warpstar")}}
             {{localize "WARLOCK.Tabs.Glyphs"}}
+            {{else}}
+            {{localize "WARLOCK.Tabs.Spells"}}
             {{/if}}
         </a>
 
@@ -241,10 +241,10 @@
             class="tab spells-tab"
             data-group="primary"
             data-tab="spells">
-            {{#if (eq data.system.activeSystem "warlock")}}
-            {{> "systems/warlock/templates/actors/partials/spells-table.hbs"}}
-            {{else}}
+            {{#if (eq data.system.activeSystem "warpstar")}}
             {{> "systems/warlock/templates/actors/partials/glyphs-table.hbs"}}
+            {{else}}
+            {{> "systems/warlock/templates/actors/partials/spells-table.hbs"}}
             {{/if}}
         </div>
 

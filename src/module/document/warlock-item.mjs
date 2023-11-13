@@ -108,6 +108,15 @@ export class WarlockItem extends Item {
                 "Slashing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Slashing"),
                 "Blast": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Blast"),
             };
+        } if (activeSystem === "wetwired") {
+            this.system.damage.type.choices = {
+                "—": "—",
+                "Crushing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Crushing"),
+                "Piercing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Piercing"),
+                "Slashing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Slashing"),
+                "Energy": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Energy"),
+                "Ship": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Ship"),
+            };
         } else if (activeSystem === "warpstar") {
             this.system.damage.type.choices = {
                 "—": "—",
@@ -136,6 +145,14 @@ export class WarlockItem extends Item {
                 "Pole arm": game.i18n.localize("WARLOCK.Skills.PoleArm"),
                 "Small blade": game.i18n.localize("WARLOCK.Skills.SmallBlade"),
                 "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
+            };
+        } if (activeSystem === "wetwired") {
+            this.system.skill.choices = {
+                "—": "—",
+                "Melee": game.i18n.localize("WARLOCK.Skills.Melee"),
+                "Gunnery": game.i18n.localize("WARLOCK.Skills.Gunnery"),
+                "Primitive Ranged": game.i18n.localize("WARLOCK.Skills.PrimitiveRanged"),
+                "Small Arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
             };
         } else if (activeSystem === "warpstar") {
             this.system.skill.choices = {
@@ -174,6 +191,13 @@ export class WarlockItem extends Item {
                 "—": "—",
                 "Casual": game.i18n.localize("WARLOCK.Items.Weapon.Types.Casual"),
                 "Martial": game.i18n.localize("WARLOCK.Items.Weapon.Types.Martial"),
+            };
+        } if (activeSystem === "wetwired") {
+            this.system.type.choices = {
+                "—": "—",
+                "Small": game.i18n.localize("WARLOCK.Items.Weapon.Types.Small"),
+                "Medium": game.i18n.localize("WARLOCK.Items.Weapon.Types.Medium"),
+                "Large": game.i18n.localize("WARLOCK.Items.Weapon.Types.Large"),
             };
         } else if (activeSystem === "warpstar") {
             this.system.type.choices = {

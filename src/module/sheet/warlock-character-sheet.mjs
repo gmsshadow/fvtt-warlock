@@ -548,6 +548,16 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
                     },
                 );
                 break;
+                case "wetwired":
+                    await Rolls.rollSkillTest(
+                        this.actor,
+                        game.warlock.skills.wetwired["Warp focus"],
+                        this.actor.system.adventuringSkills["Warp focus"],
+                        {
+                            showCombatOptions: false,
+                        },
+                    );
+                    break;
             default:
                 break;
         }

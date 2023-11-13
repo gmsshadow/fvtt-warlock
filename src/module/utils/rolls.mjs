@@ -247,6 +247,24 @@ export class Rolls {
                         default:
                             break;
                     }
+                } if (activeSystem === "wetwired") {
+                    if (form.pinned.checked) {
+                        modifier -= 5;
+                    }
+
+                    switch (form.flankingChoice.value) {
+                        case "none":
+                            break;
+                        case "flanking":
+                            modifier += 5;
+                            break;
+                        case "flanked":
+                            modifier -= 5;
+                            break;
+                        default:
+                            break;
+                    }
+                 
                 } else if (activeSystem === "warpstar") {
                     if (form.pinned.checked) {
                         modifier -= 5;

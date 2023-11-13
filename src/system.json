@@ -1,7 +1,7 @@
 {
   "id": "warlock",
-  "title": "Warlock! & Warpstar!",
-  "description": "A system for playing Warlock! and Warpstar! in Foundry VTT.",
+  "title": "Warlock!, Warpstar & Wetwired",
+  "description": "A system for playing Warlock!, Warpstar and Wetwired in Foundry VTT.",
 
   "authors": [
     {
@@ -10,7 +10,7 @@
     }
   ],
 
-  "version": "2.1.4",
+  "version": "2.1.5",
   "compatibility": {
     "minimum": 10,
     "verified": 11
@@ -18,7 +18,7 @@
 
   "url": "https://gitlab.com/gmsshadow2/fvtt-warlock",
   "manifest": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/src/system.json",
-  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/package/warlock-v2.1.4.zip",
+  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/package/warlock-v2.1.5.zip",
 
   "esmodules": [
     "module/warlock.mjs"
