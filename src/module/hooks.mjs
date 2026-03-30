@@ -19,6 +19,29 @@ import { WarlockCombatTracker } from "./combat/combat-tracker.mjs";
 import { Migrations } from "./utils/migrations.mjs";
 import { Rolls } from "./utils/rolls.mjs";
 
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Apply a subsystem CSS class to the page body.
+ *
+ * This allows subsystem-specific theming using selectors like:
+ * `body.warlock-subsystem--warpstar .warlock.sheet { ... }`
+ *
+ * @private
+ */
+function applySubsystemBodyClass() {
+    const activeSystem = game.settings.get("warlock", "activeSystem");
+    const body = document.body;
+    if (!body) return;
+
+    body.classList.remove(
+        "warlock-subsystem--warlock",
+        "warlock-subsystem--warpstar",
+        "warlock-subsystem--wetwired",
+    );
+    body.classList.add(`warlock-subsystem--${activeSystem}`);
+}
+
 /**
  * Initializes the global game variable.
  *
@@ -156,7 +179,10 @@ function initializeSettings() {
             "wetwired": game.i18n.localize("WARLOCK.Settings.ActiveSystemWetwired"),
         },
         default: "warlock",
-        onChange: _ => foundry.utils.debounce(() => window.location.reload(), 250)(),
+        onChange: _ => foundry.utils.debounce(() => {
+            applySubsystemBodyClass();
+            window.location.reload();
+        }, 250)(),
     });
 
     game.settings.register("warlock", "careerLevelCalculation", {
@@ -317,6 +343,7 @@ function initializeMigration() {
 Hooks.once("ready", () => {
     initializeTrackedResource();
     initializeMigration();
+    applySubsystemBodyClass();
 });
 
 /* -------------------------------------------------------------------------- */

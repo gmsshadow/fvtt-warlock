@@ -1,21 +1,30 @@
 /* -------------------------------------------------------------------------- */
 /* Global                                                                     */
 /* -------------------------------------------------------------------------- */
+:root {
+    /* Fallbacks (will usually be overridden by `.warlock` or subsystem blocks) */
+    --warlock-success: #1c883c;
+    --warlock-failure: #b31414;
+    --warlock-friendly: #1c883c;
+    --warlock-neutral: #e0de4d;
+    --warlock-hostile: #b31414;
+}
+
 #combat li.combatant.combat-tracker__combatant {
     border-top: none;
     border-bottom: none;
 }
 
 #combat li.combatant.combat-tracker__combatant--friendly {
-    border-left: 3px solid #1c883c;
+    border-left: 3px solid var(--warlock-friendly);
 }
 
 #combat li.combatant.combat-tracker__combatant--neutral {
-    border-left: 3px solid #e0de4d;
+    border-left: 3px solid var(--warlock-neutral);
 }
 
 #combat li.combatant.combat-tracker__combatant--hostile {
-    border-left: 3px solid #b31414;
+    border-left: 3px solid var(--warlock-hostile);
 }
 
 #combat li.combatant.combat-tracker__combatant--greyed-out {
@@ -37,22 +46,107 @@
 }
 
 .dice-total--success {
-    color: #1c883c;
+    color: var(--warlock-success);
 }
 
 .dice-total--failure {
-    color: #b31414;
+    color: var(--warlock-failure);
 }
 
 /* -------------------------------------------------------------------------- */
 /* System-specific                                                            */
 /* -------------------------------------------------------------------------- */
 
+/* -------------------------------------------------------------------------- */
+/* Subsystem theming                                                          */
+/* -------------------------------------------------------------------------- */
+/*
+To theme per subsystem, scope your CSS under one of these selectors:
+
+  body.warlock-subsystem--warlock   .warlock { ... }
+  body.warlock-subsystem--warpstar  .warlock { ... }
+  body.warlock-subsystem--wetwired  .warlock { ... }
+*/
+
 .warlock {
+    /* Typography */
     --font-accent: "Modesto Condensed", "Palatino Linotype", serif;
+    --font-body: "Signika", "Segoe UI", sans-serif;
+
+    /* Scale */
     --font-size-36: 2.25rem;
-    --color-background: rgba(0, 0, 0, 0.05);
-    --color-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Palette + surfaces */
+    --color-background: rgba(0, 0, 0, 0.05); /* used for panels/fields */
+    --color-shadow: rgba(0, 0, 0, 0.1);      /* used for inset shadows */
+    --warlock-accent: #b31414;
+    --warlock-accent-strong: #7b1111;
+    --warlock-glow: rgba(179, 20, 20, 0.65);
+
+    /* State colors (used in chat + tracker) */
+    --warlock-success: #1c883c;
+    --warlock-failure: #b31414;
+    --warlock-friendly: #1c883c;
+    --warlock-neutral: #e0de4d;
+    --warlock-hostile: #b31414;
+
+    /* Decorative effects */
+    --warlock-tabs-active-shadow: 0 0 10px var(--warlock-glow);
+    --warlock-resource-active-shadow: 0 0 5px var(--warlock-glow);
+}
+
+/* Warlock! (gritty fantasy / old-school WFRP vibe) */
+body.warlock-subsystem--warlock .warlock {
+    --font-accent: "Modesto Condensed", "Palatino Linotype", serif;
+    --font-body: "Signika", "Segoe UI", sans-serif;
+
+    /* Warmer parchment-like surfaces */
+    --color-background: rgba(70, 45, 20, 0.10);
+    --color-shadow: rgba(0, 0, 0, 0.18);
+
+    /* Ink + dried-blood accent */
+    --warlock-accent: #7b1111;
+    --warlock-accent-strong: #4f0b0b;
+    --warlock-glow: rgba(123, 17, 17, 0.55);
+
+    --warlock-tabs-active-shadow: 0 0 10px rgba(123, 17, 17, 0.45);
+    --warlock-resource-active-shadow: 0 0 5px rgba(123, 17, 17, 0.55);
+}
+
+/* Warpstar! (40k-ish: gunmetal + hazard accents) */
+body.warlock-subsystem--warpstar .warlock {
+    --font-accent: "Modesto Condensed", "Palatino Linotype", serif;
+    --font-body: "Signika", "Segoe UI", sans-serif;
+
+    /* Cooler, heavier panels */
+    --color-background: rgba(10, 12, 16, 0.25);
+    --color-shadow: rgba(0, 0, 0, 0.30);
+
+    /* Brass/hazard */
+    --warlock-accent: #d6b14a;
+    --warlock-accent-strong: #7d6420;
+    --warlock-glow: rgba(214, 177, 74, 0.55);
+
+    --warlock-tabs-active-shadow: 0 0 10px rgba(214, 177, 74, 0.45);
+    --warlock-resource-active-shadow: 0 0 5px rgba(214, 177, 74, 0.55);
+}
+
+/* Wetwired (cyberpunk: dark UI + neon glow) */
+body.warlock-subsystem--wetwired .warlock {
+    --font-accent: "Modesto Condensed", "Palatino Linotype", serif;
+    --font-body: "Signika", "Segoe UI", sans-serif;
+
+    /* Dark glass */
+    --color-background: rgba(0, 0, 0, 0.28);
+    --color-shadow: rgba(0, 0, 0, 0.45);
+
+    /* Neon cyan */
+    --warlock-accent: #00e5ff;
+    --warlock-accent-strong: #00a8b8;
+    --warlock-glow: rgba(0, 229, 255, 0.55);
+
+    --warlock-tabs-active-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
+    --warlock-resource-active-shadow: 0 0 7px rgba(0, 229, 255, 0.55);
 }
 
 .warlock h1 {
@@ -181,7 +275,7 @@
 .warlock .resource__name--active {
     color: black;
 
-    text-shadow: 0 0 5px red;
+    text-shadow: var(--warlock-resource-active-shadow);
 }
 
 .warlock .resource__body {
@@ -467,7 +561,7 @@
     border-bottom: 3px solid var(--color-underline-active);
     font-weight: bold;
 
-    text-shadow: 0 0 10px red;
+    text-shadow: var(--warlock-tabs-active-shadow);
 }
 
 /* -------------------------------------------------------------------------- */
