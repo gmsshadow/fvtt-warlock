@@ -171,6 +171,21 @@ body.warlock-subsystem--warlock .warlock {
 
     --warlock-tabs-active-shadow: 0 0 10px rgba(123, 17, 17, 0.45);
     --warlock-resource-active-shadow: 0 0 5px rgba(123, 17, 17, 0.55);
+
+    /* Sheet theming */
+    --wl-text: rgba(25, 18, 10, 0.95);
+    --wl-muted: rgba(25, 18, 10, 0.70);
+    --wl-border: rgba(60, 38, 18, 0.55);
+    --wl-border-strong: rgba(60, 38, 18, 0.85);
+    --wl-radius: 0px;
+    --wl-sheet-bg:
+        radial-gradient(1200px 700px at 20% 0%, rgba(255, 244, 220, 0.80), rgba(235, 220, 190, 0.65) 45%, rgba(210, 190, 160, 0.55) 100%),
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.028) 0px, rgba(0, 0, 0, 0.028) 1px, rgba(0, 0, 0, 0.0) 3px, rgba(0, 0, 0, 0.0) 9px);
+    --wl-panel-bg: rgba(255, 255, 255, 0.45);
+    --wl-field-bg: rgba(255, 255, 255, 0.35);
+    --wl-field-bg-focus: rgba(255, 255, 255, 0.55);
+    --wl-tab-bg: rgba(0, 0, 0, 0.06);
+    --wl-tab-active-bg: rgba(123, 17, 17, 0.10);
 }
 
 /* Warpstar! (40k-ish: gunmetal + hazard accents) */
@@ -189,6 +204,21 @@ body.warlock-subsystem--warpstar .warlock {
 
     --warlock-tabs-active-shadow: 0 0 10px rgba(214, 177, 74, 0.45);
     --warlock-resource-active-shadow: 0 0 5px rgba(214, 177, 74, 0.55);
+
+    /* Sheet theming */
+    --wl-text: rgba(235, 238, 245, 0.92);
+    --wl-muted: rgba(235, 238, 245, 0.70);
+    --wl-border: rgba(214, 177, 74, 0.35);
+    --wl-border-strong: rgba(214, 177, 74, 0.75);
+    --wl-radius: 2px;
+    --wl-sheet-bg:
+        radial-gradient(1000px 700px at 30% 0%, rgba(24, 28, 34, 0.92), rgba(13, 15, 18, 0.92)),
+        repeating-linear-gradient(135deg, rgba(214, 177, 74, 0.10) 0px, rgba(214, 177, 74, 0.10) 8px, rgba(0, 0, 0, 0.0) 8px, rgba(0, 0, 0, 0.0) 22px);
+    --wl-panel-bg: rgba(0, 0, 0, 0.22);
+    --wl-field-bg: rgba(0, 0, 0, 0.28);
+    --wl-field-bg-focus: rgba(214, 177, 74, 0.12);
+    --wl-tab-bg: rgba(0, 0, 0, 0.25);
+    --wl-tab-active-bg: rgba(214, 177, 74, 0.12);
 }
 
 /* Wetwired (cyberpunk: dark UI + neon glow) */
@@ -207,6 +237,22 @@ body.warlock-subsystem--wetwired .warlock {
 
     --warlock-tabs-active-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
     --warlock-resource-active-shadow: 0 0 7px rgba(0, 229, 255, 0.55);
+
+    /* Sheet theming */
+    --wl-text: rgba(220, 245, 255, 0.92);
+    --wl-muted: rgba(220, 245, 255, 0.70);
+    --wl-border: rgba(0, 229, 255, 0.35);
+    --wl-border-strong: rgba(0, 229, 255, 0.75);
+    --wl-radius: 10px;
+    --wl-sheet-bg:
+        radial-gradient(1200px 800px at 25% 0%, rgba(8, 12, 18, 0.94), rgba(3, 5, 8, 0.94)),
+        repeating-linear-gradient(90deg, rgba(0, 229, 255, 0.08) 0px, rgba(0, 229, 255, 0.08) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 18px),
+        repeating-linear-gradient(0deg, rgba(255, 0, 200, 0.05) 0px, rgba(255, 0, 200, 0.05) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 26px);
+    --wl-panel-bg: rgba(0, 0, 0, 0.25);
+    --wl-field-bg: rgba(0, 0, 0, 0.32);
+    --wl-field-bg-focus: rgba(0, 229, 255, 0.12);
+    --wl-tab-bg: rgba(0, 0, 0, 0.30);
+    --wl-tab-active-bg: rgba(0, 229, 255, 0.10);
 }
 
 .warlock h1 {
@@ -218,6 +264,89 @@ body.warlock-subsystem--wetwired .warlock {
     margin: 0px;
 
     text-align: center;
+}
+
+.warlock.sheet {
+    border: 2px solid var(--wl-border-strong, rgba(0, 0, 0, 0.25));
+    border-radius: var(--wl-radius, 0px);
+    overflow: hidden;
+}
+
+.warlock.sheet .window-content {
+    background: var(--wl-sheet-bg, rgba(0, 0, 0, 0.05));
+    color: var(--wl-text, var(--color-text-dark-primary));
+    font-family: var(--font-body);
+}
+
+.warlock.sheet .window-header {
+    border-bottom: 1px solid var(--wl-border, rgba(0, 0, 0, 0.2));
+}
+
+.warlock.sheet .window-header .window-title {
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.warlock .header {
+    background: var(--wl-panel-bg, rgba(255, 255, 255, 0.25));
+    border-bottom: 2px solid var(--wl-border, rgba(0, 0, 0, 0.2));
+}
+
+.warlock .header__image {
+    filter: grayscale(0.1) contrast(1.05);
+}
+
+.warlock .tabs {
+    background: var(--wl-tab-bg, rgba(0, 0, 0, 0.08));
+    border-bottom: 1px solid var(--wl-border, rgba(0, 0, 0, 0.2));
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.warlock .tabs__item {
+    border-bottom: none;
+    border-radius: 999px;
+    padding: 2px 12px;
+    background: transparent;
+    color: var(--wl-muted, var(--color-text-dark-6));
+}
+
+.warlock .tabs__item.active {
+    background: var(--wl-tab-active-bg, rgba(0, 0, 0, 0.10));
+    color: var(--wl-text, var(--color-text-dark-primary));
+    border: 1px solid var(--wl-border, rgba(0, 0, 0, 0.2));
+}
+
+.warlock .table__header {
+    background: var(--wl-panel-bg, rgba(255, 255, 255, 0.20));
+    border: 1px solid var(--wl-border, rgba(0, 0, 0, 0.2));
+}
+
+.warlock .table__entry:not(:first-child) {
+    border-top: 1px solid var(--wl-border, rgba(0, 0, 0, 0.12));
+}
+
+.warlock .field {
+    background: var(--wl-field-bg, rgba(255, 255, 255, 0.20));
+    border: 1px solid var(--wl-border, rgba(0, 0, 0, 0.20));
+    border-radius: calc(var(--wl-radius, 0px) * 0.5);
+    box-shadow: inset 0 0 10px var(--color-shadow);
+    color: inherit;
+}
+
+.warlock .field:hover,
+.warlock .field:focus {
+    background: var(--wl-field-bg-focus, rgba(255, 255, 255, 0.35));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--warlock-accent) 30%, transparent);
+}
+
+.warlock .table__entry-field:last-child {
+    color: var(--wl-muted, var(--color-text-dark-6));
+}
+
+.warlock .editor {
+    background: var(--wl-panel-bg, rgba(255, 255, 255, 0.20));
+    border: 1px solid var(--wl-border, rgba(0, 0, 0, 0.2));
 }
 
 .warlock select.field {
