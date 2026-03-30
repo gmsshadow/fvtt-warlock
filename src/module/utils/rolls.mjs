@@ -158,7 +158,9 @@ export class Rolls {
             }),
             flavor: flavor,
             flags: {
-                isBasicTest: options.isBasicTest,
+                warlock: {
+                    isBasicTest: options.isBasicTest,
+                },
             },
         });
     }

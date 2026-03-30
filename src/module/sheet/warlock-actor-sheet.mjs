@@ -79,8 +79,13 @@ export class WarlockActorSheet extends ActorSheet {
      * @override
      * @inheritdoc
      */
-    getData() {
-        const context = super.getData();
+    async getData() {
+        const context = await super.getData();
+
+        // Foundry's sheet context shape has changed over time; keep templates
+        // stable by ensuring `context.data.system` always exists.
+        context.data ??= {};
+        context.data.system ??= context.actor?.system ?? this.actor.system;
 
         context.data.system.activeSystem = game.settings.get("warlock", "activeSystem");
 
@@ -122,8 +127,8 @@ export class WarlockActorSheet extends ActorSheet {
         const content = await renderTemplate(
             "systems/warlock/templates/chat/item-card.hbs",
             {
-                name: effect.data.label,
-                img: effect.data.icon,
+                name: effect.name,
+                img: effect.icon ?? effect.img,
             },
         );
 
@@ -253,7 +258,7 @@ export class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        if ((item.data.type !== "Equipment")
+        if ((item.type !== "Equipment")
             || ((item.system.quantity - 1) < 0)) {
             return;
         }
@@ -286,7 +291,7 @@ export class WarlockActorSheet extends ActorSheet {
 
         await Dialog.confirm({
             title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
-                item: effect.data.label,
+                item: effect.name,
             }),
             yes: async () => {
                 await effect.delete();

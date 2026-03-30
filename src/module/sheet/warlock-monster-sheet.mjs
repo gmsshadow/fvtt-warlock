@@ -50,7 +50,7 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
      * @inheritdoc
      */
     async getData() {
-        const context = super.getData();
+        const context = await super.getData();
 
         context.data.system.abilities = context.actor.itemTypes["Ability"]
             .sort((a, b) => {

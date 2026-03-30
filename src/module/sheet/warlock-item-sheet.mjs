@@ -35,6 +35,11 @@ export class WarlockItemSheet extends ItemSheet {
     {
         const context = await super.getData();
 
+        // Foundry's sheet context shape has changed over time; keep templates
+        // stable by ensuring `context.data.system` always exists.
+        context.data ??= {};
+        context.data.system ??= context.item?.system ?? this.item.system;
+
         if (context.data.system.description)
         {
             context.data.system.description = await TextEditor.enrichHTML(

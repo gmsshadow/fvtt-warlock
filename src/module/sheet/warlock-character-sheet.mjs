@@ -173,13 +173,13 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             .map((careerId) => {
                 return {
                     _id: careerId,
-                    data: {
+                    system: {
                         isActive: false,
                     },
                 };
             });
 
-        this.actor.updateEmbeddedDocuments("Item", [
+        await this.actor.updateEmbeddedDocuments("Item", [
             {
                 _id: itemId,
                 system: {

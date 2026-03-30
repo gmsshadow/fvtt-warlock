@@ -332,10 +332,14 @@ Hooks.once("ready", () => {
  * @private
  */
 function highlightSuccessOrFailure(message, html, data) {
+    const isBasicTest = message.flags?.warlock?.isBasicTest;
+    const total = message.rolls?.[0]?.total;
+
     if (message.isRoll
         && message.isContentVisible
-        && message.flags.isBasicTest) {
-        if (message.rolls[0].total >= 20) {
+        && isBasicTest
+        && (typeof total === "number")) {
+        if (total >= 20) {
             html.find(".dice-total").addClass("dice-total--success");
         } else {
             html.find(".dice-total").addClass("dice-total--failure");

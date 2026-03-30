@@ -10,15 +10,15 @@
     }
   ],
 
-  "version": "2.1.5",
+  "version": "2.1.6",
   "compatibility": {
-    "minimum": 10,
-    "verified": 11
+    "minimum": 13,
+    "verified": 13
   },
 
   "url": "https://gitlab.com/gmsshadow2/fvtt-warlock",
   "manifest": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/src/system.json",
-  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/package/warlock-v2.1.5.zip",
+  "download": "https://gitlab.com/gmsshadow2/fvtt-warlock/-/raw/master/package/warlock-v2.1.6.zip",
 
   "esmodules": [
     "module/warlock.mjs"
