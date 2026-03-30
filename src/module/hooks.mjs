@@ -388,6 +388,25 @@ Hooks.on("renderSidebarTab", (app, html) => {
         text.insertAfter(html.find("#game-details .modules"));
     } else if (app.options.id === "combat"
                && game.combat) {
+        // Show which side is up next and which side starts the round.
+        const sideTurn = game.combat.getFlag("warlock", "sideTurn");
+        const sideWinner = game.combat.getFlag("warlock", "sideInitiativeWinner");
+
+        const sideLabel = (side) => (side === "players") ? "Players" : (side === "gm") ? "GM" : null;
+        const nextSideText = sideLabel(sideTurn ?? sideWinner);
+        const startSideText = sideLabel(sideWinner);
+
+        html.find(".warlock-combat-side-turn").remove();
+        if (nextSideText || startSideText) {
+            const banner = $(
+                `<div class="warlock-combat-side-turn">
+                    ${nextSideText ? `Next side: <strong>${nextSideText}</strong>` : ""}
+                    ${startSideText ? `<span class="warlock-combat-side-turn__sep">•</span>Round starts with: <strong>${startSideText}</strong>` : ""}
+                </div>`
+            );
+            html.find(".combat-tracker").prepend(banner);
+        }
+
         // Hide the irrelevant combat controls.
         html.find(`.combat-control[data-control="rollAll"]`).css("visibility", "hidden");
         html.find(`.combat-control[data-control="rollNPC"]`).css("visibility", "hidden");
@@ -397,6 +416,28 @@ Hooks.on("renderSidebarTab", (app, html) => {
         html.find(".token-initiative").hide();
 
         for (const [_, combatant] of game.combat.combatants.entries()) {
+            // Show actions remaining for each combatant, when available.
+            const combatantEl = html.find(`.combatant[data-combatant-id=${combatant.id}]`);
+            combatantEl.find(".warlock-actions-remaining").remove();
+
+            const current = combatant.actor?.system?.resources?.actionsPerRound?.value;
+            const max = combatant.actor?.system?.resources?.actionsPerRound?.max;
+            if (typeof current === "number" && typeof max === "number") {
+                const classes = ["warlock-actions-remaining"];
+                if (current <= 0) classes.push("warlock-actions-remaining--empty");
+                if (combatant.id === game.combat.combatant?.id) classes.push("warlock-actions-remaining--active");
+
+                const badge = $(`<span class="${classes.join(" ")}">${current}/${max}</span>`);
+
+                // Prefer to place near the name; fall back to the combatant row.
+                const nameTarget = combatantEl.find(".token-name, .combatant-name, h4").first();
+                if (nameTarget.length) {
+                    nameTarget.append(badge);
+                } else {
+                    combatantEl.append(badge);
+                }
+            }
+
             // Add the class to turns to show the token's disposition.
             if (combatant.token?.disposition) {
                 const element = html.find(`.combatant[data-combatant-id=${combatant.id}]`);
