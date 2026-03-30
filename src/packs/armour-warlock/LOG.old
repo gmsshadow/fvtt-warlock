@@ -1,1 +1,5 @@
-2023/11/02-04:17:11.967 3500 Delete type=3 #1
+2026/03/30-13:27:17.486 4434 Log #6: 0 ops saved to Table #7 OK
+2026/03/30-13:27:17.486 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\armour-warlock/000006.log: OK
+2026/03/30-13:27:17.486 4434 Table #5: 6 entries OK
+2026/03/30-13:27:17.495 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\armour-warlock/MANIFEST-000004: OK
+2026/03/30-13:27:17.500 4434 **** Repaired leveldb C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\armour-warlock; recovered 1 files; 993 bytes. Some data may have been lost. ****

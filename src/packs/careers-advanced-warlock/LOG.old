@@ -1,1 +1,5 @@
-2023/11/02-04:17:12.174 5904 Delete type=3 #1
+2026/03/30-13:27:17.585 4434 Log #6: 0 ops saved to Table #7 OK
+2026/03/30-13:27:17.588 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\careers-advanced-warlock/000006.log: OK
+2026/03/30-13:27:17.588 4434 Table #5: 34 entries OK
+2026/03/30-13:27:17.593 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\careers-advanced-warlock/MANIFEST-000004: OK
+2026/03/30-13:27:17.596 4434 **** Repaired leveldb C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\careers-advanced-warlock; recovered 1 files; 23876 bytes. Some data may have been lost. ****

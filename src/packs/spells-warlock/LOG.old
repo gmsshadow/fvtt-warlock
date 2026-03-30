@@ -1,1 +1,5 @@
-2023/11/02-04:17:12.286 5f54 Delete type=3 #1
+2026/03/30-13:27:17.642 4434 Log #6: 0 ops saved to Table #7 OK
+2026/03/30-13:27:17.642 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\spells-warlock/000006.log: OK
+2026/03/30-13:27:17.644 4434 Table #5: 72 entries OK
+2026/03/30-13:27:17.646 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\spells-warlock/MANIFEST-000004: OK
+2026/03/30-13:27:17.652 4434 **** Repaired leveldb C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\spells-warlock; recovered 1 files; 19556 bytes. Some data may have been lost. ****

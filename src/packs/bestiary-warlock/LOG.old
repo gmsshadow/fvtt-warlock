@@ -1,1 +1,5 @@
-2023/11/02-04:17:11.438 5904 Delete type=3 #1
+2026/03/30-13:27:17.302 4434 Log #6: 0 ops saved to Table #7 OK
+2026/03/30-13:27:17.306 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\bestiary-warlock/000006.log: OK
+2026/03/30-13:27:17.306 4434 Table #5: 182 entries OK
+2026/03/30-13:27:17.308 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\bestiary-warlock/MANIFEST-000004: OK
+2026/03/30-13:27:17.311 4434 **** Repaired leveldb C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\bestiary-warlock; recovered 1 files; 73723 bytes. Some data may have been lost. ****

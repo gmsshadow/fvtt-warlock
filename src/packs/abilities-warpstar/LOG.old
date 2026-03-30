@@ -1,1 +1,5 @@
-2023/11/02-04:17:11.864 566c Delete type=3 #1
+2026/03/30-13:27:17.451 4434 Log #6: 0 ops saved to Table #7 OK
+2026/03/30-13:27:17.451 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\abilities-warpstar/000006.log: OK
+2026/03/30-13:27:17.451 4434 Table #5: 22 entries OK
+2026/03/30-13:27:17.454 4434 Archiving C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\abilities-warpstar/MANIFEST-000004: OK
+2026/03/30-13:27:17.460 4434 **** Repaired leveldb C:\Users\barry\AppData\Local\FoundryVTT\Data\systems\warlock\packs\abilities-warpstar; recovered 1 files; 5019 bytes. Some data may have been lost. ****
