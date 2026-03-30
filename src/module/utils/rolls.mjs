@@ -34,6 +34,8 @@ export class Rolls {
     /**
      * Rolls the initiative to determine which side acts first in combat and
      * creates a ChatMessage for it.
+     *
+     * @returns {Promise<{winner: "players"|"gm", playersTotal: number, gmTotal: number}>}
      */
     static async rollInitiative() {
         const rollFormula = "1d6";
@@ -66,6 +68,12 @@ export class Rolls {
             speaker: ChatMessage.getSpeaker(),
             flavor: game.i18n.localize("WARLOCK.Chat.Roll.InitiativeGamesMaster"),
         });
+
+        return {
+            winner: (playerRoll.total > gmRoll.total) ? "players" : "gm",
+            playersTotal: playerRoll.total,
+            gmTotal: gmRoll.total,
+        };
     }
 
     /* ---------------------------------------------------------------------- */

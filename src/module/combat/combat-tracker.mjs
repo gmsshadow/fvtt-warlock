@@ -8,18 +8,9 @@ export class WarlockCombatTracker extends CombatTracker {
      * @inheritdoc
      */
     async getData() {
-        const context = await super.getData();
-
-        context.turns.sort((a, b) => {
-            const aDisposition = context.combat.combatants.get(a.id).token.disposition;
-            const bDisposition = context.combat.combatants.get(b.id).token.disposition;
-
-            // Subtract the disposition from 0 so that friendly is -1, neutral
-            // is 0, and hostile is 1.
-            return (0 - aDisposition) - (0 - bDisposition);
-        });
-
-        return context;
+        // Preserve the Combat turn order which may be system-defined
+        // (e.g. side-based interleaving initiative).
+        return await super.getData();
     }
 
     /* ---------------------------------------------------------------------- */
