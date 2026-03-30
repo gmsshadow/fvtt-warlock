@@ -515,13 +515,13 @@ body.warlock-subsystem--wetwired .warlock {
 .warlock .table__entry {
     border: 2px solid transparent;
 
-    height: 26px;
+    min-height: 26px;
 
     padding-left: 2px;
 }
 
 .warlock .table__entry--tall {
-    height: 30px;
+    min-height: 30px;
 }
 
 .warlock .table__entry:not(:first-child) {
@@ -531,19 +531,34 @@ body.warlock-subsystem--wetwired .warlock {
 .warlock .table__entry-image {
     border: none;
 
-    height: 28px;
+    height: 20px;
+    width: 20px;
 
-    padding-bottom: 2px;
+    margin-right: 6px;
+    padding-bottom: 0;
 
     vertical-align: middle;
 }
 
 .warlock .table__entry-field {
-    line-height: 26px;
+    line-height: 1.4;
 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/* Prevent icon/title overlap in first column */
+.warlock .table__entry-field:first-child {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.warlock .table__entry-field:first-child a {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .warlock .table__header-field:not(:first-child),
