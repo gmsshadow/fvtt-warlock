@@ -264,6 +264,7 @@ function initializeHandlebarsTemplates() {
         "systems/warlock/templates/actors/partials/spells-table.hbs",
         "systems/warlock/templates/actors/partials/weapons-table.hbs",
         "systems/warlock/templates/actors/partials/combat-tab.hbs",
+        "systems/warlock/templates/chat/attack-card.hbs",
     ]);
 }
 
@@ -378,6 +379,23 @@ function highlightSuccessOrFailure(message, html, data) {
 
 Hooks.on("renderChatMessage", (app, html, data) => {
     highlightSuccessOrFailure(app, html, data);
+
+    // Handle attack card buttons.
+    html.find(".chat-card__button--apply-damage").click(async (event) => {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const damageTotal = parseInt(button.dataset.damageTotal);
+        const damageType = button.dataset.damageType;
+        await Rolls.applyDamageToTargets(damageTotal, damageType);
+    });
+
+    html.find(".chat-card__button--apply-half").click(async (event) => {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const damageTotal = parseInt(button.dataset.damageTotal);
+        const damageType = button.dataset.damageType;
+        await Rolls.applyDamageToTargets(damageTotal, damageType, { half: true });
+    });
 });
 
 /* -------------------------------------------------------------------------- */

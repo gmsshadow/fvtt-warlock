@@ -1,0 +1,49 @@
+<div class="warlock chat-card chat-card--attack">
+    <div class="chat-card__header">
+        <img class="chat-card__image" src="{{weaponImg}}">
+        <div class="chat-card__name">
+            {{weaponName}}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="chat-card__details">
+        <span class="chat-card__details-field">
+            {{localize "WARLOCK.Chat.Attack.Skill"}}: {{skillName}} ({{skillLevel}})
+        </span>
+        <span class="chat-card__details-field">
+            {{localize "WARLOCK.Chat.Attack.Damage"}}: {{damageFormula}} {{damageTypeName}}
+        </span>
+        {{#if weaponTypeName}}
+        <span class="chat-card__details-field">
+            {{localize "WARLOCK.Chat.Attack.WeaponType"}}: {{weaponTypeName}}
+        </span>
+        {{/if}}
+    </div>
+
+    <hr>
+
+    <div class="chat-card__attack-actions">
+        <button
+            class="chat-card__button chat-card__button--apply-damage"
+            data-action="apply-damage"
+            data-actor-id="{{actorId}}"
+            data-damage-total="{{damageTotal}}"
+            data-damage-type="{{damageType}}">
+            <i class="fas fa-crosshairs"></i>
+            {{localize "WARLOCK.Chat.Attack.ApplyDamage"}}
+            ({{damageTotal}})
+        </button>
+
+        <button
+            class="chat-card__button chat-card__button--apply-half"
+            data-action="apply-half-damage"
+            data-actor-id="{{actorId}}"
+            data-damage-total="{{damageTotal}}"
+            data-damage-type="{{damageType}}">
+            <i class="fas fa-shield-alt"></i>
+            {{localize "WARLOCK.Chat.Attack.ApplyHalfDamage"}}
+        </button>
+    </div>
+</div>

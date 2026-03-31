@@ -70,6 +70,7 @@ export class WarlockActorSheet extends ActorSheet {
         html.find(".pay-stamina-cost").click(this._onPayStaminaCost.bind(this));
         html.find(".roll-armour").click(this._onRollStaminaLossReduction.bind(this));
         html.find(".roll-weapon").click(this._onRollDamage.bind(this));
+        html.find(".weapon-attack").click(this._onWeaponAttack.bind(this));
         html.find(".toggle-description").click(this._onToggleDescription.bind(this));
     }
 
@@ -520,6 +521,31 @@ export class WarlockActorSheet extends ActorSheet {
         const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const weapon = this.actor.items.get(weaponId);
         Rolls.rollDamage(this.actor, weapon);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Performs an integrated weapon attack (skill test + damage) and displays
+     * an attack card in the chat log with an "Apply Damage" button.
+     *
+     * Shift-click: skip dialog and roll a basic test.
+     * Alt-click:   skip dialog and roll an opposed test.
+     *
+     * @param {Event} event The click event to perform the weapon attack
+     *
+     * @private
+     */
+    async _onWeaponAttack(event) {
+        event.preventDefault();
+
+        const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
+        const weapon = this.actor.items.get(weaponId);
+
+        await Rolls.rollWeaponAttack(this.actor, weapon, {
+            skipDialog: event.shiftKey || event.altKey,
+            isBasicTest: event.shiftKey,
+        });
     }
 
     /* ---------------------------------------------------------------------- */

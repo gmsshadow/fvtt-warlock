@@ -947,3 +947,65 @@ body.warlock-subsystem--wetwired .warlock {
 .warlock .chat-card__details-field:not(:first-child) {
     border-left: 2px groove var(--color-border-light-1);
 }
+
+/* Attack Card */
+
+.warlock .chat-card--attack .chat-card__details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.warlock .chat-card--attack .chat-card__details-field {
+    border-left: none;
+    padding-left: 0;
+}
+
+.warlock .chat-card__attack-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 4px;
+}
+
+.warlock .chat-card__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    width: 100%;
+    padding: 4px 8px;
+    border: 1px solid var(--color-border-light-2);
+    border-radius: 3px;
+    cursor: pointer;
+
+    font-size: var(--font-size-12);
+    font-family: var(--font-primary);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    transition: background 0.15s;
+}
+
+.warlock .chat-card__button:hover {
+    background: var(--color-border-light-1);
+}
+
+.warlock .chat-card__button--apply-damage {
+    font-weight: bold;
+}
+
+.warlock .chat-card--damage-summary p {
+    margin: 2px 0;
+    font-size: var(--font-size-12);
+}
+
+/* Weapon attack icon */
+
+.warlock .weapon-attack {
+    color: var(--color-text-primary);
+}
+
+.warlock .weapon-attack:hover {
+    color: var(--warlock-hostile);
+}

@@ -2,13 +2,11 @@
     "WARLOCK": {
         "ActiveEffect": {
             "NewActiveEffect": "New Active Effect",
-
             "AddEffect": "Add Effect",
             "ChatEffect": "Chat Effect",
             "DeleteEffect": "Delete Effect",
             "EditEffect": "Edit Effect"
         },
-
         "Actors": {
             "Character": {
                 "Biography": "Biography",
@@ -16,12 +14,10 @@
                 "Passions": "Passions",
                 "Talent": "Talent"
             },
-
             "Monster": {
                 "AdventuringSkills": "Adventuring Skills",
                 "WeaponSkill": "Weapon Skill"
             },
-
             "Vehicle": {
                 "AntiPersonnelGun": "Anti-Personnel Gun",
                 "Astronav": "Astronav",
@@ -29,12 +25,10 @@
                 "Scanners": "Scanners",
                 "ShipGun": "Ship Gun",
                 "Structure": "Structure",
-
                 "CurrentStructure": "Current Structure",
                 "MaximumStructure": "Maximum Structure"
             }
         },
-
         "Chat": {
             "Roll": {
                 "Damage": "Damage Roll - {weapon} - {damageType}",
@@ -44,14 +38,24 @@
                 "SkillTestBasic": "Basic Skill Test - {name} - Level {level}",
                 "SkillTestOpposed": "Opposed Skill Test - {name} - Level {level}",
                 "StaminaLossReduction": "Stamina Loss Reduction Roll - {armour}"
+            },
+            "Attack": {
+                "Flavor": "Attack — {weapon} ({testType}) — {skill} Level {level}",
+                "Skill": "Skill",
+                "Damage": "Damage",
+                "WeaponType": "Type",
+                "ApplyDamage": "Apply Damage",
+                "ApplyHalfDamage": "Apply Half Damage",
+                "DamageAppliedGross": "{damage} damage dealt to {target}.",
+                "ArmourReduced": "Armour ({armour}) absorbed {reduction} damage.",
+                "NetStaminaLoss": "Net stamina loss: {net}. Stamina is now {newStamina}.",
+                "CriticalWarning": "⚠ CRITICAL HIT! Stamina is {negative} below zero — roll on the critical table with +{negative}."
             }
         },
-
         "CombatTracker": {
             "ModifyActionsPerRound": "Left click to increase actions remaining in the round, right click to decrease actions remaining in the round",
             "RollInitiative": "Roll initiative for each side"
         },
-
         "Details": {
             "Community": "Community",
             "Name": "Name",
@@ -60,21 +64,17 @@
             "Traits": "Traits",
             "Type": "Type"
         },
-
         "Dialogs": {
             "DeleteItem": {
                 "Title": "Delete {item}"
             },
-
             "ReputationConfiguration": {
                 "Title": "Reputation",
                 "Description": "Description",
                 "DescriptionHint": "Enter the event or group with which the reputation is associated.",
-
                 "Cancel": "Cancel",
                 "Submit": "Submit"
             },
-
             "SkillTest": {
                 "Title": "Skill Test: {skill}",
                 "Modifier": "Modifier",
@@ -92,43 +92,35 @@
                 "PinnedHint": "While pinned, you subtract 5 from any tests that require you to look out from cover.",
                 "Flanking": "Flanking",
                 "FlankingHint": "If flanking, you add 5 to your ranged attack. If flanked, you subtract 5 from any dodge test until the start of your next round.",
-
                 "OpposedTest": "Opposed Test",
                 "Cancel": "Cancel",
                 "BasicTest": "Basic Test",
-
                 "VehicleCombatCapabilityChoices": {
                     "None": "None",
                     "ShipGun": "Ship Gun",
-                    "AntiPersonnelGun":"Anti-Personnel Gun"
+                    "AntiPersonnelGun": "Anti-Personnel Gun"
                 },
-
                 "ShieldChoices": {
                     "None": "None (+0)",
                     "Small": "Small (+3)",
                     "Large": "Large (+5)"
                 },
-
                 "FlankingChoices": {
                     "None": "None (+0)",
                     "Flanking": "Flanking (+5)",
                     "Flanked": "Flanked (-5)"
                 }
             },
-
             "StaminaCost": {
                 "Title": "Stamina Cost",
-
                 "Cancel": "Cancel",
                 "PayStaminaCost": "Pay Stamina Cost ({cost})"
             }
         },
-
         "Items": {
             "Ability": {
                 "Name": "Ability"
             },
-
             "Armour": {
                 "Name": "Armour",
                 "Type": "Type",
@@ -140,24 +132,20 @@
                     "Heavy": "Heavy"
                 }
             },
-
             "Career": {
                 "Name": "Career",
                 "Skill": "Skill",
                 "Current": "Current",
                 "Max": "Max"
             },
-
             "CriticalEffect": {
                 "Name": "Critical Effect"
             },
-
             "Equipment": {
                 "Name": "Equipment",
                 "Quantity": "Quantity",
                 "Description": "Description"
             },
-
             "Glyph": {
                 "Name": "Glyph",
                 "StaminaCost": "Stamina Cost",
@@ -166,7 +154,6 @@
                     "Opposed": "Opposed"
                 }
             },
-
             "Money": {
                 "Name": "Money",
                 "ConsolidateMoneyHint": "Consolidate money to the highest note",
@@ -174,13 +161,11 @@
                     "Pennies": "Pennies",
                     "Silver": "Silver",
                     "Gold": "Gold",
-
                     "Frags": "Frags",
                     "Shards": "Shards",
                     "Jades": "Jades"
                 }
             },
-
             "Spell": {
                 "Name": "Spell",
                 "StaminaCost": "Stamina Cost",
@@ -188,7 +173,6 @@
                     "Basic": "Basic"
                 }
             },
-
             "Weapon": {
                 "Name": "Weapon",
                 "Skill": "Skill",
@@ -207,28 +191,25 @@
                 "Types": {
                     "Casual": "Casual",
                     "Martial": "Martial",
-
                     "Small": "Small",
                     "Medium": "Medium",
                     "Large": "Large"
                 }
             },
-
             "AddItem": "Add",
             "ChatItem": "Chat Item",
             "DeleteItem": "Delete Item",
             "EditItem": "Edit Item",
             "EquipItem": "Equip Item",
-
             "NewItem": "New {item}"
         },
-
         "Notifications": {
             "MigratingWorld": "Migrating your world for version {version} — Please do not close your game or shut down your server.",
             "MigratingWorldSuccess": "Successfully migrated your world for version {version}!",
-            "StaminaCost": "The stamina cost is equal to or greater than your current stamina!"
+            "StaminaCost": "The stamina cost is equal to or greater than your current stamina!",
+            "WeaponNoSkill": "This weapon has no linked skill. Set a skill on the weapon item first.",
+            "NoTargetsSelected": "No targets selected. Target one or more tokens first."
         },
-
         "Resources": {
             "ActionsPerRound": "Actions Per Round",
             "Advances": "Advances",
@@ -236,21 +217,15 @@
             "Pluck": "Pluck",
             "Reputation": "Reputation",
             "Stamina": "Stamina",
-
             "CurrentLuck": "Current Luck",
             "MaximumLuck": "Maximum Luck",
-
             "CurrentStamina": "Current Stamina",
             "MaximumStamina": "Maximum Stamina",
-
             "CurrentActionsPerRound": "Current Actions Per Round",
             "MaximumActionsPerRound": "Maximum Actions Per Round",
-
             "ReputationTest": "Reputation ({description})",
-
             "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event."
         },
-
         "Settings": {
             "SystemMigrationVersion": "System Migration Version",
             "ActiveSystem": "Active System",
@@ -273,13 +248,11 @@
             "Passions": "Passions",
             "PassionsHint": "Enable or disable the optional Passions rule from Warlock! Compendium 2."
         },
-
         "Sidebar": {
             "Settings": {
                 "Blurb": "Purchase <a href='https://www.drivethrurpg.com/product/383512/Warlock-Traitors-Edition'>Warlock!</a>, <a href='https://www.drivethrurpg.com/product/330123/Warpstar'>Warpstar!</a> and <a href='https://www.drivethrurpg.com/product/444344/Wetwired'>Wetwired</a>, and join the <a href='https://l.facebook.com/l.php?u=https%3A%2F%2Fdiscord.gg%2FxjFgkxWEup&h=AT30OjhfBQj8j2-smQCn9GjZkhiqtTeNTZi64BIuKQXneJNL-dHdV1T1cOrj0uwxhCgSOEhezycVHCXMsdbLENLe1ekb6f2OItzyGZEiM7gRpudfxIVP4CfJl7pZO2WDjZ_urIS7xzWOOc5OpbbuNQGcUyKDFkJ3EYrHA6464PPJ95eqOT5zAGuaPH3n6hN3DfIkzvs3srI34JhpGa1BRHLXoRytjE61HHZhfj-OpqeIhzC0zcB2PJCu2RCCNiVU55GNqSV69cfTSe9McmR1KB8iBIryeHksksrxWWiMr_Xd5MCeetAXaRonvZTZn6Ug_yFf177SR0EOp9vrgUzPXwvVlgHxoIzo_S40T29LUJcCYl4WlD7w7xvA9LewFnZcRLfhoYJPjgllhFZOXA77E-tAQbzdfBV1chaLxo4Ya779fUeesfGECQmPtp632HSCEbZwYh-xwM08b2ZaYlFULTIYWaDfqQOdhxAio3KEyWwchdWbKytELNJltxfd21jAPUNf7t21KHClUKaHgQCm5W0pB8CE5XARF2R4ulC1SE20dVqEUl0P9gZYLJH8D3AYipRhdImaQnTpobzTEKdv62vUGRZFgdMEHH4kIsQsV4k1-WVl0asY'>Discord community</a>!"
             }
         },
-
         "Skills": {
             "AnimalHandler": "Animal handler",
             "Appraise": "Appraise",
@@ -336,16 +309,13 @@
             "Thrown": "Thrown",
             "WarpFocus": "Warp focus",
             "ZeroG": "Zero G",
-
             "AdventuringSkills": "Adventuring Skills",
             "WeaponSkill": "Weapon Skill"
         },
-
         "Tables": {
             "EquippedWeapons": "Equipped Weapons",
             "EquippedArmour": "Equipped Armour",
             "CriticalEffects": "Critical Effects",
-
             "Current": "Current",
             "Damage": "Damage",
             "Level": "Level",
@@ -356,13 +326,12 @@
             "StaminaCost": "Stamina Cost",
             "Test": "Test",
             "Type": "Type",
-
             "ModifyQuantityTooltip": "Left-click to increase quantity, right-click to decrease quantity",
             "PayStaminaCostTooltip": "Pay Stamina Cost",
             "RollArmourReductionTooltip": "Roll Armour Reduction",
-            "RollWeaponDamageTooltip": "Roll Weapon Damage"
+            "RollWeaponDamageTooltip": "Roll Weapon Damage",
+            "WeaponAttackTooltip": "Attack with this weapon"
         },
-
         "Tabs": {
             "Abilities": "Abilities",
             "Combat": "Combat",
@@ -373,7 +342,6 @@
             "Skills": "Skills",
             "Spells": "Spells"
         },
-
         "Tests": {
             "TestCareer": "Test Career",
             "TestSkill": "Test Skill"
