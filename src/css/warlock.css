@@ -1,4 +1,9 @@
 /* -------------------------------------------------------------------------- */
+/* Fonts                                                                      */
+/* -------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap");
+
+/* -------------------------------------------------------------------------- */
 /* Global                                                                     */
 /* -------------------------------------------------------------------------- */
 :root {
@@ -130,8 +135,8 @@ To theme per subsystem, scope your CSS under one of these selectors:
 
 .warlock {
     /* Typography */
-    --font-accent: "Modesto Condensed", "Palatino Linotype", serif;
-    --font-body: "Signika", "Segoe UI", sans-serif;
+    --font-accent: "Cinzel", "Palatino Linotype", serif;
+    --font-body: "Crimson Pro", "Palatino Linotype", "Georgia", serif;
 
     /* Scale */
     --font-size-36: 2.25rem;
@@ -155,37 +160,156 @@ To theme per subsystem, scope your CSS under one of these selectors:
     --warlock-resource-active-shadow: 0 0 5px var(--warlock-glow);
 }
 
-/* Warlock! (gritty fantasy / old-school WFRP vibe) */
+/* Warlock! (stark B&W, medieval ink-on-parchment, matching the rulebook) */
 body.warlock-subsystem--warlock .warlock {
-    --font-accent: "Modesto Condensed", "Palatino Linotype", serif;
-    --font-body: "Signika", "Segoe UI", sans-serif;
+    /* Typography — Cinzel for the angular medieval headings, Crimson Pro for body */
+    --font-accent: "Cinzel", "Palatino Linotype", serif;
+    --font-body: "Crimson Pro", "Palatino Linotype", "Georgia", serif;
 
-    /* Warmer parchment-like surfaces */
-    --color-background: rgba(70, 45, 20, 0.10);
-    --color-shadow: rgba(0, 0, 0, 0.18);
+    /* Pale parchment — clean like the book's pages, not overly yellowed */
+    --color-background: rgba(45, 30, 15, 0.06);
+    --color-shadow: rgba(0, 0, 0, 0.10);
 
-    /* Ink + dried-blood accent */
-    --warlock-accent: #7b1111;
-    --warlock-accent-strong: #4f0b0b;
-    --warlock-glow: rgba(123, 17, 17, 0.55);
+    /* Ink-black and dried blood — only accent is a deep, muted red */
+    --warlock-accent: #6b1010;
+    --warlock-accent-strong: #3d0808;
+    --warlock-glow: rgba(107, 16, 16, 0.40);
 
-    --warlock-tabs-active-shadow: 0 0 10px rgba(123, 17, 17, 0.45);
-    --warlock-resource-active-shadow: 0 0 5px rgba(123, 17, 17, 0.55);
+    --warlock-tabs-active-shadow: none;
+    --warlock-resource-active-shadow: none;
 
     /* Sheet theming */
-    --wl-text: rgba(25, 18, 10, 0.95);
-    --wl-muted: rgba(25, 18, 10, 0.70);
-    --wl-border: rgba(60, 38, 18, 0.55);
-    --wl-border-strong: rgba(60, 38, 18, 0.85);
+    --wl-text: #1a1208;
+    --wl-muted: rgba(26, 18, 8, 0.60);
+    --wl-border: rgba(26, 18, 8, 0.22);
+    --wl-border-strong: rgba(26, 18, 8, 0.50);
     --wl-radius: 0px;
-    --wl-sheet-bg:
-        radial-gradient(1200px 700px at 20% 0%, rgba(255, 244, 220, 0.80), rgba(235, 220, 190, 0.65) 45%, rgba(210, 190, 160, 0.55) 100%),
-        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.028) 0px, rgba(0, 0, 0, 0.028) 1px, rgba(0, 0, 0, 0.0) 3px, rgba(0, 0, 0, 0.0) 9px);
-    --wl-panel-bg: rgba(255, 255, 255, 0.45);
-    --wl-field-bg: rgba(255, 255, 255, 0.35);
+    --wl-sheet-bg: #f5f0e8;
+    --wl-panel-bg: rgba(255, 255, 255, 0.35);
+    --wl-field-bg: rgba(255, 255, 255, 0.30);
     --wl-field-bg-focus: rgba(255, 255, 255, 0.55);
-    --wl-tab-bg: rgba(0, 0, 0, 0.06);
-    --wl-tab-active-bg: rgba(123, 17, 17, 0.10);
+    --wl-tab-bg: transparent;
+    --wl-tab-active-bg: rgba(26, 18, 8, 0.06);
+}
+
+/* Warlock! heading overrides */
+body.warlock-subsystem--warlock .warlock h1 {
+    font-family: "Cinzel", serif;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+body.warlock-subsystem--warlock .warlock .resource__name {
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: var(--font-size-13);
+    border-bottom: 1px solid rgba(26, 18, 8, 0.30);
+}
+
+body.warlock-subsystem--warlock .warlock .resource__body {
+    font-family: "Crimson Pro", serif;
+}
+
+/* Warlock! table headers — thin hairline rules like the book */
+body.warlock-subsystem--warlock .warlock .table__header {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(26, 18, 8, 0.50);
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    font-size: var(--font-size-11);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(26, 18, 8, 0.75);
+}
+
+body.warlock-subsystem--warlock .warlock .table__entry:not(:first-child) {
+    border-top: 1px solid rgba(26, 18, 8, 0.12);
+}
+
+/* Warlock! tabs — clean, understated */
+body.warlock-subsystem--warlock .warlock .tabs {
+    background: transparent;
+    border-bottom: 1px solid rgba(26, 18, 8, 0.25);
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    font-size: var(--font-size-11);
+}
+
+body.warlock-subsystem--warlock .warlock .tabs__item {
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    padding: 4px 12px;
+}
+
+body.warlock-subsystem--warlock .warlock .tabs__item.active {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(26, 18, 8, 0.65);
+    color: var(--wl-text);
+}
+
+/* Warlock! fields — thin ink borders, no shadow */
+body.warlock-subsystem--warlock .warlock .field {
+    border: 1px solid rgba(26, 18, 8, 0.20);
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.20);
+}
+
+body.warlock-subsystem--warlock .warlock .field:hover,
+body.warlock-subsystem--warlock .warlock .field:focus {
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: none;
+    border-color: rgba(26, 18, 8, 0.40);
+}
+
+/* Warlock! sheet border */
+body.warlock-subsystem--warlock .warlock.sheet {
+    border: 2px solid rgba(26, 18, 8, 0.50);
+}
+
+/* Warlock! window title */
+body.warlock-subsystem--warlock .warlock.sheet .window-header .window-title {
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+}
+
+/* Warlock! chat cards — ink-on-parchment */
+body.warlock-subsystem--warlock .warlock.chat-card {
+    font-family: "Crimson Pro", serif;
+}
+
+body.warlock-subsystem--warlock .warlock .chat-card__name {
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+
+body.warlock-subsystem--warlock .warlock .combat-result__vs {
+    font-family: "Crimson Pro", serif;
+}
+
+body.warlock-subsystem--warlock .warlock .combat-result__critical-text {
+    font-family: "Crimson Pro", serif;
+    font-style: italic;
+    border-left-color: rgba(107, 16, 16, 0.60);
+}
+
+body.warlock-subsystem--warlock .warlock .chat-card__button {
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    font-size: var(--font-size-11);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid rgba(26, 18, 8, 0.30);
+    background: rgba(245, 240, 232, 0.80);
+}
+
+body.warlock-subsystem--warlock .warlock .chat-card__button:hover {
+    background: rgba(26, 18, 8, 0.08);
 }
 
 /* Warpstar! (40k-ish: gunmetal + hazard accents) */
@@ -453,7 +577,7 @@ body.warlock-subsystem--wetwired .warlock {
 
     color: var(--color-text-dark-header);
 
-    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+    font-family: var(--font-accent);
     font-size: var(--font-size-16);
 
     position: relative;
