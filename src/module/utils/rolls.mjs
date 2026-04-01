@@ -69,6 +69,33 @@ function getCriticalEntry(damageType, total) {
     return { text, isDead, tableKey };
 }
 
+/**
+ * Miscast table (1d20). Rolled when a caster rolls a natural 1 on their
+ * Incantation test and then fails the saving Incantation re-test.
+ */
+const MISCAST_TABLE = {
+    1:  "The caster\u2019s hands catch fire, causing them 1d6 damage.",
+    2:  "Two small horns grow from the caster\u2019s head.",
+    3:  "One of the caster\u2019s eyes turns milky white.",
+    4:  "The spell discharges incorrectly, hitting the nearest creature for 2d6 damage.",
+    5:  "The caster\u2019s fingers elongate on one hand.",
+    6:  "Blood runs from the caster\u2019s eyes for 1d6 days.",
+    7:  "The spell backfires, blasting the caster across the room for 2d6 damage.",
+    8:  "An otherworldly being spies the caster, and appears in 1d3 rounds.",
+    9:  "The caster loses the sense of taste \u2014 all food is like ash.",
+    10: "The caster\u2019s skin is bleached white.",
+    11: "All of the caster\u2019s hair falls out.",
+    12: "The caster\u2019s skin becomes translucent for 2d6 days.",
+    13: "The caster\u2019s arms are altered, growing small bone spurs.",
+    14: "The caster freezes like a statue for the next 1d3 days.",
+    15: "A miasma of magical mist fills a nearby space, causing 1d6 damage to all.",
+    16: "The caster\u2019s eyes turn jet black for 1d6 weeks.",
+    17: "The caster is possessed by an otherworldly being for 1d6 turns.",
+    18: "The caster loses the ability to cast spells for 1d6 days \u2014 every attempt miscasts.",
+    19: "The caster\u2019s face is frozen in a grimace of pain for 1d6 days.",
+    20: "The caster\u2019s arms become covered in small scales.",
+};
+
 /* -------------------------------------------------------------------------- */
 /* Rolls                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -123,6 +150,126 @@ export class Rolls {
 
     /* ---------------------------------------------------------------------- */
 
+    /**
+     * Rolls a Luck test and automatically deducts 1 Luck regardless of the
+     * outcome (per the rules: "you deduct one from your Luck score for the
+     * rest of the adventure").
+     *
+     * @param {WarlockActor} actor The actor testing their luck
+     */
+    static async rollLuckTest(actor) {
+        const currentLuck = actor.system.resources.luck.value;
+
+        // Roll 1d20 + Luck as a basic test (>= 20 succeeds).
+        const roll = new Roll("1d20 + @luck", { luck: currentLuck });
+        await roll.evaluate({ async: true });
+
+        const success = roll.total >= 20;
+
+        // Deduct 1 Luck (minimum 0).
+        const newLuck = Math.max(0, currentLuck - 1);
+        await actor.update({
+            system: { resources: { luck: { value: newLuck } } },
+        });
+
+        // Build a chat card with the result and the deduction notice.
+        const resultLabel = success
+            ? game.i18n.localize("WARLOCK.Chat.Luck.Success")
+            : game.i18n.localize("WARLOCK.Chat.Luck.Failure");
+
+        const content = `<div class="warlock chat-card chat-card--luck-test">
+            <p class="luck-test__result ${success ? "luck-test__result--success" : "luck-test__result--fail"}">
+                <strong>${resultLabel}</strong>
+            </p>
+            <p class="luck-test__deduction">
+                ${game.i18n.format("WARLOCK.Chat.Luck.Deducted", { old: currentLuck, new: newLuck })}
+            </p>
+        </div>`;
+
+        await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            flavor: game.i18n.format("WARLOCK.Chat.Roll.SkillTestBasic", {
+                name: game.i18n.localize("WARLOCK.Resources.Luck"),
+                level: currentLuck,
+            }),
+            content,
+            rolls: [roll],
+            sound: CONFIG.sounds.dice,
+            flags: { warlock: { isBasicTest: true, isLuckTest: true } },
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Short rest: recover half of lost stamina. Per the rules: "Characters
+     * recover half their lost stamina as soon as they take half an hour to
+     * catch their breath."
+     *
+     * @param {WarlockActor} actor
+     */
+    static async restShort(actor) {
+        const current = actor.system.resources.stamina.value;
+        const max = actor.system.resources.stamina.max;
+        const lost = max - current;
+        const recovered = Math.floor(lost / 2);
+        const newStamina = Math.min(max, current + recovered);
+
+        if (recovered <= 0) {
+            ui.notifications.info(
+                game.i18n.localize("WARLOCK.Notifications.NoStaminaToRecover"),
+            );
+            return;
+        }
+
+        await actor.update({
+            system: { resources: { stamina: { value: newStamina } } },
+        });
+
+        await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            content: `<div class="warlock chat-card chat-card--rest">
+                <p>🛏 <strong>${game.i18n.localize("WARLOCK.Chat.Rest.ShortRest")}</strong></p>
+                <p>${game.i18n.format("WARLOCK.Chat.Rest.Recovered", { recovered, old: current, new: newStamina, max })}</p>
+            </div>`,
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Long rest: recover all stamina. Per the rules: "The remaining stamina
+     * is recovered after a good night's sleep."
+     *
+     * @param {WarlockActor} actor
+     */
+    static async restLong(actor) {
+        const current = actor.system.resources.stamina.value;
+        const max = actor.system.resources.stamina.max;
+        const recovered = max - current;
+
+        if (recovered <= 0) {
+            ui.notifications.info(
+                game.i18n.localize("WARLOCK.Notifications.NoStaminaToRecover"),
+            );
+            return;
+        }
+
+        await actor.update({
+            system: { resources: { stamina: { value: max } } },
+        });
+
+        await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            content: `<div class="warlock chat-card chat-card--rest">
+                <p>🌙 <strong>${game.i18n.localize("WARLOCK.Chat.Rest.LongRest")}</strong></p>
+                <p>${game.i18n.format("WARLOCK.Chat.Rest.Recovered", { recovered, old: current, new: max, max })}</p>
+            </div>`,
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
     static async rollSkillTest(actor, name, level, options = {}) {
         if (!options.skipDialog) {
             options = await Rolls._getSkillTestOptions(name, options);
@@ -155,6 +302,155 @@ export class Rolls {
                 weapon: weapon.name,
                 damageType: weapon.system.damage.type.choices[weapon.system.damage.type.value],
             }),
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Performs a spell casting test with full Wrath of the Otherworld
+     * automation.
+     *
+     * Flow:
+     * 1. Roll 1d20 + Incantation (or Warp Focus) — the casting test.
+     * 2. Total >= 20 → spell succeeds.
+     *    Total < 20 → spell fails.
+     * 3. If the d20 shows a NATURAL 1 → Wrath of the Otherworld:
+     *    a. Auto-roll a second Incantation test (the saving throw).
+     *    b. If the save succeeds (>= 20): close call, no miscast.
+     *    c. If the save fails (< 20): MISCAST — roll 1d20 on the
+     *       miscast table and display the result.
+     *
+     * Everything is shown in a single chat card.
+     *
+     * @param {WarlockActor} actor     The casting actor
+     * @param {string}       skillName Localised skill name
+     * @param {number}       skillLevel The actor's skill level
+     * @param {object}       [options]
+     * @param {string}       [options.spellName] Name of the spell being cast
+     * @param {number}       [options.staminaCost] Stamina cost (auto-deducted)
+     */
+    static async rollSpellTest(actor, skillName, skillLevel, options = {}) {
+        // Optional modifier dialog.
+        let modifier = 0;
+        if (!options.skipDialog) {
+            const dialogOpts = await Rolls._getSkillTestOptions(skillName, {
+                showCombatOptions: false,
+            });
+            if (dialogOpts.cancelled) return;
+            modifier = dialogOpts.modifier ?? 0;
+        }
+
+        // --- Auto-deduct stamina cost if provided ---
+        const staminaCost = options.staminaCost ?? 0;
+        if (staminaCost > 0) {
+            const currentStamina = actor.system.resources?.stamina?.value ?? 0;
+            if (currentStamina < staminaCost) {
+                ui.notifications.error(
+                    game.i18n.localize("WARLOCK.Notifications.StaminaCost"),
+                );
+                return;
+            }
+            await actor.update({
+                system: { resources: { stamina: { value: currentStamina - staminaCost } } },
+            });
+        }
+
+        // --- Casting roll ---
+        let formula = "1d20 + @level";
+        if (modifier > 0) formula += " + @modifier";
+        else if (modifier < 0) formula += " - @modifier";
+
+        const castRoll = new Roll(formula, {
+            level: skillLevel,
+            modifier: Math.abs(modifier),
+        });
+        await castRoll.evaluate({ async: true });
+
+        const allRolls = [castRoll];
+
+        // Extract the natural d20 result.
+        const naturalD20 = castRoll.dice[0]?.total ?? castRoll.total;
+        const castTotal = castRoll.total;
+        const castSuccess = castTotal >= 20;
+        const isNatural1 = naturalD20 === 1;
+
+        // --- Build result data ---
+        const result = {
+            spellName: options.spellName ?? "",
+            skillName,
+            skillLevel,
+            modifier,
+            castTotal,
+            castSuccess,
+            naturalD20,
+            isNatural1,
+            staminaCost,
+            staminaDeducted: staminaCost > 0,
+            // Wrath fields — populated below if triggered.
+            wrathTriggered: false,
+            saveTotal: null,
+            saveSuccess: false,
+            miscast: false,
+            miscastRoll: null,
+            miscastText: "",
+        };
+
+        // --- Wrath of the Otherworld (natural 1) ---
+        if (isNatural1) {
+            result.wrathTriggered = true;
+
+            // Second Incantation test — the saving throw.
+            const saveRoll = new Roll("1d20 + @level", { level: skillLevel });
+            await saveRoll.evaluate({ async: true });
+            allRolls.push(saveRoll);
+
+            result.saveTotal = saveRoll.total;
+            result.saveSuccess = saveRoll.total >= 20;
+
+            if (!result.saveSuccess) {
+                // MISCAST — roll 1d20 on the miscast table.
+                result.miscast = true;
+                const miscastRoll = new Roll("1d20");
+                await miscastRoll.evaluate({ async: true });
+                allRolls.push(miscastRoll);
+
+                result.miscastRoll = miscastRoll.total;
+                result.miscastText = MISCAST_TABLE[miscastRoll.total]
+                    ?? MISCAST_TABLE[20];
+            }
+        }
+
+        // --- Render chat card ---
+        const cardContent = await renderTemplate(
+            "systems/warlock/templates/chat/spell-test-card.hbs",
+            result,
+        );
+
+        const flavor = options.spellName
+            ? game.i18n.format("WARLOCK.Chat.Spell.FlavorNamed", {
+                spell: options.spellName,
+                skill: skillName,
+                level: skillLevel,
+            })
+            : game.i18n.format("WARLOCK.Chat.Roll.SkillTestBasic", {
+                name: skillName,
+                level: skillLevel,
+            });
+
+        await ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            flavor,
+            content: cardContent,
+            rolls: allRolls,
+            sound: CONFIG.sounds.dice,
+            flags: {
+                warlock: {
+                    isSpellTest: true,
+                    isBasicTest: true,
+                    isMiscast: result.miscast,
+                },
+            },
         });
     }
 

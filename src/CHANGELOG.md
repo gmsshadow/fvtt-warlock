@@ -7,6 +7,67 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.4.3]
+### Added
+- **Integrated combat workflow**: Click the attack icon on any weapon to run a
+  fully automated opposed combat resolution — attacker roll, defender
+  counter-roll (weapon skill for melee, Dodge for ranged), damage, armour
+  reduction, stamina application, all in a single chat card.
+- **Mighty strike detection**: Automatically detected when the winner's total is
+  three or more times the loser's total. Damage is doubled per the rules.
+- **Critical hit automation**: When stamina drops below 0, the system auto-rolls
+  1d6 + negative stamina on the correct critical table (Slashing, Piercing,
+  Crushing, or Blast) and displays the full result text. Includes a "Pull
+  Critical" button to set the target to 0 stamina instead.
+- **Melee counter-attacks**: In melee, if the defender wins the opposed test,
+  their weapon damage is rolled and applied to the attacker — matching the
+  Warlock! rules where either combatant can be injured.
+- **Attack setup dialog**: Choose weapon (if multiple equipped), target (if
+  multiple targeted with stamina shown), modifier, faraway, defender shield,
+  flanking/pinned options.
+- **Fallback attack card**: When no tokens are targeted, a simpler card is shown
+  with manual "Apply Damage" and "Apply Half Damage" buttons.
+- **Miscast / Wrath of the Otherworld**: Casting spells now detects a natural 1
+  on the Incantation test, auto-rolls a second saving test, and if that fails,
+  rolls 1d20 on the full miscast table (all 20 entries from the rulebook).
+  Everything appears in a single chat card.
+- **Automatic stamina cost deduction**: Spell stamina cost is deducted before
+  the casting test, with an insufficient stamina check.
+- **Luck auto-deduction**: Testing Luck now automatically deducts 1 from the
+  current Luck value regardless of success or failure, per the rules.
+- **Short rest**: Mug icon beneath Stamina — recovers half of lost stamina.
+- **Long rest**: Bed icon beneath Stamina — recovers all stamina to maximum.
+- Both rest actions post a summary to chat.
+- All four critical hit tables embedded (Slashing, Piercing, Crushing, Blast).
+- All 20 miscast table entries embedded.
+
+### Changed
+- **Warlock! theme overhaul**: Subsystem CSS now uses Cinzel (headings) and
+  Crimson Pro (body) fonts via Google Fonts import, matching the angular
+  medieval heading style and clean serif body text of the Traitor's Edition
+  rulebook. Flat pale parchment background, thin hairline table rules, clean
+  tab underlines, no glow effects — faithful to the book's stark
+  ink-on-parchment aesthetic.
+- Default new Character stamina set to 14/14 and Luck to 8/8 (the minimum
+  possible at character creation) instead of 0/0.
+- Spell test handler updated to use the new `rollSpellTest` flow instead of a
+  plain skill test.
+- Repository moved from GitLab to GitHub. Manifest and download URLs updated
+  accordingly.
+
+## [2.2.2]
+### Added
+- Side-based initiative with alternating turns and GM combatant selection.
+- Actions-per-round tracking in the combat tracker with visual badges.
+- Subsystem-specific CSS theming (Warlock!, Warpstar!, Wetwired) via body class
+  and CSS custom properties.
+- Wetwired subsystem support (skills, weapon types, damage types, combat
+  options).
+
+### Changed
+- Updated to Foundry VTT v13 compatibility.
+- Combat tracker hides irrelevant controls and shows side turn/round start info.
+
 ## [1.0.0]
 ### Added
 - Support for Passions optional rule from Compendium 2.
@@ -213,7 +274,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - The initial private release of this system.
 
-[Unreleased]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.10...develop
+[Unreleased]: https://github.com/gmsshadow/fvtt-warlock/compare/v2.4.3...main
+[2.4.3]: https://github.com/gmsshadow/fvtt-warlock/compare/v2.2.2...v2.4.3
+[2.2.2]: https://github.com/gmsshadow/fvtt-warlock/compare/v1.0.0...v2.2.2
 [0.3.10]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.9...v0.3.10
 [0.3.9]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.8...v0.3.9
 [0.3.8]: https://gitlab.com/azarvel/fvtt-warlock/-/compare/v0.3.7...v0.3.8

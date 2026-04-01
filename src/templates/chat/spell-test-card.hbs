@@ -1,0 +1,75 @@
+<div class="warlock chat-card chat-card--spell-test">
+    {{#if spellName}}
+    <div class="chat-card__header">
+        <div class="chat-card__name">{{spellName}}</div>
+    </div>
+    <hr>
+    {{/if}}
+
+    {{!-- Stamina cost --}}
+    {{#if staminaDeducted}}
+    <p class="spell-test__stamina-cost">
+        {{localize "WARLOCK.Chat.Spell.StaminaPaid"}}: {{staminaCost}}
+    </p>
+    {{/if}}
+
+    {{!-- Casting roll --}}
+    <div class="spell-test__cast-section">
+        <p>
+            <strong>{{skillName}} {{skillLevel}}</strong>
+            {{#if modifier}}
+                ({{#if (gt modifier 0)}}+{{/if}}{{modifier}})
+            {{/if}}
+            = <span class="spell-test__total {{#if castSuccess}}spell-test__total--success{{else}}spell-test__total--fail{{/if}}">
+                {{castTotal}}
+            </span>
+            {{#if castSuccess}}
+                — <strong>{{localize "WARLOCK.Chat.Spell.Success"}}</strong>
+            {{else}}
+                — <strong>{{localize "WARLOCK.Chat.Spell.Failure"}}</strong>
+            {{/if}}
+        </p>
+    </div>
+
+    {{!-- Wrath of the Otherworld --}}
+    {{#if isNatural1}}
+    <hr>
+    <div class="spell-test__wrath-section">
+        <p class="spell-test__wrath-header">
+            ⚡ <strong>{{localize "WARLOCK.Chat.Spell.WrathTriggered"}}</strong>
+        </p>
+        <p class="spell-test__wrath-detail">
+            {{localize "WARLOCK.Chat.Spell.WrathDetail"}}
+        </p>
+
+        {{!-- Saving test --}}
+        <div class="spell-test__save-section">
+            <p>
+                {{localize "WARLOCK.Chat.Spell.SaveTest"}}: {{skillName}} {{skillLevel}}
+                = <span class="spell-test__total {{#if saveSuccess}}spell-test__total--success{{else}}spell-test__total--fail{{/if}}">
+                    {{saveTotal}}
+                </span>
+                {{#if saveSuccess}}
+                    — <strong>{{localize "WARLOCK.Chat.Spell.SaveSuccess"}}</strong>
+                {{else}}
+                    — <strong>{{localize "WARLOCK.Chat.Spell.SaveFailure"}}</strong>
+                {{/if}}
+            </p>
+        </div>
+
+        {{!-- Miscast result --}}
+        {{#if miscast}}
+        <hr>
+        <div class="spell-test__miscast-section">
+            <p class="spell-test__miscast-header">
+                💀 <strong>{{localize "WARLOCK.Chat.Spell.Miscast"}}</strong>
+                ({{localize "WARLOCK.Chat.Spell.MiscastRoll"}}: {{miscastRoll}})
+            </p>
+            <p class="spell-test__miscast-text">
+                <em>{{miscastText}}</em>
+            </p>
+        </div>
+        {{/if}}
+    </div>
+    {{/if}}
+</div>

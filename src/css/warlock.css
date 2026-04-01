@@ -1377,3 +1377,123 @@ body.warlock-subsystem--wetwired .warlock {
 .warlock-attack-setup .form-group {
     margin-bottom: 6px;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Spell Test Card                                                             */
+/* -------------------------------------------------------------------------- */
+
+.warlock .chat-card--spell-test {
+    font-size: var(--font-size-12);
+}
+
+.warlock .spell-test__stamina-cost {
+    font-size: var(--font-size-11);
+    color: var(--wl-muted, var(--color-text-dark-6));
+    margin: 2px 0;
+}
+
+.warlock .spell-test__total {
+    font-weight: bold;
+    font-size: var(--font-size-14);
+}
+
+.warlock .spell-test__total--success {
+    color: var(--warlock-success);
+}
+
+.warlock .spell-test__total--fail {
+    color: var(--warlock-failure);
+}
+
+.warlock .spell-test__wrath-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.warlock .spell-test__wrath-header {
+    color: #8b3fcf;
+    font-size: var(--font-size-13);
+}
+
+.warlock .spell-test__wrath-detail {
+    font-size: var(--font-size-11);
+    font-style: italic;
+    color: var(--wl-muted, var(--color-text-dark-6));
+}
+
+.warlock .spell-test__save-section {
+    padding-left: 4px;
+    border-left: 3px solid #8b3fcf;
+}
+
+.warlock .spell-test__miscast-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.warlock .spell-test__miscast-header {
+    color: var(--warlock-hostile);
+    font-size: var(--font-size-13);
+}
+
+.warlock .spell-test__miscast-text {
+    font-size: var(--font-size-12);
+    padding: 4px 6px;
+    border-left: 3px solid var(--warlock-hostile);
+    margin-left: 2px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Rest Actions                                                                */
+/* -------------------------------------------------------------------------- */
+
+.warlock .resource__rest-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.warlock .resource__rest-actions a {
+    font-size: var(--font-size-11);
+    color: var(--wl-muted, var(--color-text-dark-6));
+    cursor: pointer;
+}
+
+.warlock .resource__rest-actions a:hover {
+    color: var(--warlock-success);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Luck Test Card                                                              */
+/* -------------------------------------------------------------------------- */
+
+.warlock .chat-card--luck-test p {
+    margin: 2px 0;
+    font-size: var(--font-size-12);
+}
+
+.warlock .luck-test__result--success {
+    color: var(--warlock-success);
+}
+
+.warlock .luck-test__result--fail {
+    color: var(--warlock-failure);
+}
+
+.warlock .luck-test__deduction {
+    font-size: var(--font-size-11);
+    color: var(--wl-muted, var(--color-text-dark-6));
+    font-style: italic;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Rest Card                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.warlock .chat-card--rest p {
+    margin: 2px 0;
+    font-size: var(--font-size-12);
+}

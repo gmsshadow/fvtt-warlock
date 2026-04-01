@@ -79,6 +79,8 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         html.find(".test-skill").click(this._onTestSkill.bind(this));
         html.find(".test-spell").click(this._onTestSpell.bind(this));
         html.find(".open-reputation-dialog").click(this._onOpenReputationDialog.bind(this));
+        html.find(".rest-short").click(this._onShortRest.bind(this));
+        html.find(".rest-long").click(this._onLongRest.bind(this));
 
         // Save the last focused skill level input element.
         html.find(".edit-skill-level").focusin((event) => {
@@ -415,7 +417,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
-     * Roll a skill test using luck.
+     * Roll a Luck test with automatic Luck deduction.
      *
      * @param {Event} event The click event to test Luck
      *
@@ -424,11 +426,33 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     async _onTestLuck(event) {
         event.preventDefault();
 
-        await Rolls.rollSkillTest(
-            this.actor,
-            game.i18n.localize("WARLOCK.Resources.Luck"),
-            this.actor.system.resources.luck.value,
-        );
+        await Rolls.rollLuckTest(this.actor);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Short rest: recover half lost stamina.
+     *
+     * @param {Event} event
+     * @private
+     */
+    async _onShortRest(event) {
+        event.preventDefault();
+        await Rolls.restShort(this.actor);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Long rest: recover all stamina.
+     *
+     * @param {Event} event
+     * @private
+     */
+    async _onLongRest(event) {
+        event.preventDefault();
+        await Rolls.restLong(this.actor);
     }
 
     /* ---------------------------------------------------------------------- */
@@ -516,7 +540,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
-     * Roll a skill test for a spell or glyph.
+     * Roll a spell casting test with Wrath of the Otherworld automation.
      *
      * @param {Event} event The click event to test for a spell or glyph
      *
@@ -527,39 +551,39 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
 
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
+        // Get the spell item for name/stamina cost display.
+        const itemId = event.currentTarget.closest(".table__entry")?.dataset?.itemId;
+        const spellItem = itemId ? this.actor.items.get(itemId) : null;
+
+        let skillName;
+        let skillLevel;
+
         switch (activeSystem) {
             case "warlock":
-                await Rolls.rollSkillTest(
-                    this.actor,
-                    game.warlock.skills.warlock["Incantation"],
-                    this.actor.system.adventuringSkills["Incantation"],
-                    {
-                        showCombatOptions: false,
-                    },
-                );
+                skillName = game.warlock.skills.warlock["Incantation"];
+                skillLevel = this.actor.system.adventuringSkills["Incantation"];
                 break;
             case "warpstar":
-                await Rolls.rollSkillTest(
-                    this.actor,
-                    game.warlock.skills.warpstar["Warp focus"],
-                    this.actor.system.adventuringSkills["Warp focus"],
-                    {
-                        showCombatOptions: false,
-                    },
-                );
+                skillName = game.warlock.skills.warpstar["Warp focus"];
+                skillLevel = this.actor.system.adventuringSkills["Warp focus"];
                 break;
-                case "wetwired":
-                    await Rolls.rollSkillTest(
-                        this.actor,
-                        game.warlock.skills.wetwired["Warp focus"],
-                        this.actor.system.adventuringSkills["Warp focus"],
-                        {
-                            showCombatOptions: false,
-                        },
-                    );
-                    break;
+            case "wetwired":
+                skillName = game.warlock.skills.wetwired["Sorcery"] ?? game.warlock.skills.wetwired["Conjuring"];
+                skillLevel = this.actor.system.adventuringSkills["Sorcery"]
+                    ?? this.actor.system.adventuringSkills["Conjuring"] ?? 0;
+                break;
             default:
-                break;
+                return;
         }
+
+        await Rolls.rollSpellTest(
+            this.actor,
+            skillName,
+            skillLevel,
+            {
+                spellName: spellItem?.name ?? "",
+                staminaCost: spellItem?.system?.staminaCost ?? 0,
+            },
+        );
     }
 }

@@ -55,6 +55,29 @@
                 "PullCritical": "Pull Critical (set to 0 Stamina)",
                 "CriticalPulled": "{name} is left on 0 Stamina — out of the fight but alive.",
                 "RangedMiss": "The shot misses — the target escapes unharmed."
+            },
+            "Spell": {
+                "FlavorNamed": "Casting {spell} — {skill} Level {level}",
+                "StaminaPaid": "Stamina spent",
+                "Success": "Spell succeeds!",
+                "Failure": "Spell fails.",
+                "WrathTriggered": "Wrath of the Otherworld!",
+                "WrathDetail": "A natural 1! The caster has mispronounced the strict wording and must make a second Incantation test to avoid a miscast.",
+                "SaveTest": "Saving test",
+                "SaveSuccess": "All is well — the miscast is averted.",
+                "SaveFailure": "The saving test fails — MISCAST!",
+                "Miscast": "MISCAST!",
+                "MiscastRoll": "1d20"
+            },
+            "Luck": {
+                "Success": "Lucky! The test succeeds.",
+                "Failure": "Unlucky! The test fails.",
+                "Deducted": "Luck reduced: {old} → {new}"
+            },
+            "Rest": {
+                "ShortRest": "Short Rest (half an hour)",
+                "LongRest": "Long Rest (good night's sleep)",
+                "Recovered": "Stamina: {old} → {new} (+{recovered} recovered, max {max})"
             }
         },
         "CombatTracker": {
@@ -243,7 +266,8 @@
             "StaminaCost": "The stamina cost is equal to or greater than your current stamina!",
             "WeaponNoSkill": "This weapon has no linked skill. Set a skill on the weapon item first.",
             "NoTargetsSelected": "No target selected. Target a token first, then click attack.",
-            "NoEquippedWeapons": "No equipped weapons with a linked skill. Equip a weapon first."
+            "NoEquippedWeapons": "No equipped weapons with a linked skill. Equip a weapon first.",
+            "NoStaminaToRecover": "No stamina to recover — already at maximum."
         },
         "Resources": {
             "ActionsPerRound": "Actions Per Round",
@@ -259,7 +283,9 @@
             "CurrentActionsPerRound": "Current Actions Per Round",
             "MaximumActionsPerRound": "Maximum Actions Per Round",
             "ReputationTest": "Reputation ({description})",
-            "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event."
+            "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event.",
+            "ShortRestTooltip": "Short Rest — recover half lost Stamina",
+            "LongRestTooltip": "Long Rest — recover all Stamina"
         },
         "Settings": {
             "SystemMigrationVersion": "System Migration Version",

@@ -266,6 +266,7 @@ function initializeHandlebarsTemplates() {
         "systems/warlock/templates/actors/partials/combat-tab.hbs",
         "systems/warlock/templates/chat/combat-result-card.hbs",
         "systems/warlock/templates/chat/attack-card.hbs",
+        "systems/warlock/templates/chat/spell-test-card.hbs",
         "systems/warlock/templates/dialogs/attack-setup-dialog.hbs",
     ]);
 }
