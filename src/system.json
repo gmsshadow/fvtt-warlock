@@ -17,9 +17,9 @@
     "maximum": "13"
   },
 
-  "url": "https://github.com/gmsshadow/fvtt-warlock/tree/main/src",
-  "manifest": "https://raw.githubusercontent.com/gmsshadow/fvtt-warlock/refs/heads/main/src/system.json",
-  "download": "https://github.com/gmsshadow/fvtt-warlock/raw/refs/heads/main/package/warlock-v2.4.2.zip",
+  "url": "https://github.com/gmsshadow/fvtt-warlock",
+  "manifest": "https://raw.githubusercontent.com/gmsshadow/fvtt-warlock/main/src/system.json",
+  "download": "https://raw.githubusercontent.com/gmsshadow/fvtt-warlock/main/package/warlock-v2.4.2.zip",
 
   "esmodules": [
     "module/warlock.mjs"
