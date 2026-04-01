@@ -12,8 +12,9 @@
 
   "version": "2.4.2",
   "compatibility": {
-    "minimum": 13,
-    "verified": 13
+    "minimum": "13",
+    "verified": "13",
+    "maximum": "13"
   },
 
   "url": "https://github.com/gmsshadow/fvtt-warlock/tree/main/src",
