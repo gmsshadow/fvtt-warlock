@@ -1,0 +1,93 @@
+<div class="warlock chat-card chat-card--combat-result">
+    <div class="chat-card__header">
+        <img class="chat-card__image" src="{{weaponImg}}">
+        <div class="chat-card__name">{{attackType}} — {{weaponName}}</div>
+    </div>
+
+    <hr>
+
+    <div class="combat-result__rolls">
+        <div class="combat-result__roll combat-result__roll--attacker">
+            <strong>{{attackerName}}</strong>
+            <span class="combat-result__skill">{{attackerSkillName}} {{attackerSkillLevel}}</span>
+            {{#if attackerModifier}}
+            <span class="combat-result__mod">({{#if (gt attackerModifier 0)}}+{{/if}}{{attackerModifier}})</span>
+            {{/if}}
+            <span class="combat-result__total">= {{attackerTotal}}</span>
+        </div>
+        <div class="combat-result__vs">vs</div>
+        <div class="combat-result__roll combat-result__roll--defender">
+            <strong>{{defenderName}}</strong>
+            <span class="combat-result__skill">{{defenderSkillName}} {{defenderSkillLevel}}</span>
+            {{#if defenderModifier}}
+            <span class="combat-result__mod">(+{{defenderModifier}})</span>
+            {{/if}}
+            <span class="combat-result__total">= {{defenderTotal}}</span>
+        </div>
+    </div>
+
+    <hr>
+
+    {{#if isDraw}}
+    <div class="combat-result__outcome combat-result__outcome--draw">
+        <p>⚔ <strong>{{localize "WARLOCK.Chat.Combat.Draw"}}</strong></p>
+    </div>
+
+    {{else}}
+    <div class="combat-result__outcome">
+        <p class="combat-result__winner-line">
+            ✓ <strong>{{winnerName}}</strong> {{localize "WARLOCK.Chat.Combat.Wins"}}
+            {{#if isMightyStrike}}
+            <span class="combat-result__mighty">⚡ {{localize "WARLOCK.Chat.Combat.MightyStrike"}}</span>
+            {{/if}}
+        </p>
+
+        {{#if defenderCounterAttack}}
+        <p class="combat-result__counter-note"><em>{{localize "WARLOCK.Chat.Combat.CounterAttack"}}</em></p>
+        {{/if}}
+
+        {{#if hasDamage}}
+        <hr>
+        <div class="combat-result__damage-section">
+            <p>{{damageWeaponName}}: {{rawDamage}} {{damageTypeName}}
+            {{#if isMightyStrike}} ×2 = {{finalDamage}}{{/if}}</p>
+            {{#if hasArmour}}
+            <p>{{armourName}}: −{{armourReduction}}</p>
+            {{/if}}
+            <p><strong>{{localize "WARLOCK.Chat.Combat.NetDamage"}}: {{netDamage}}</strong></p>
+        </div>
+
+        <hr>
+        <div class="combat-result__stamina-section">
+            <p>{{loserName}}: {{oldStamina}} → <strong>{{newStamina}}</strong> {{localize "WARLOCK.Chat.Combat.Stamina"}}</p>
+        </div>
+
+        {{#if isCritical}}
+        <hr>
+        <div class="combat-result__critical-section">
+            <p class="combat-result__critical-header">
+                ⚠ <strong>{{localize "WARLOCK.Chat.Combat.CriticalHit"}}</strong>
+                (1d6+{{critModifier}} = {{critTotal}})
+            </p>
+            <p class="combat-result__critical-type">{{critTableKey}} {{localize "WARLOCK.Chat.Combat.Critical"}}:</p>
+            <p class="combat-result__critical-text"><em>{{criticalText}}</em></p>
+            {{#if isDead}}
+            <p class="combat-result__dead">💀 <strong>{{localize "WARLOCK.Chat.Combat.Dead"}}</strong></p>
+            {{/if}}
+            <button
+                class="chat-card__button chat-card__button--pull-critical"
+                data-action="pull-critical"
+                data-actor-id="{{loserActorId}}">
+                <i class="fas fa-hand-paper"></i>
+                {{localize "WARLOCK.Chat.Combat.PullCritical"}}
+            </button>
+        </div>
+        {{/if}}
+        {{/if}}
+
+        {{#if rangedMiss}}
+        <p><em>{{localize "WARLOCK.Chat.Combat.RangedMiss"}}</em></p>
+        {{/if}}
+    </div>
+    {{/if}}
+</div>

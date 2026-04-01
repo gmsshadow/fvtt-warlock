@@ -264,7 +264,9 @@ function initializeHandlebarsTemplates() {
         "systems/warlock/templates/actors/partials/spells-table.hbs",
         "systems/warlock/templates/actors/partials/weapons-table.hbs",
         "systems/warlock/templates/actors/partials/combat-tab.hbs",
+        "systems/warlock/templates/chat/combat-result-card.hbs",
         "systems/warlock/templates/chat/attack-card.hbs",
+        "systems/warlock/templates/dialogs/attack-setup-dialog.hbs",
     ]);
 }
 
@@ -289,6 +291,8 @@ function initializeHandlebarsHelpers() {
         const activeSystem = game.settings.get("warlock", "activeSystem");
         return game.warlock.skills[activeSystem][skill]
     });
+
+    Handlebars.registerHelper("gt", (a, b) => a > b);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -380,7 +384,7 @@ function highlightSuccessOrFailure(message, html, data) {
 Hooks.on("renderChatMessage", (app, html, data) => {
     highlightSuccessOrFailure(app, html, data);
 
-    // Handle attack card buttons.
+    // Handle simple attack card "Apply Damage" buttons.
     html.find(".chat-card__button--apply-damage").click(async (event) => {
         event.preventDefault();
         const button = event.currentTarget;
@@ -395,6 +399,14 @@ Hooks.on("renderChatMessage", (app, html, data) => {
         const damageTotal = parseInt(button.dataset.damageTotal);
         const damageType = button.dataset.damageType;
         await Rolls.applyDamageToTargets(damageTotal, damageType, { half: true });
+    });
+
+    // Handle combat result card "Pull Critical" button.
+    html.find(".chat-card__button--pull-critical").click(async (event) => {
+        event.preventDefault();
+        const btn = event.currentTarget;
+        const actorId = btn.dataset.actorId;
+        await Rolls.pullCritical(actorId);
     });
 });
 

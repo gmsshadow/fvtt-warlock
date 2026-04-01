@@ -1,0 +1,64 @@
+<form class="warlock warlock-attack-setup">
+    {{#if showWeaponChoice}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.AttackSetup.Weapon"}}</label>
+        <select name="weaponId">
+            {{#each weapons}}
+            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{/if}}
+
+    {{#if showTargetChoice}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.AttackSetup.Target"}}</label>
+        <select name="targetTokenId">
+            {{#each targets}}
+            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{/if}}
+
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.SkillTest.Modifier"}}</label>
+        <input type="number" name="modifier" value="0" data-dtype="Number">
+        <p class="hint">{{localize "WARLOCK.Dialogs.AttackSetup.ModifierHint"}}</p>
+    </div>
+
+    {{#if isRanged}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.SkillTest.RangedTargetFaraway"}}</label>
+        <input type="checkbox" name="faraway" data-dtype="Boolean">
+        <p class="hint">{{localize "WARLOCK.Dialogs.SkillTest.RangedTargetFarawayHint"}}</p>
+    </div>
+    {{/if}}
+
+    {{#if showDefenderShield}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.AttackSetup.DefenderShield"}}</label>
+        <select name="defenderShield">
+            <option value="none">{{localize "WARLOCK.Dialogs.SkillTest.ShieldChoices.None"}}</option>
+            <option value="small">{{localize "WARLOCK.Dialogs.SkillTest.ShieldChoices.Small"}}</option>
+            <option value="large">{{localize "WARLOCK.Dialogs.SkillTest.ShieldChoices.Large"}}</option>
+        </select>
+        <p class="hint">{{localize "WARLOCK.Dialogs.AttackSetup.DefenderShieldHint"}}</p>
+    </div>
+    {{/if}}
+
+    {{#if showFlanking}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.SkillTest.Flanking"}}</label>
+        <select name="flankingChoice">
+            <option value="none">{{localize "WARLOCK.Dialogs.SkillTest.FlankingChoices.None"}}</option>
+            <option value="flanking">{{localize "WARLOCK.Dialogs.SkillTest.FlankingChoices.Flanking"}}</option>
+            <option value="flanked">{{localize "WARLOCK.Dialogs.SkillTest.FlankingChoices.Flanked"}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.SkillTest.Pinned"}}</label>
+        <input type="checkbox" name="pinned" data-dtype="Boolean">
+    </div>
+    {{/if}}
+</form>

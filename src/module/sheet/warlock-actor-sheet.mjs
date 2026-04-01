@@ -526,11 +526,8 @@ export class WarlockActorSheet extends ActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
-     * Performs an integrated weapon attack (skill test + damage) and displays
-     * an attack card in the chat log with an "Apply Damage" button.
-     *
-     * Shift-click: skip dialog and roll a basic test.
-     * Alt-click:   skip dialog and roll an opposed test.
+     * Performs a fully automated combat attack against a targeted token.
+     * Target a token first, then click the weapon attack button.
      *
      * @param {Event} event The click event to perform the weapon attack
      *
@@ -540,11 +537,9 @@ export class WarlockActorSheet extends ActorSheet {
         event.preventDefault();
 
         const weaponId = event.currentTarget.closest(".table__entry").dataset.itemId;
-        const weapon = this.actor.items.get(weaponId);
 
-        await Rolls.rollWeaponAttack(this.actor, weapon, {
-            skipDialog: event.shiftKey || event.altKey,
-            isBasicTest: event.shiftKey,
+        await Rolls.rollCombatAttack(this.actor, {
+            selectedWeaponId: weaponId,
         });
     }
 

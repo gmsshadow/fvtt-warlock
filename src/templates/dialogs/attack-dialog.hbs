@@ -1,0 +1,110 @@
+<form class="warlock warlock-attack-dialog">
+    {{!-- Combatant Summary --}}
+    <div class="attack-dialog__summary">
+        <div class="attack-dialog__combatant">
+            <label>{{localize "WARLOCK.Dialogs.Attack.Attacker"}}</label>
+            <span>{{attackerName}} — {{attackerSkillName}} {{attackerSkillLevel}}</span>
+            {{#unless isRanged}}
+            <span class="attack-dialog__hint">
+                (+5 {{localize "WARLOCK.Dialogs.Attack.InitiativeBonus"}})
+            </span>
+            {{/unless}}
+        </div>
+
+        <div class="attack-dialog__combatant">
+            <label>{{localize "WARLOCK.Dialogs.Attack.Defender"}}</label>
+            <span>{{defenderName}} — {{defenderSkillName}} {{defenderSkillLevel}}</span>
+        </div>
+    </div>
+
+    <hr>
+
+    {{!-- Attacker Modifier --}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.Attack.AttackerModifier"}}
+        </label>
+
+        <input
+            class="field"
+            type="number"
+            name="attackerModifier"
+            value="0"
+            data-dtype="Number">
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.Attack.AttackerModifierHint"}}
+        </p>
+    </div>
+
+    {{!-- Range (ranged only) --}}
+    {{#if isRanged}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.Attack.Range"}}
+        </label>
+
+        <select name="range">
+            <option value="close">{{localize "WARLOCK.Dialogs.Attack.RangeClose"}}</option>
+            <option value="faraway">{{localize "WARLOCK.Dialogs.Attack.RangeFaraway"}}</option>
+        </select>
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.Attack.RangeHint"}}
+        </p>
+    </div>
+
+    {{!-- Defender's Shield (Warlock ranged only) --}}
+    {{#if (eq activeSystem "warlock")}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.Attack.DefenderShield"}}
+        </label>
+
+        <select name="defenderShield">
+            <option value="none">{{localize "WARLOCK.Dialogs.Attack.ShieldNone"}}</option>
+            <option value="small">{{localize "WARLOCK.Dialogs.Attack.ShieldSmall"}}</option>
+            <option value="large">{{localize "WARLOCK.Dialogs.Attack.ShieldLarge"}}</option>
+        </select>
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.Attack.DefenderShieldHint"}}
+        </p>
+    </div>
+    {{/if}}
+    {{/if}}
+
+    {{!-- Flanking / Pinned (Warpstar & Wetwired) --}}
+    {{#unless (eq activeSystem "warlock")}}
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.Pinned"}}
+        </label>
+
+        <input
+            type="checkbox"
+            name="pinned"
+            data-dtype="Boolean">
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.PinnedHint"}}
+        </p>
+    </div>
+
+    <div class="form-group">
+        <label>
+            {{localize "WARLOCK.Dialogs.SkillTest.Flanking"}}
+        </label>
+
+        <select name="flanking">
+            <option value="none">{{localize "WARLOCK.Dialogs.SkillTest.FlankingChoices.None"}}</option>
+            <option value="flanking">{{localize "WARLOCK.Dialogs.SkillTest.FlankingChoices.Flanking"}}</option>
+            <option value="flanked">{{localize "WARLOCK.Dialogs.SkillTest.FlankingChoices.Flanked"}}</option>
+        </select>
+
+        <p class="hint">
+            {{localize "WARLOCK.Dialogs.SkillTest.FlankingHint"}}
+        </p>
+    </div>
+    {{/unless}}
+</form>

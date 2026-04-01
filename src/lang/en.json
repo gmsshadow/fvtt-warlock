@@ -39,17 +39,22 @@
                 "SkillTestOpposed": "Opposed Skill Test - {name} - Level {level}",
                 "StaminaLossReduction": "Stamina Loss Reduction Roll - {armour}"
             },
-            "Attack": {
-                "Flavor": "Attack — {weapon} ({testType}) — {skill} Level {level}",
-                "Skill": "Skill",
-                "Damage": "Damage",
-                "WeaponType": "Type",
-                "ApplyDamage": "Apply Damage",
-                "ApplyHalfDamage": "Apply Half Damage",
-                "DamageAppliedGross": "{damage} damage dealt to {target}.",
-                "ArmourReduced": "Armour ({armour}) absorbed {reduction} damage.",
-                "NetStaminaLoss": "Net stamina loss: {net}. Stamina is now {newStamina}.",
-                "CriticalWarning": "⚠ CRITICAL HIT! Stamina is {negative} below zero — roll on the critical table with +{negative}."
+            "Attack": {},
+            "Combat": {
+                "FlavourMelee": "Melee Attack — {weapon}",
+                "FlavourRanged": "Ranged Attack — {weapon}",
+                "Draw": "Draw! The exchange is inconclusive.",
+                "Wins": "wins the exchange!",
+                "MightyStrike": "MIGHTY STRIKE!",
+                "CounterAttack": "The defender strikes back!",
+                "NetDamage": "Net damage",
+                "Stamina": "Stamina",
+                "CriticalHit": "CRITICAL HIT!",
+                "Critical": "Critical",
+                "Dead": "DEAD",
+                "PullCritical": "Pull Critical (set to 0 Stamina)",
+                "CriticalPulled": "{name} is left on 0 Stamina — out of the fight but alive.",
+                "RangedMiss": "The shot misses — the target escapes unharmed."
             }
         },
         "CombatTracker": {
@@ -115,6 +120,34 @@
                 "Title": "Stamina Cost",
                 "Cancel": "Cancel",
                 "PayStaminaCost": "Pay Stamina Cost ({cost})"
+            },
+            "Attack": {
+                "Title": "Attack: {weapon}",
+                "Attacker": "Attacker",
+                "Defender": "Target",
+                "InitiativeBonus": "initiative bonus",
+                "AttackerModifier": "Additional Modifier",
+                "AttackerModifierHint": "Any additional situational bonus or penalty for the attacker.",
+                "Range": "Range",
+                "RangeClose": "Close / Nearby (+0)",
+                "RangeFaraway": "Faraway (−5)",
+                "RangeHint": "Faraway range imposes a −5 penalty on the attacker.",
+                "DefenderShield": "Defender's Shield",
+                "ShieldNone": "None (+0)",
+                "ShieldSmall": "Small Shield (+3 to Dodge)",
+                "ShieldLarge": "Large Shield (+5 to Dodge)",
+                "DefenderShieldHint": "Shields add to the defender's Dodge against ranged attacks.",
+                "Attack": "Attack!",
+                "Cancel": "Cancel"
+            },
+            "AttackSetup": {
+                "Title": "Attack",
+                "Attack": "Attack!",
+                "Weapon": "Weapon",
+                "Target": "Target",
+                "ModifierHint": "Additional situational modifier to the attacker's roll.",
+                "DefenderShield": "Defender's Shield",
+                "DefenderShieldHint": "If the defender has a shield, it adds to their Dodge vs. ranged attacks."
             }
         },
         "Items": {
@@ -194,7 +227,8 @@
                     "Small": "Small",
                     "Medium": "Medium",
                     "Large": "Large"
-                }
+                },
+                "Unarmed": "Unarmed"
             },
             "AddItem": "Add",
             "ChatItem": "Chat Item",
@@ -208,7 +242,8 @@
             "MigratingWorldSuccess": "Successfully migrated your world for version {version}!",
             "StaminaCost": "The stamina cost is equal to or greater than your current stamina!",
             "WeaponNoSkill": "This weapon has no linked skill. Set a skill on the weapon item first.",
-            "NoTargetsSelected": "No targets selected. Target one or more tokens first."
+            "NoTargetsSelected": "No target selected. Target a token first, then click attack.",
+            "NoEquippedWeapons": "No equipped weapons with a linked skill. Equip a weapon first."
         },
         "Resources": {
             "ActionsPerRound": "Actions Per Round",
@@ -330,7 +365,7 @@
             "PayStaminaCostTooltip": "Pay Stamina Cost",
             "RollArmourReductionTooltip": "Roll Armour Reduction",
             "RollWeaponDamageTooltip": "Roll Weapon Damage",
-            "WeaponAttackTooltip": "Attack with this weapon"
+            "WeaponAttackTooltip": "Attack with this weapon (target a token first)"
         },
         "Tabs": {
             "Abilities": "Abilities",
