@@ -107,7 +107,7 @@ export class Rolls {
 
     static async rollStaminaLossReduction(actor, armour) {
         const roll = new Roll(`${armour.system.reductionRoll}`, {});
-        roll.evaluate();
+        await roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor: game.i18n.format("WARLOCK.Chat.Roll.StaminaLossReduction", { armour: armour.name }),
@@ -120,11 +120,11 @@ export class Rolls {
         const rollFormula = "1d6";
         let playerRoll = new Roll(rollFormula, {});
         let gmRoll = new Roll(rollFormula, {});
-        playerRoll.evaluate();
-        gmRoll.evaluate();
+        await playerRoll.evaluate();
+        await gmRoll.evaluate();
         while (playerRoll.total === gmRoll.total) {
-            playerRoll = playerRoll.reroll();
-            gmRoll = gmRoll.reroll();
+            playerRoll = await playerRoll.reroll();
+            gmRoll = await gmRoll.reroll();
         }
         await playerRoll.toMessage({
             speaker: ChatMessage.getSpeaker(),
@@ -145,7 +145,7 @@ export class Rolls {
 
     static async rollPluckEvent(actor, pluck) {
         const roll = new Roll("2d6 + @pluck", { pluck });
-        roll.evaluate();
+        await roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor: game.i18n.localize("WARLOCK.Chat.Roll.PluckEvent"),
@@ -166,7 +166,7 @@ export class Rolls {
 
         // Roll 1d20 + Luck as a basic test (>= 20 succeeds).
         const roll = new Roll("1d20 + @luck", { luck: currentLuck });
-        roll.evaluate();
+        await roll.evaluate();
 
         const success = roll.total >= 20;
 
@@ -287,7 +287,7 @@ export class Rolls {
         if (modifier > 0) formula += " + @modifier";
         else if (modifier < 0) formula += " - @modifier";
         const roll = new Roll(formula, { level, modifier: Math.abs(modifier) });
-        roll.evaluate();
+        await roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor,
@@ -299,7 +299,7 @@ export class Rolls {
 
     static async rollDamage(actor, weapon) {
         const roll = new Roll(`max(${weapon.system.damage.roll}, 1)`, {});
-        roll.evaluate();
+        await roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor: game.i18n.format("WARLOCK.Chat.Roll.Damage", {
@@ -369,7 +369,7 @@ export class Rolls {
             level: skillLevel,
             modifier: Math.abs(modifier),
         });
-        castRoll.evaluate();
+        await castRoll.evaluate();
 
         const allRolls = [castRoll];
 
@@ -406,7 +406,7 @@ export class Rolls {
 
             // Second Incantation test — the saving throw.
             const saveRoll = new Roll("1d20 + @level", { level: skillLevel });
-            saveRoll.evaluate();
+            await saveRoll.evaluate();
             allRolls.push(saveRoll);
 
             result.saveTotal = saveRoll.total;
@@ -416,7 +416,7 @@ export class Rolls {
                 // MISCAST — roll 1d20 on the miscast table.
                 result.miscast = true;
                 const miscastRoll = new Roll("1d20");
-                miscastRoll.evaluate();
+                await miscastRoll.evaluate();
                 allRolls.push(miscastRoll);
 
                 result.miscastRoll = miscastRoll.total;
@@ -580,7 +580,7 @@ export class Rolls {
         if (setup.pinned) atkMod -= 5;
 
         const atkRoll = new Roll("1d20 + @level + @mod", { level: atkInfo.skillLevel, mod: atkMod });
-        atkRoll.evaluate();
+        await atkRoll.evaluate();
 
         // Defender modifiers.
         const defInfo = Rolls.getDefenderCombatInfo(defenderActor, isRanged);
@@ -590,7 +590,7 @@ export class Rolls {
             if (setup.defenderShield === "large") defMod += 5;
         }
         const defRoll = new Roll("1d20 + @level + @mod", { level: defInfo.skillLevel, mod: defMod });
-        defRoll.evaluate();
+        await defRoll.evaluate();
 
         const atkTotal = atkRoll.total;
         const defTotal = defRoll.total;
@@ -647,7 +647,7 @@ export class Rolls {
     /** @private */
     static async _resolveDamage(result, allRolls, attacker, defenderActor, targetToken, weapon, isMightyStrike) {
         const damageRoll = new Roll(`max(${weapon.system.damage.roll}, 1)`, {});
-        damageRoll.evaluate();
+        await damageRoll.evaluate();
         allRolls.push(damageRoll);
 
         const damageType = weapon.system.damage.type.value;
@@ -659,7 +659,7 @@ export class Rolls {
         let armourReduction = 0;
         if (armour?.system.reductionRoll) {
             const aRoll = new Roll(armour.system.reductionRoll, {});
-            aRoll.evaluate();
+            await aRoll.evaluate();
             armourReduction = aRoll.total;
             allRolls.push(aRoll);
         }
@@ -684,7 +684,7 @@ export class Rolls {
         if (newStamina < 0) {
             const critMod = Math.abs(newStamina);
             const critRoll = new Roll("1d6 + @mod", { mod: critMod });
-            critRoll.evaluate();
+            await critRoll.evaluate();
             allRolls.push(critRoll);
             const crit = getCriticalEntry(damageType, critRoll.total);
             Object.assign(result, {
@@ -701,7 +701,7 @@ export class Rolls {
         const formula = defInfo.damageFormula || "1d6-2";
         const damageType = defInfo.damageType || "Crushing";
         const damageRoll = new Roll(`max(${formula}, 1)`, {});
-        damageRoll.evaluate();
+        await damageRoll.evaluate();
         allRolls.push(damageRoll);
 
         const damageTypeName = defInfo.weapon?.system.damage.type.choices?.[damageType] ?? damageType;
@@ -712,7 +712,7 @@ export class Rolls {
         let armourReduction = 0;
         if (armour?.system.reductionRoll) {
             const aRoll = new Roll(armour.system.reductionRoll, {});
-            aRoll.evaluate();
+            await aRoll.evaluate();
             armourReduction = aRoll.total;
             allRolls.push(aRoll);
         }
@@ -737,7 +737,7 @@ export class Rolls {
         if (newStamina < 0) {
             const critMod = Math.abs(newStamina);
             const critRoll = new Roll("1d6 + @mod", { mod: critMod });
-            critRoll.evaluate();
+            await critRoll.evaluate();
             allRolls.push(critRoll);
             const crit = getCriticalEntry(damageType, critRoll.total);
             Object.assign(result, {
@@ -761,9 +761,9 @@ export class Rolls {
         if (modifier > 0) formula += " + @modifier";
         else if (modifier < 0) formula += " - @modifier";
         const attackRoll = new Roll(formula, { level: atkInfo.skillLevel, modifier: Math.abs(modifier) });
-        attackRoll.evaluate();
+        await attackRoll.evaluate();
         const damageRoll = new Roll(`max(${weapon.system.damage.roll}, 1)`, {});
-        damageRoll.evaluate();
+        await damageRoll.evaluate();
         const damageTypeName = weapon.system.damage.type.choices?.[weapon.system.damage.type.value] ?? weapon.system.damage.type.value;
         const cardContent = await Rolls._renderTemplate("systems/warlock/templates/chat/attack-card.hbs", {
             weaponImg: weapon.img, weaponName: weapon.name,
@@ -800,7 +800,7 @@ export class Rolls {
             let armourReduction = 0;
             if (armour?.system.reductionRoll) {
                 const r = new Roll(armour.system.reductionRoll, {});
-                r.evaluate();
+                await r.evaluate();
                 armourReduction = r.total;
             }
             const netDamage = Math.max(1, grossDamage - armourReduction);
