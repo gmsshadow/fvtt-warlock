@@ -871,7 +871,7 @@ export class Rolls {
                 },
                 default: "attack",
                 close: () => resolve({ cancelled: true }),
-            }, null).render(true);
+            }).render(true);
         });
     }
 
@@ -967,7 +967,7 @@ export class Rolls {
                 },
                 default: "cancel",
                 close: () => resolve({ cancelled: true }),
-            }, null).render(true);
+            }).render(true);
         });
     }
 }

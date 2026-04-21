@@ -23,34 +23,9 @@ export class WarlockCombatTracker extends CombatTracker {
      * by default.
      */
     _getEntryContextOptions() {
-        return [
-            {
-                name: "COMBAT.CombatantUpdate",
-                icon: "<i class=\"fas fa-edit\"></i>",
-                callback: this._onConfigureCombatant.bind(this)
-            },
-            {
-                name: "COMBAT.CombatantClear",
-                icon: "<i class=\"fas fa-undo\"></i>",
-                condition: li => {
-                    const combatant = this.viewed.combatants.get(li.data("combatant-id"));
-                    return combatant?.system?.initiative ?? false;
-                },
-                callback: li => {
-                    const combatant = this.viewed.combatants.get(li.data("combatant-id"));
-                    return combatant?.update({
-                        initiative: null,
-                    });
-                },
-            },
-            {
-                name: "COMBAT.CombatantRemove",
-                icon: "<i class=\"fas fa-trash\"></i>",
-                callback: li => {
-                    const combatant = this.viewed.combatants.get(li.data("combatant-id"));
-                    return combatant?.delete();
-                },
-            },
-        ];
+        // In Foundry v14 the CombatTracker context menu implementation changed.
+        // Use the base implementation, but remove initiative-related entries.
+        const options = super._getEntryContextOptions();
+        return options.filter(o => !/Initiative/i.test(o?.name ?? ""));
     }
 }

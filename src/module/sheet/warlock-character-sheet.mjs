@@ -372,7 +372,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
                 close: () => resolve({
                     cancelled: true,
                 }),
-            }, null).render(true);
+            }).render(true);
         });
 
         if (options.cancelled) {

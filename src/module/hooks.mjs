@@ -383,9 +383,9 @@ function highlightSuccessOrFailure(message, html, data) {
 
 /* -------------------------------------------------------------------------- */
 
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
     const $html = (html instanceof HTMLElement) ? $(html) : html;
-    highlightSuccessOrFailure(app, html, data);
+    highlightSuccessOrFailure(message, html, data);
 
     // Handle simple attack card "Apply Damage" buttons.
     $html.find(".chat-card__button--apply-damage").click(async (event) => {
