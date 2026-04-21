@@ -101,9 +101,13 @@ const MISCAST_TABLE = {
 /* -------------------------------------------------------------------------- */
 
 export class Rolls {
+    static async _renderTemplate(path, data) {
+        return await foundry.applications.handlebars.renderTemplate(path, data);
+    }
+
     static async rollStaminaLossReduction(actor, armour) {
         const roll = new Roll(`${armour.system.reductionRoll}`, {});
-        await roll.evaluate({ async: true });
+        roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor: game.i18n.format("WARLOCK.Chat.Roll.StaminaLossReduction", { armour: armour.name }),
@@ -116,11 +120,11 @@ export class Rolls {
         const rollFormula = "1d6";
         let playerRoll = new Roll(rollFormula, {});
         let gmRoll = new Roll(rollFormula, {});
-        await playerRoll.evaluate({ async: true });
-        await gmRoll.evaluate({ async: true });
+        playerRoll.evaluate();
+        gmRoll.evaluate();
         while (playerRoll.total === gmRoll.total) {
-            playerRoll = await playerRoll.reroll({ async: true });
-            gmRoll = await gmRoll.reroll({ async: true });
+            playerRoll = playerRoll.reroll();
+            gmRoll = gmRoll.reroll();
         }
         await playerRoll.toMessage({
             speaker: ChatMessage.getSpeaker(),
@@ -141,7 +145,7 @@ export class Rolls {
 
     static async rollPluckEvent(actor, pluck) {
         const roll = new Roll("2d6 + @pluck", { pluck });
-        await roll.evaluate({ async: true });
+        roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor: game.i18n.localize("WARLOCK.Chat.Roll.PluckEvent"),
@@ -162,7 +166,7 @@ export class Rolls {
 
         // Roll 1d20 + Luck as a basic test (>= 20 succeeds).
         const roll = new Roll("1d20 + @luck", { luck: currentLuck });
-        await roll.evaluate({ async: true });
+        roll.evaluate();
 
         const success = roll.total >= 20;
 
@@ -283,7 +287,7 @@ export class Rolls {
         if (modifier > 0) formula += " + @modifier";
         else if (modifier < 0) formula += " - @modifier";
         const roll = new Roll(formula, { level, modifier: Math.abs(modifier) });
-        await roll.evaluate({ async: true });
+        roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor,
@@ -295,7 +299,7 @@ export class Rolls {
 
     static async rollDamage(actor, weapon) {
         const roll = new Roll(`max(${weapon.system.damage.roll}, 1)`, {});
-        await roll.evaluate({ async: true });
+        roll.evaluate();
         await roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor }),
             flavor: game.i18n.format("WARLOCK.Chat.Roll.Damage", {
@@ -365,7 +369,7 @@ export class Rolls {
             level: skillLevel,
             modifier: Math.abs(modifier),
         });
-        await castRoll.evaluate({ async: true });
+        castRoll.evaluate();
 
         const allRolls = [castRoll];
 
@@ -402,7 +406,7 @@ export class Rolls {
 
             // Second Incantation test — the saving throw.
             const saveRoll = new Roll("1d20 + @level", { level: skillLevel });
-            await saveRoll.evaluate({ async: true });
+            saveRoll.evaluate();
             allRolls.push(saveRoll);
 
             result.saveTotal = saveRoll.total;
@@ -412,7 +416,7 @@ export class Rolls {
                 // MISCAST — roll 1d20 on the miscast table.
                 result.miscast = true;
                 const miscastRoll = new Roll("1d20");
-                await miscastRoll.evaluate({ async: true });
+                miscastRoll.evaluate();
                 allRolls.push(miscastRoll);
 
                 result.miscastRoll = miscastRoll.total;
@@ -422,7 +426,7 @@ export class Rolls {
         }
 
         // --- Render chat card ---
-        const cardContent = await renderTemplate(
+        const cardContent = await Rolls._renderTemplate(
             "systems/warlock/templates/chat/spell-test-card.hbs",
             result,
         );
@@ -576,7 +580,7 @@ export class Rolls {
         if (setup.pinned) atkMod -= 5;
 
         const atkRoll = new Roll("1d20 + @level + @mod", { level: atkInfo.skillLevel, mod: atkMod });
-        await atkRoll.evaluate({ async: true });
+        atkRoll.evaluate();
 
         // Defender modifiers.
         const defInfo = Rolls.getDefenderCombatInfo(defenderActor, isRanged);
@@ -586,7 +590,7 @@ export class Rolls {
             if (setup.defenderShield === "large") defMod += 5;
         }
         const defRoll = new Roll("1d20 + @level + @mod", { level: defInfo.skillLevel, mod: defMod });
-        await defRoll.evaluate({ async: true });
+        defRoll.evaluate();
 
         const atkTotal = atkRoll.total;
         const defTotal = defRoll.total;
@@ -623,7 +627,7 @@ export class Rolls {
             }
         }
 
-        const cardContent = await renderTemplate(
+        const cardContent = await Rolls._renderTemplate(
             "systems/warlock/templates/chat/combat-result-card.hbs", result,
         );
         const flavor = isRanged
@@ -643,7 +647,7 @@ export class Rolls {
     /** @private */
     static async _resolveDamage(result, allRolls, attacker, defenderActor, targetToken, weapon, isMightyStrike) {
         const damageRoll = new Roll(`max(${weapon.system.damage.roll}, 1)`, {});
-        await damageRoll.evaluate({ async: true });
+        damageRoll.evaluate();
         allRolls.push(damageRoll);
 
         const damageType = weapon.system.damage.type.value;
@@ -655,7 +659,7 @@ export class Rolls {
         let armourReduction = 0;
         if (armour?.system.reductionRoll) {
             const aRoll = new Roll(armour.system.reductionRoll, {});
-            await aRoll.evaluate({ async: true });
+            aRoll.evaluate();
             armourReduction = aRoll.total;
             allRolls.push(aRoll);
         }
@@ -680,7 +684,7 @@ export class Rolls {
         if (newStamina < 0) {
             const critMod = Math.abs(newStamina);
             const critRoll = new Roll("1d6 + @mod", { mod: critMod });
-            await critRoll.evaluate({ async: true });
+            critRoll.evaluate();
             allRolls.push(critRoll);
             const crit = getCriticalEntry(damageType, critRoll.total);
             Object.assign(result, {
@@ -697,7 +701,7 @@ export class Rolls {
         const formula = defInfo.damageFormula || "1d6-2";
         const damageType = defInfo.damageType || "Crushing";
         const damageRoll = new Roll(`max(${formula}, 1)`, {});
-        await damageRoll.evaluate({ async: true });
+        damageRoll.evaluate();
         allRolls.push(damageRoll);
 
         const damageTypeName = defInfo.weapon?.system.damage.type.choices?.[damageType] ?? damageType;
@@ -708,7 +712,7 @@ export class Rolls {
         let armourReduction = 0;
         if (armour?.system.reductionRoll) {
             const aRoll = new Roll(armour.system.reductionRoll, {});
-            await aRoll.evaluate({ async: true });
+            aRoll.evaluate();
             armourReduction = aRoll.total;
             allRolls.push(aRoll);
         }
@@ -733,7 +737,7 @@ export class Rolls {
         if (newStamina < 0) {
             const critMod = Math.abs(newStamina);
             const critRoll = new Roll("1d6 + @mod", { mod: critMod });
-            await critRoll.evaluate({ async: true });
+            critRoll.evaluate();
             allRolls.push(critRoll);
             const crit = getCriticalEntry(damageType, critRoll.total);
             Object.assign(result, {
@@ -757,11 +761,11 @@ export class Rolls {
         if (modifier > 0) formula += " + @modifier";
         else if (modifier < 0) formula += " - @modifier";
         const attackRoll = new Roll(formula, { level: atkInfo.skillLevel, modifier: Math.abs(modifier) });
-        await attackRoll.evaluate({ async: true });
+        attackRoll.evaluate();
         const damageRoll = new Roll(`max(${weapon.system.damage.roll}, 1)`, {});
-        await damageRoll.evaluate({ async: true });
+        damageRoll.evaluate();
         const damageTypeName = weapon.system.damage.type.choices?.[weapon.system.damage.type.value] ?? weapon.system.damage.type.value;
-        const cardContent = await renderTemplate("systems/warlock/templates/chat/attack-card.hbs", {
+        const cardContent = await Rolls._renderTemplate("systems/warlock/templates/chat/attack-card.hbs", {
             weaponImg: weapon.img, weaponName: weapon.name,
             skillName: atkInfo.skillName, skillLevel: atkInfo.skillLevel,
             damageFormula: weapon.system.damage.roll, damageTypeName,
@@ -796,7 +800,7 @@ export class Rolls {
             let armourReduction = 0;
             if (armour?.system.reductionRoll) {
                 const r = new Roll(armour.system.reductionRoll, {});
-                await r.evaluate({ async: true });
+                r.evaluate();
                 armourReduction = r.total;
             }
             const netDamage = Math.max(1, grossDamage - armourReduction);
@@ -834,7 +838,7 @@ export class Rolls {
             label: `${t.name} (Stamina: ${t.actor?.system.resources?.stamina?.value ?? "?"})`,
             selected: targets.length === 1,
         }));
-        const content = await renderTemplate("systems/warlock/templates/dialogs/attack-setup-dialog.hbs", {
+        const content = await Rolls._renderTemplate("systems/warlock/templates/dialogs/attack-setup-dialog.hbs", {
             weapons: weaponChoices, targets: targetChoices,
             showWeaponChoice: equippedWeapons.length > 1,
             showTargetChoice: targets.length > 1,
@@ -923,7 +927,7 @@ export class Rolls {
             }
             return { modifier, isBasicTest };
         }
-        const content = await renderTemplate("systems/warlock/templates/dialogs/skill-test-dialog.hbs", {
+        const content = await Rolls._renderTemplate("systems/warlock/templates/dialogs/skill-test-dialog.hbs", {
             activeSystem: game.settings.get("warlock", "activeSystem"),
             baseModifier: options.baseModifier ?? 0,
             showVehicleCombatCapabilities: options.showVehicleCombatCapabilities,

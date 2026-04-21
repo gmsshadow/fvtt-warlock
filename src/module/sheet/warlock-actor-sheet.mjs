@@ -126,7 +126,7 @@ export class WarlockActorSheet extends ActorSheet {
         const effectId = event.currentTarget.closest(".table__entry").dataset.effectId;
         const effect = this.actor.effects.get(effectId);
 
-        const content = await renderTemplate(
+        const content = await foundry.applications.handlebars.renderTemplate(
             "systems/warlock/templates/chat/item-card.hbs",
             {
                 name: effect.name,
@@ -159,7 +159,7 @@ export class WarlockActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        const content = await renderTemplate(
+        const content = await foundry.applications.handlebars.renderTemplate(
             "systems/warlock/templates/chat/item-card.hbs",
             {
                 name: item.name,

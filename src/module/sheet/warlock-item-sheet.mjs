@@ -43,7 +43,7 @@ export class WarlockItemSheet extends ItemSheet {
 
         if (context.data.system.description)
         {
-            context.data.system.description = await TextEditor.enrichHTML(
+            context.data.system.description = await foundry.applications.ux.TextEditor.enrichHTML(
                 context.data.system.description,
                 {
                     async: true,

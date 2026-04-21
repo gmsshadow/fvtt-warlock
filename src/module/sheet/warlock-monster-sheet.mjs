@@ -66,7 +66,7 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
                 return a.sort - b.sort;
             });
 
-        context.data.system.biography.description = await TextEditor.enrichHTML(
+        context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
             context.data.system.biography.description,
             {
                 async: true,

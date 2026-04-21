@@ -127,19 +127,19 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         context.data.system.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
         context.data.system.biography.passions.enabled = game.settings.get("warlock", "passionsEnabled");
 
-        context.data.system.biography.description = await TextEditor.enrichHTML(
+        context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
             context.data.system.biography.description,
             {
                 async: true,
             },
         );
-        context.data.system.biography.notes = await TextEditor.enrichHTML(
+        context.data.system.biography.notes = await foundry.applications.ux.TextEditor.enrichHTML(
             context.data.system.biography.notes,
             {
                 async: true,
             },
         );
-        context.data.system.biography.talent.description = await TextEditor.enrichHTML(
+        context.data.system.biography.talent.description = await foundry.applications.ux.TextEditor.enrichHTML(
             context.data.system.biography.talent.description,
             {
                 async: true,
@@ -344,7 +344,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         }
 
         const template = "systems/warlock/templates/dialogs/reputation-configuration-dialog.hbs";
-        const content = await renderTemplate(template, {
+        const content = await foundry.applications.handlebars.renderTemplate(template, {
             description: this.actor.system.resources.reputation.description,
         });
 
