@@ -50,28 +50,29 @@ export class WarlockActorSheet extends ActorSheet {
      */
     activateListeners(html) {
         super.activateListeners(html);
+        const $html = (html instanceof HTMLElement) ? $(html) : html;
 
         // Select all of the text in an input element when focusing it.
-        html.find("input").focusin((event) => {
+        $html.find("input").focusin((event) => {
             event.currentTarget.select();
         });
 
-        html.find(".chat-effect").click(this._onChatActiveEffect.bind(this));
-        html.find(".chat-item").click(this._onChatItem.bind(this));
-        html.find(".create-effect").click(this._onCreateActiveEffect.bind(this));
-        html.find(".create-item").click(this._onCreateItem.bind(this));
-        html.find(".delete-effect").click(this._onDeleteActiveEffect.bind(this));
-        html.find(".delete-item").click(this._onDeleteItem.bind(this));
-        html.find(".edit-effect").click(this._onEditActiveEffect.bind(this));
-        html.find(".edit-item").click(this._onEditItem.bind(this));
-        html.find(".equip-item").click(this._onEquipItem.bind(this));
-        html.find(".modify-quantity").click(this._onIncreaseQuantity.bind(this));
-        html.find(".modify-quantity").contextmenu(this._onDecreaseQuantity.bind(this));
-        html.find(".pay-stamina-cost").click(this._onPayStaminaCost.bind(this));
-        html.find(".roll-armour").click(this._onRollStaminaLossReduction.bind(this));
-        html.find(".roll-weapon").click(this._onRollDamage.bind(this));
-        html.find(".weapon-attack").click(this._onWeaponAttack.bind(this));
-        html.find(".toggle-description").click(this._onToggleDescription.bind(this));
+        $html.find(".chat-effect").click(this._onChatActiveEffect.bind(this));
+        $html.find(".chat-item").click(this._onChatItem.bind(this));
+        $html.find(".create-effect").click(this._onCreateActiveEffect.bind(this));
+        $html.find(".create-item").click(this._onCreateItem.bind(this));
+        $html.find(".delete-effect").click(this._onDeleteActiveEffect.bind(this));
+        $html.find(".delete-item").click(this._onDeleteItem.bind(this));
+        $html.find(".edit-effect").click(this._onEditActiveEffect.bind(this));
+        $html.find(".edit-item").click(this._onEditItem.bind(this));
+        $html.find(".equip-item").click(this._onEquipItem.bind(this));
+        $html.find(".modify-quantity").click(this._onIncreaseQuantity.bind(this));
+        $html.find(".modify-quantity").contextmenu(this._onDecreaseQuantity.bind(this));
+        $html.find(".pay-stamina-cost").click(this._onPayStaminaCost.bind(this));
+        $html.find(".roll-armour").click(this._onRollStaminaLossReduction.bind(this));
+        $html.find(".roll-weapon").click(this._onRollDamage.bind(this));
+        $html.find(".weapon-attack").click(this._onWeaponAttack.bind(this));
+        $html.find(".toggle-description").click(this._onToggleDescription.bind(this));
     }
 
     /* ---------------------------------------------------------------------- */
@@ -555,6 +556,14 @@ export class WarlockActorSheet extends ActorSheet {
     _onToggleDescription(event) {
         event.preventDefault();
 
-        $(event.currentTarget.closest(".table__entry")).next().slideToggle();
+        const entry = event.currentTarget.closest(".table__entry");
+        if (!entry) return;
+
+        const next = entry.nextElementSibling;
+        if (!next) return;
+
+        // The collapsible row is hidden by CSS. Toggle it safely without relying on jQuery.
+        const isHidden = (next.style.display === "none") || (getComputedStyle(next).display === "none");
+        next.style.display = isHidden ? "block" : "none";
     }
 }

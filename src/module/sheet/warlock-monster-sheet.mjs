@@ -36,11 +36,12 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
      */
     activateListeners(html) {
         super.activateListeners(html);
+        const $html = (html instanceof HTMLElement) ? $(html) : html;
 
-        html.find(".test-adventuring-skills").click(this._onTestAdventuringSkills.bind(this));
-        html.find(".test-skill").click(this._onTestWeaponSkill.bind(this));
-        html.find(".test-spell").click(this._onTestAdventuringSkills.bind(this));
-        html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
+        $html.find(".test-adventuring-skills").click(this._onTestAdventuringSkills.bind(this));
+        $html.find(".test-skill").click(this._onTestWeaponSkill.bind(this));
+        $html.find(".test-spell").click(this._onTestAdventuringSkills.bind(this));
+        $html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
     }
 
     /* ---------------------------------------------------------------------- */

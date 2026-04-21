@@ -67,23 +67,24 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
      */
     activateListeners(html) {
         super.activateListeners(html);
+        const $html = (html instanceof HTMLElement) ? $(html) : html;
 
-        html.find(".activate-career").click(this._onActivateCareer.bind(this));
-        html.find(".consolidate-money").click(this._onConsolidateMoney.bind(this));
-        html.find(".edit-skill-level").change(this._onEditSkillLevel.bind(this));
-        html.find(".increment-skill-level").click(this._onIncrementSkillLevel.bind(this));
-        html.find(".test-career").click(this._onTestCareer.bind(this));
-        html.find(".test-luck").click(this._onTestLuck.bind(this));
-        html.find(".test-pluck").click(this._onTestPluck.bind(this));
-        html.find(".test-reputation").click(this._onTestReputation.bind(this));
-        html.find(".test-skill").click(this._onTestSkill.bind(this));
-        html.find(".test-spell").click(this._onTestSpell.bind(this));
-        html.find(".open-reputation-dialog").click(this._onOpenReputationDialog.bind(this));
-        html.find(".rest-short").click(this._onShortRest.bind(this));
-        html.find(".rest-long").click(this._onLongRest.bind(this));
+        $html.find(".activate-career").click(this._onActivateCareer.bind(this));
+        $html.find(".consolidate-money").click(this._onConsolidateMoney.bind(this));
+        $html.find(".edit-skill-level").change(this._onEditSkillLevel.bind(this));
+        $html.find(".increment-skill-level").click(this._onIncrementSkillLevel.bind(this));
+        $html.find(".test-career").click(this._onTestCareer.bind(this));
+        $html.find(".test-luck").click(this._onTestLuck.bind(this));
+        $html.find(".test-pluck").click(this._onTestPluck.bind(this));
+        $html.find(".test-reputation").click(this._onTestReputation.bind(this));
+        $html.find(".test-skill").click(this._onTestSkill.bind(this));
+        $html.find(".test-spell").click(this._onTestSpell.bind(this));
+        $html.find(".open-reputation-dialog").click(this._onOpenReputationDialog.bind(this));
+        $html.find(".rest-short").click(this._onShortRest.bind(this));
+        $html.find(".rest-long").click(this._onLongRest.bind(this));
 
         // Save the last focused skill level input element.
-        html.find(".edit-skill-level").focusin((event) => {
+        $html.find(".edit-skill-level").focusin((event) => {
             this.saveFocus = event.currentTarget.dataset.skill;
         });
     }

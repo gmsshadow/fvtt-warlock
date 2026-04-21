@@ -22,9 +22,10 @@ export class WarlockItemSheet extends ItemSheet {
     activateListeners(html)
     {
         super.activateListeners(html);
+        const $html = (html instanceof HTMLElement) ? $(html) : html;
 
         // Select all of the text in an input element when focusing it.
-        html.find("input").focusin((event) => {
+        $html.find("input").focusin((event) => {
             event.currentTarget.select();
         });
     }

@@ -36,11 +36,12 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
      */
     activateListeners(html) {
         super.activateListeners(html);
+        const $html = (html instanceof HTMLElement) ? $(html) : html;
 
         const activeSystem = game.settings.get("warlock", "activeSystem");
 
         if (activeSystem === "warpstar") {
-            html.find(".test-skill").click(this._onTestSkill.bind(this));
+            $html.find(".test-skill").click(this._onTestSkill.bind(this));
         }
     }
 

@@ -365,6 +365,7 @@ Hooks.once("ready", () => {
  * @private
  */
 function highlightSuccessOrFailure(message, html, data) {
+    const $html = (html instanceof HTMLElement) ? $(html) : html;
     const isBasicTest = message.flags?.warlock?.isBasicTest;
     const total = message.rolls?.[0]?.total;
 
@@ -373,9 +374,9 @@ function highlightSuccessOrFailure(message, html, data) {
         && isBasicTest
         && (typeof total === "number")) {
         if (total >= 20) {
-            html.find(".dice-total").addClass("dice-total--success");
+            $html.find(".dice-total").addClass("dice-total--success");
         } else {
-            html.find(".dice-total").addClass("dice-total--failure");
+            $html.find(".dice-total").addClass("dice-total--failure");
         }
     }
 }
@@ -383,10 +384,11 @@ function highlightSuccessOrFailure(message, html, data) {
 /* -------------------------------------------------------------------------- */
 
 Hooks.on("renderChatMessage", (app, html, data) => {
+    const $html = (html instanceof HTMLElement) ? $(html) : html;
     highlightSuccessOrFailure(app, html, data);
 
     // Handle simple attack card "Apply Damage" buttons.
-    html.find(".chat-card__button--apply-damage").click(async (event) => {
+    $html.find(".chat-card__button--apply-damage").click(async (event) => {
         event.preventDefault();
         const button = event.currentTarget;
         const damageTotal = parseInt(button.dataset.damageTotal);
@@ -394,7 +396,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
         await Rolls.applyDamageToTargets(damageTotal, damageType);
     });
 
-    html.find(".chat-card__button--apply-half").click(async (event) => {
+    $html.find(".chat-card__button--apply-half").click(async (event) => {
         event.preventDefault();
         const button = event.currentTarget;
         const damageTotal = parseInt(button.dataset.damageTotal);
@@ -403,7 +405,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
     });
 
     // Handle combat result card "Pull Critical" button.
-    html.find(".chat-card__button--pull-critical").click(async (event) => {
+    $html.find(".chat-card__button--pull-critical").click(async (event) => {
         event.preventDefault();
         const btn = event.currentTarget;
         const actorId = btn.dataset.actorId;
@@ -414,9 +416,10 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 /* -------------------------------------------------------------------------- */
 
 Hooks.on("renderSidebarTab", (app, html) => {
+    const $html = (html instanceof HTMLElement) ? $(html) : html;
     if (app.options.id === "settings") {
         const text = $(`<p>${game.i18n.localize("WARLOCK.Sidebar.Settings.Blurb")}</p>`);
-        text.insertAfter(html.find("#game-details .modules"));
+        text.insertAfter($html.find("#game-details .modules"));
     } else if (app.options.id === "combat"
                && game.combat) {
         // Show which side is up next and which side starts the round.
@@ -427,7 +430,7 @@ Hooks.on("renderSidebarTab", (app, html) => {
         const nextSideText = sideLabel(sideTurn ?? sideWinner);
         const startSideText = sideLabel(sideWinner);
 
-        html.find(".warlock-combat-side-turn").remove();
+        $html.find(".warlock-combat-side-turn").remove();
         if (nextSideText || startSideText) {
             const banner = $(
                 `<div class="warlock-combat-side-turn">
@@ -435,20 +438,20 @@ Hooks.on("renderSidebarTab", (app, html) => {
                     ${startSideText ? `<span class="warlock-combat-side-turn__sep">•</span>Round starts with: <strong>${startSideText}</strong>` : ""}
                 </div>`
             );
-            html.find(".combat-tracker").prepend(banner);
+            $html.find(".combat-tracker").prepend(banner);
         }
 
         // Hide the irrelevant combat controls.
-        html.find(`.combat-control[data-control="rollAll"]`).css("visibility", "hidden");
-        html.find(`.combat-control[data-control="rollNPC"]`).css("visibility", "hidden");
-        html.find(`.combat-control[data-control="resetAll"]`).css("visibility", "hidden");
-        html.find(`.combat-control[data-control="previousTurn"]`).css("visibility", "hidden");
-        html.find(`.combat-control[data-control="nextTurn"]`).css("visibility", "hidden");
-        html.find(".token-initiative").hide();
+        $html.find(`.combat-control[data-control="rollAll"]`).css("visibility", "hidden");
+        $html.find(`.combat-control[data-control="rollNPC"]`).css("visibility", "hidden");
+        $html.find(`.combat-control[data-control="resetAll"]`).css("visibility", "hidden");
+        $html.find(`.combat-control[data-control="previousTurn"]`).css("visibility", "hidden");
+        $html.find(`.combat-control[data-control="nextTurn"]`).css("visibility", "hidden");
+        $html.find(".token-initiative").hide();
 
         for (const [_, combatant] of game.combat.combatants.entries()) {
             // Show actions remaining for each combatant, when available.
-            const combatantEl = html.find(`.combatant[data-combatant-id=${combatant.id}]`);
+            const combatantEl = $html.find(`.combatant[data-combatant-id=${combatant.id}]`);
             combatantEl.find(".warlock-actions-remaining").remove();
 
             const current = combatant.actor?.system?.resources?.actionsPerRound?.value;
@@ -471,7 +474,7 @@ Hooks.on("renderSidebarTab", (app, html) => {
 
             // Add the class to turns to show the token's disposition.
             if (combatant.token?.disposition) {
-                const element = html.find(`.combatant[data-combatant-id=${combatant.id}]`);
+                const element = $html.find(`.combatant[data-combatant-id=${combatant.id}]`);
                 switch (combatant.token.disposition) {
                     case -1: // Hostile
                         element.addClass("combat-tracker__combatant--hostile");

@@ -84,12 +84,13 @@ export class WarlockCareerSheet extends WarlockItemSheet {
      */
     activateListeners(html) {
         super.activateListeners(html);
+        const $html = (html instanceof HTMLElement) ? $(html) : html;
 
-        html.find(".edit-career-skill-level").change(this._onEditCareerSkillLevel.bind(this));
-        html.find(".toggle-career-skill").click(this._onToggleCareerSkill.bind(this));
+        $html.find(".edit-career-skill-level").change(this._onEditCareerSkillLevel.bind(this));
+        $html.find(".toggle-career-skill").click(this._onToggleCareerSkill.bind(this));
 
         // Save the last focused skill level input element.
-        html.find(".edit-career-skill-level").focusin((event) => {
+        $html.find(".edit-career-skill-level").focusin((event) => {
             this.saveFocus = event.currentTarget.dataset.skill;
         });
     }
