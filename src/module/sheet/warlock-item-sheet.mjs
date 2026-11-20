@@ -10,6 +10,10 @@ export class WarlockItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ["warlock", "sheet", "item"],
+        window: {
+            // Drag the bottom-right corner to resize the sheet.
+            resizable: true,
+        },
         form: {
             submitOnChange: true,
         },

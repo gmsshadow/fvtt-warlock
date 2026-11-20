@@ -13,6 +13,10 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ["warlock", "sheet", "actor"],
+        window: {
+            // Drag the bottom-right corner to resize the sheet.
+            resizable: true,
+        },
         form: {
             submitOnChange: true,
         },

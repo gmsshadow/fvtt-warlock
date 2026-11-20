@@ -7,6 +7,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.5]
+### Added
+- All actor and item sheets are resizable: drag the bottom-right corner. The
+  header and tabs keep their size, and the sheet body fills the window and
+  scrolls when the sheet is made smaller.
+
+### Fixed
+- Template preloading uses `foundry.applications.handlebars.loadTemplates`
+  (the global was deprecated in v13 and is removed in v15).
+
 ## [2.5.4]
 ### Fixed
 - Sheet header resource blocks share the row evenly and wrap long labels, so

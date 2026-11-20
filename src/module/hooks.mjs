@@ -248,7 +248,7 @@ function initializeSettings() {
  * @private
  */
 function initializeHandlebarsTemplates() {
-    loadTemplates([
+    foundry.applications.handlebars.loadTemplates([
         "systems/warlock/templates/actors/partials/armour-table.hbs",
         "systems/warlock/templates/actors/partials/equipment-table.hbs",
         "systems/warlock/templates/actors/partials/glyphs-table.hbs",
