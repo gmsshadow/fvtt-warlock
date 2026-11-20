@@ -30,15 +30,13 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
     /** @override */
     static TABS = {
         primary: {
-            combat: { id: "combat", group: "primary", label: "WARLOCK.Tabs.Combat" },
-            gear: { id: "gear", group: "primary", label: "WARLOCK.Tabs.Gear" },
-            description: { id: "description", group: "primary", label: "WARLOCK.Tabs.Description" },
+            initial: "combat",
+            tabs: [
+                { id: "combat", label: "WARLOCK.Tabs.Combat" },
+                { id: "gear", label: "WARLOCK.Tabs.Gear" },
+                { id: "description", label: "WARLOCK.Tabs.Description" },
+            ],
         },
-    };
-
-    /** @override */
-    tabGroups = {
-        primary: "combat",
     };
 
     /* ---------------------------------------------------------------------- */

@@ -27,14 +27,12 @@ export class WarlockCareerSheet extends WarlockItemSheet {
     /** @override */
     static TABS = {
         primary: {
-            skills: { id: "skills", group: "primary", label: "WARLOCK.Tabs.Skills" },
-            description: { id: "description", group: "primary", label: "WARLOCK.Tabs.Description" },
+            initial: "skills",
+            tabs: [
+                { id: "skills", label: "WARLOCK.Tabs.Skills" },
+                { id: "description", label: "WARLOCK.Tabs.Description" },
+            ],
         },
-    };
-
-    /** @override */
-    tabGroups = {
-        primary: "skills",
     };
 
     /* ---------------------------------------------------------------------- */

@@ -42,17 +42,15 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     /** @override */
     static TABS = {
         primary: {
-            skills: { id: "skills", group: "primary", label: "WARLOCK.Tabs.Skills" },
-            combat: { id: "combat", group: "primary", label: "WARLOCK.Tabs.Combat" },
-            gear: { id: "gear", group: "primary", label: "WARLOCK.Tabs.Gear" },
-            spells: { id: "spells", group: "primary", label: "WARLOCK.Tabs.Spells" },
-            notes: { id: "notes", group: "primary", label: "WARLOCK.Tabs.Notes" },
+            initial: "skills",
+            tabs: [
+                { id: "skills", label: "WARLOCK.Tabs.Skills" },
+                { id: "combat", label: "WARLOCK.Tabs.Combat" },
+                { id: "gear", label: "WARLOCK.Tabs.Gear" },
+                { id: "spells", label: "WARLOCK.Tabs.Spells" },
+                { id: "notes", label: "WARLOCK.Tabs.Notes" },
+            ],
         },
-    };
-
-    /** @override */
-    tabGroups = {
-        primary: "skills",
     };
 
     /* ---------------------------------------------------------------------- */

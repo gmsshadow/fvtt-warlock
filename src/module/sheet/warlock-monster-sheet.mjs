@@ -31,17 +31,15 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
     /** @override */
     static TABS = {
         primary: {
-            abilities: { id: "abilities", group: "primary", label: "WARLOCK.Tabs.Abilities" },
-            combat: { id: "combat", group: "primary", label: "WARLOCK.Tabs.Combat" },
-            gear: { id: "gear", group: "primary", label: "WARLOCK.Tabs.Gear" },
-            spells: { id: "spells", group: "primary", label: "WARLOCK.Tabs.Spells" },
-            description: { id: "description", group: "primary", label: "WARLOCK.Tabs.Description" },
+            initial: "abilities",
+            tabs: [
+                { id: "abilities", label: "WARLOCK.Tabs.Abilities" },
+                { id: "combat", label: "WARLOCK.Tabs.Combat" },
+                { id: "gear", label: "WARLOCK.Tabs.Gear" },
+                { id: "spells", label: "WARLOCK.Tabs.Spells" },
+                { id: "description", label: "WARLOCK.Tabs.Description" },
+            ],
         },
-    };
-
-    /** @override */
-    tabGroups = {
-        primary: "abilities",
     };
 
     /* ---------------------------------------------------------------------- */
