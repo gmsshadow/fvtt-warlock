@@ -78,6 +78,8 @@ function initializeCONFIG() {
  */
 function initializeSheets() {
     // Actor sheets.
+    const { DocumentSheetConfig } = foundry.applications.apps;
+
     DocumentSheetConfig.registerSheet(Actor, "warlock", WarlockCharacterSheet, {
         types: ["Character"],
         makeDefault: true,

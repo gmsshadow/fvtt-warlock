@@ -7,6 +7,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.4]
+### Fixed
+- Sheet header resource blocks share the row evenly and wrap long labels, so
+  the Monster sheet's Actions per Round, Weapon Skill and Adventuring Skills
+  no longer overlap.
+- Header resource boxes line up on one row; the Character sheet's rest buttons
+  sit below Stamina instead of pushing Luck and Actions per Round down.
+- Sheet registration uses `foundry.applications.apps.DocumentSheetConfig`
+  (the global was deprecated in v13 and is removed in v15).
+
 ## [2.5.3]
 ### Fixed
 - Character and Career sheets always show the active subsystem's full

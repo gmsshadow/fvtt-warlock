@@ -557,15 +557,16 @@ body.warlock-subsystem--wetwired .warlock {
     display: flex;
     flex-direction: column;
 
-    flex: 0 0 100px;
+    /* Resource blocks share the row equally, so long names ("Actions per
+       Round", "Adventuring Skills") wrap instead of overlapping. */
+    flex: 1 1 0;
 
-    min-width: 0;
+    min-width: 80px;
+    max-width: 160px;
 
     padding: 0px 6px;
 
     position: relative;
-
-    white-space: nowrap;
 }
 
 .warlock .resource:not(:last-child) {
@@ -579,10 +580,18 @@ body.warlock-subsystem--wetwired .warlock {
 
     font-family: var(--font-accent);
     font-size: var(--font-size-16);
+    line-height: 1.1;
 
     position: relative;
 
     text-align: center;
+
+    /* Grow to the tallest label in the row and sit the text on the bottom
+       edge, so every block's value boxes line up. */
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .warlock .resource__name--active {
@@ -596,9 +605,16 @@ body.warlock-subsystem--wetwired .warlock {
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
+    justify-content: center;
 
     font-family: var(--font-accent);
     font-size: var(--font-size-20);
+}
+
+/* Let the label, not the inputs' intrinsic width, size the block. */
+.warlock .resource__body .field {
+    min-width: 0;
+    width: 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -808,8 +824,14 @@ body.warlock-subsystem--wetwired .warlock {
     border-bottom: 2px groove var(--color-border-light-1);
 }
 
+/* Resource rows: blocks stretch to equal height (see .resource__name). */
 .warlock .header__row--align-end {
-    align-items: flex-end;
+    align-items: stretch;
+}
+
+/* Leave room for the rest buttons that hang below the Stamina boxes. */
+.warlock .header__row--align-end:has(.resource__rest-actions) {
+    padding-bottom: 20px;
 }
 
 .warlock .header__name {
@@ -1461,6 +1483,13 @@ body.warlock-subsystem--wetwired .warlock {
     display: flex;
     justify-content: center;
     gap: 8px;
+
+    /* Hang below the Stamina boxes so the block is no taller than its
+       neighbours and Luck / Actions per Round line up with it. */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     margin-top: 2px;
 }
 
