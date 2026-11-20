@@ -1,4 +1,5 @@
 import { WarlockItemSheet } from "./warlock-item-sheet.mjs";
+import { completeSkillList, DEFAULT_CAREER_SKILL } from "../utils/skills.mjs";
 
 /**
  * The custom WarlockCareerSheet that extends the custom WarlockItemSheet.
@@ -73,41 +74,16 @@ export class WarlockCareerSheet extends WarlockItemSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
 
-        // Sort skills by their localized names.
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        const localizedSkills = game.warlock.skills[activeSystem];
-        context.data.system.adventuringSkills = Object.fromEntries(
-            Object
-                .entries(context.data.system.adventuringSkills)
-                .sort(([a,], [b,]) => {
-                    return localizedSkills[a].localeCompare(localizedSkills[b]);
-                })
+        // Always show the active subsystem's full skill list, sorted by
+        // localized name, using stored values where present.
+        context.data.system.adventuringSkills = completeSkillList(
+            context.data.system.adventuringSkills,
+            () => ({ ...DEFAULT_CAREER_SKILL }),
         );
-
-        context.tabs = this._getTabs();
 
         return context;
     }
 
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * Build tab metadata for the template.
-     * @returns {Object}
-     */
-    _getTabs() {
-        const tabs = {};
-        for (const [groupId, groupTabs] of Object.entries(this.constructor.TABS)) {
-            for (const [tabId, tabConfig] of Object.entries(groupTabs)) {
-                tabs[tabId] = {
-                    ...tabConfig,
-                    active: this.tabGroups[groupId] === tabId,
-                    cssClass: this.tabGroups[groupId] === tabId ? "active" : "",
-                };
-            }
-        }
-        return tabs;
-    }
 
     /* ---------------------------------------------------------------------- */
 
@@ -154,7 +130,7 @@ export class WarlockCareerSheet extends WarlockItemSheet {
         }
 
         const skill = target.closest(".table__entry").dataset.skill;
-        const isCareerSkill = this.item.system.adventuringSkills[skill].isCareerSkill;
+        const isCareerSkill = this.item.system.adventuringSkills?.[skill]?.isCareerSkill ?? false;
 
         await this.item.update({
             system: {

@@ -1020,7 +1020,8 @@ body.warlock-subsystem--wetwired .warlock {
 /* Editor                                                                     */
 /* -------------------------------------------------------------------------- */
 
-.warlock .editor {
+.warlock .editor,
+.warlock prose-mirror {
     background: var(--color-background);
 
     border: 2px groove var(--color-border-light-1);
@@ -1032,13 +1033,20 @@ body.warlock-subsystem--wetwired .warlock {
     word-break: break-word;
 }
 
-.warlock .editor-content {
+.warlock .editor-content,
+.warlock prose-mirror .editor-content {
     padding-left: 3px;
     padding-right: 3px;
 }
 
-.warlock .tox.tox-tinymce {
-    height: 100% !important;
+.warlock prose-mirror {
+    display: block;
+    min-height: 120px;
+}
+
+/* ApplicationV2: only the active tab pane is shown. */
+.warlock .tab:not(.active) {
+    display: none;
 }
 
 /* -------------------------------------------------------------------------- */

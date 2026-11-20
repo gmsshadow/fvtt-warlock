@@ -1,3 +1,5 @@
+import { DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
+
 /**
  * The custom WarlockItem document that extends the base Item document.
  *
@@ -230,7 +232,7 @@ export class WarlockItem extends Item {
                 let careerSkills = "";
 
                 Object
-                    .entries(this.system.adventuringSkills)
+                    .entries(this.system.adventuringSkills ?? {})
                     .forEach(([key, value]) => {
                         if (value.isCareerSkill) {
                             if (careerSkills.length !== 0) {
@@ -300,7 +302,7 @@ export class WarlockItem extends Item {
         }
 
         const careerLevel = Object
-            .entries(this.system.adventuringSkills)
+            .entries(this.system.adventuringSkills ?? {})
             .filter(([name, data]) => {
                 return data.isCareerSkill;
             })
@@ -313,7 +315,7 @@ export class WarlockItem extends Item {
                 if (careerSkill[0] === skill) {
                     skillLevel = level;
                 } else {
-                    skillLevel = this.parent.system.adventuringSkills[careerSkill[0]];
+                    skillLevel = this.parent.system.adventuringSkills?.[careerSkill[0]] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
                 }
 
                 if (careerLevelCalculation === "lowestSkill") {

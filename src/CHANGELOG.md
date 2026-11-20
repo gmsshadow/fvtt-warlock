@@ -7,6 +7,42 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.3]
+### Fixed
+- Character and Career sheets always show the active subsystem's full
+  predefined skill list (Warlock!, Warpstar! or Wetwired), sorted by name,
+  even when the stored data is missing some or all skills.
+- On world load the GM client adds any missing active-subsystem skills to
+  Characters (at level 4), their Careers and world Career items. Existing
+  levels and skills from other subsystems are left untouched.
+- Skill tests, skill increments, vehicle tests and career level calculation no
+  longer break on a missing skill entry.
+
+## [2.5.2]
+### Fixed
+- Foundry v14 / ApplicationV2 compliance pass across all sheets:
+  - Sheet templates no longer nest a `<form>` inside the sheet's own form, so
+    field edits save again.
+  - Tabs use the AppV2 tab action and active classes; removed the custom
+    `_getTabs()` helpers that overwrote Foundry's tab context.
+  - Rich-text fields use `<prose-mirror>` instead of the removed `{{editor}}`
+    helper, and enriched HTML is no longer written back into live actor/item
+    data.
+  - Portrait editing uses the built-in `editImage` action.
+  - Item and effect rows are draggable via ActorSheetV2's built-in DragDrop.
+  - Active Effects use `name`/`img` instead of the removed `label`/`icon`.
+  - Chat cards no longer pass the removed `CONST.CHAT_MESSAGE_TYPES`.
+- Dialogs read their fields from `button.form`; dialog templates no longer wrap
+  content in a nested `<form>`.
+- Combat tracker extends `foundry.applications.sidebar.tabs.CombatTracker`, and
+  the side-turn banner, action badges and settings blurb use the
+  `renderCombatTracker` / `renderSettings` hooks.
+
+## [2.5.1]
+### Fixed
+- Added `TYPES.*` localization keys for sheet titles.
+- Guarded against characters with no adventuring skills.
+
 ## [2.4.3]
 ### Added
 - **Integrated combat workflow**: Click the attack icon on any weapon to run a

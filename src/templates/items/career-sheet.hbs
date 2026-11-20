@@ -1,4 +1,4 @@
-<form
+<div
     class="{{cssClass}} document"
     autocomplete="off">
     <header class="header">
@@ -18,13 +18,17 @@
         class="tabs"
         data-group="primary">
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.skills.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="skills">
             {{localize "WARLOCK.Tabs.Skills"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.description.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="description">
             {{localize "WARLOCK.Tabs.Description"}}
         </a>
@@ -32,7 +36,7 @@
 
     <section class="body">
         <div
-            class="tab skills-tab"
+            class="tab skills-tab {{tabs.skills.cssClass}}"
             data-group="primary"
             data-tab="skills">
             <div class="career-skills table">
@@ -96,17 +100,19 @@
         </div>
 
         <div
-            class="tab notes-tab"
+            class="tab notes-tab {{tabs.description.cssClass}}"
             data-group="primary"
             data-tab="description">
             <div class="flex flex--column flex--no-gap">
-                {{editor
-                    data.system.description
-                    target="system.description"
-                    button=true
-                    owner=owner
-                    editable=editable}}
+                <prose-mirror
+                    name="system.description"
+                    value="{{data.system.description}}"
+                    data-document-uuid="{{document.uuid}}"
+                    toggled
+                    {{#unless editable}}disabled{{/unless}}>
+                    {{{enriched.description}}}
+                </prose-mirror>
             </div>
         </div>
     </section>
-</form>
+</div>

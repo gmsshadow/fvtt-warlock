@@ -12,7 +12,7 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     /** @override */
     static DEFAULT_OPTIONS = {
-        classes: ["warlock"],
+        classes: ["warlock", "sheet", "actor"],
         form: {
             submitOnChange: true,
         },
@@ -33,15 +33,6 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
             weaponAttack: WarlockActorSheet._onWeaponAttack,
             toggleDescription: WarlockActorSheet._onToggleDescription,
         },
-        dragDrop: [
-            { dragSelector: ".abilities__entry" },
-            { dragSelector: ".careers__entry" },
-            { dragSelector: ".weapons__entry" },
-            { dragSelector: ".armour__entry" },
-            { dragSelector: ".equipment__entry" },
-            { dragSelector: ".spells__entry" },
-            { dragSelector: ".glyphs__entry" },
-        ],
     };
 
     /** @override */
@@ -81,9 +72,11 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
 
-        // Build the context.data.system structure that templates expect.
-        context.data ??= {};
-        context.data.system ??= this.actor.system;
+        // Templates read from context.data.system. Use a copy so that sorted
+        // lists, settings flags and enriched HTML never leak into the live
+        // actor data.
+        context.data = { system: WarlockActorSheet.cloneSystemData(this.actor.system) };
+        context.enriched = {};
 
         context.data.system.activeSystem = game.settings.get("warlock", "activeSystem");
 
@@ -110,6 +103,32 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
     /* ---------------------------------------------------------------------- */
 
     /**
+     * Returns a mutable plain-object copy of a document's system data.
+     *
+     * @param {object} system The document's system data
+     * @returns {object}
+     */
+    static cloneSystemData(system) {
+        if (system instanceof foundry.abstract.DataModel) return system.toObject(false);
+        return foundry.utils.deepClone(system ?? {});
+    }
+
+    /**
+     * Enriches an HTML field for display in a <prose-mirror> element.
+     *
+     * @param {string} html The raw HTML
+     * @returns {Promise<string>}
+     */
+    async enrich(html) {
+        return foundry.applications.ux.TextEditor.enrichHTML(html ?? "", {
+            relativeTo: this.document,
+            secrets: this.document.isOwner,
+        });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
      * Displays an ActiveEffect card in the chat log.
      *
      * @param {Event} event The click event
@@ -125,12 +144,11 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
             "systems/warlock/templates/chat/item-card.hbs",
             {
                 name: effect.name,
-                img: effect.icon ?? effect.img,
+                img: effect.img,
             },
         );
 
         await ChatMessage.create({
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             content: content,
             sound: CONFIG.sounds.notification,
             speaker: ChatMessage.getSpeaker({
@@ -164,7 +182,6 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
         );
 
         await ChatMessage.create({
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             content: content,
             sound: CONFIG.sounds.notification,
             speaker: ChatMessage.getSpeaker({
@@ -187,8 +204,8 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
         if (!this.isEditable) return;
 
         await this.actor.createEmbeddedDocuments("ActiveEffect", [{
-            label: game.i18n.localize("WARLOCK.ActiveEffect.NewActiveEffect"),
-            icon: "icons/svg/aura.svg",
+            name: game.i18n.localize("WARLOCK.ActiveEffect.NewActiveEffect"),
+            img: "icons/svg/aura.svg",
             origin: this.actor.uuid,
         }]);
     }

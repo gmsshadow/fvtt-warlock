@@ -1,10 +1,11 @@
-<form
+<div
     class="{{cssClass}} document"
     autocomplete="off">
     <header class="header">
         <img
             class="header__image header__image--small"
             src="{{item.img}}"
+            data-action="editImage"
             data-edit="img">
 
         <div class="header__body">
@@ -42,12 +43,14 @@
                 {{localize "WARLOCK.Items.Equipment.Description"}}
             </h1>
 
-            {{editor
-                data.system.description
-                target="system.description"
-                button=true
-                owner=owner
-                editable=editable}}
+            <prose-mirror
+                name="system.description"
+                value="{{data.system.description}}"
+                data-document-uuid="{{document.uuid}}"
+                toggled
+                {{#unless editable}}disabled{{/unless}}>
+                {{{enriched.description}}}
+            </prose-mirror>
         </div>
     </section>
-</form>
+</div>

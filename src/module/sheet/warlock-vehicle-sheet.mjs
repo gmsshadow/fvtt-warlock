@@ -1,6 +1,7 @@
 import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
 import { Rolls } from "../utils/rolls.mjs";
+import { DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
 
 /**
  * The custom WarlockVehicleSheet that extends the custom WarlockActorSheet.
@@ -45,36 +46,13 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
 
-        context.data.system.biography ??= {};
-        context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
-            context.data.system.biography?.description ?? "",
-            { async: true },
-        );
-
-        context.tabs = this._getTabs();
+        context.enriched.biography = {
+            description: await this.enrich(context.data.system.biography?.description),
+        };
 
         return context;
     }
 
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * Build tab metadata for the template.
-     * @returns {Object}
-     */
-    _getTabs() {
-        const tabs = {};
-        for (const [groupId, groupTabs] of Object.entries(this.constructor.TABS)) {
-            for (const [tabId, tabConfig] of Object.entries(groupTabs)) {
-                tabs[tabId] = {
-                    ...tabConfig,
-                    active: this.tabGroups[groupId] === tabId,
-                    cssClass: this.tabGroups[groupId] === tabId ? "active" : "",
-                };
-            }
-        }
-        return tabs;
-    }
 
     /* ---------------------------------------------------------------------- */
 
@@ -111,7 +89,7 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
             await Rolls.rollSkillTest(
                 actor,
                 skill,
-                actor.system.adventuringSkills[skill],
+                actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL,
                 {
                     baseModifier: baseModifier,
                     showCombatOptions: true,

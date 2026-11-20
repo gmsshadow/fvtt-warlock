@@ -1,10 +1,11 @@
-<form
+<div
     class="{{cssClass}} document"
     autocomplete="off">
     <div class="header">
         <img
             class="header__image"
             src="{{actor.img}}"
+            data-action="editImage"
             data-edit="img">
 
         <div class="header__body">
@@ -125,25 +126,33 @@
         class="tabs"
         data-group="primary">
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.abilities.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="abilities">
             {{localize "WARLOCK.Tabs.Abilities"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.combat.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="combat">
             {{localize "WARLOCK.Tabs.Combat"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.gear.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="gear">
             {{localize "WARLOCK.Tabs.Gear"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.spells.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="spells">
             {{#if (eq data.system.activeSystem "warpstar")}}
             {{localize "WARLOCK.Tabs.Glyphs"}}
@@ -153,7 +162,9 @@
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.description.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="description">
             {{localize "WARLOCK.Tabs.Description"}}
         </a>
@@ -161,7 +172,7 @@
 
     <section class="body">
         <div
-            class="tab abilities-tab"
+            class="tab abilities-tab {{tabs.abilities.cssClass}}"
             data-group="primary"
             data-tab="abilities">
             <div class="abilities table">
@@ -183,7 +194,7 @@
                 <div class="abilities__body table__body">
                     {{#each data.system.abilities}}
                     <div
-                        class="abilities__entry table__entry"
+                        class="abilities__entry table__entry draggable"
                         data-item-id="{{id}}">
                         <span class="abilities__entry-field table__entry-field">
                             <a class="toggle-description" data-action="toggleDescription">
@@ -224,14 +235,14 @@
         </div>
 
         <div
-            class="tab combat-tab"
+            class="tab combat-tab {{tabs.combat.cssClass}}"
             data-group="primary"
             data-tab="combat">
             {{> "systems/warlock/templates/actors/partials/combat-tab.hbs"}}
         </div>
 
         <div
-            class="tab gear-tab"
+            class="tab gear-tab {{tabs.gear.cssClass}}"
             data-group="primary"
             data-tab="gear">
             {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
@@ -242,7 +253,7 @@
         </div>
 
         <div
-            class="tab spells-tab"
+            class="tab spells-tab {{tabs.spells.cssClass}}"
             data-group="primary"
             data-tab="spells">
             {{#if (eq data.system.activeSystem "warpstar")}}
@@ -253,15 +264,17 @@
         </div>
 
         <div
-            class="tab description-tab"
+            class="tab description-tab {{tabs.description.cssClass}}"
             data-group="primary"
             data-tab="description">
-            {{editor
-                data.system.biography.description
-                target="system.biography.description"
-                button=true
-                owner=owner
-                editable=editable}}
+            <prose-mirror
+                name="system.biography.description"
+                value="{{data.system.biography.description}}"
+                data-document-uuid="{{document.uuid}}"
+                toggled
+                {{#unless editable}}disabled{{/unless}}>
+                {{{enriched.biography.description}}}
+            </prose-mirror>
         </div>
     </div>
-</form>
+</div>

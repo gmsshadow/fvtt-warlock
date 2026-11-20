@@ -66,35 +66,13 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
         context.data.system.glyphs = this.actor.itemTypes["Glyph"]
             .sort((a, b) => a.sort - b.sort);
 
-        context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
-            context.data.system.biography.description,
-            { async: true },
-        );
-
-        context.tabs = this._getTabs();
+        context.enriched.biography = {
+            description: await this.enrich(context.data.system.biography?.description),
+        };
 
         return context;
     }
 
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * Build tab metadata for the template.
-     * @returns {Object}
-     */
-    _getTabs() {
-        const tabs = {};
-        for (const [groupId, groupTabs] of Object.entries(this.constructor.TABS)) {
-            for (const [tabId, tabConfig] of Object.entries(groupTabs)) {
-                tabs[tabId] = {
-                    ...tabConfig,
-                    active: this.tabGroups[groupId] === tabId,
-                    cssClass: this.tabGroups[groupId] === tabId ? "active" : "",
-                };
-            }
-        }
-        return tabs;
-    }
 
     /* ---------------------------------------------------------------------- */
 

@@ -9,7 +9,7 @@ const { ItemSheetV2 } = foundry.applications.sheets;
 export class WarlockItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     /** @override */
     static DEFAULT_OPTIONS = {
-        classes: ["warlock"],
+        classes: ["warlock", "sheet", "item"],
         form: {
             submitOnChange: true,
         },
@@ -47,19 +47,26 @@ export class WarlockItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
 
-        // Foundry's sheet context shape has changed over time; keep templates
-        // stable by ensuring `context.data.system` always exists.
-        context.data ??= {};
-        context.data.system ??= context.item?.system ?? this.item.system;
+        // Templates read from context.data.system; use a copy so nothing
+        // written here leaks into the live item data.
+        const system = this.item.system;
+        context.data = {
+            system: (system instanceof foundry.abstract.DataModel)
+                ? system.toObject(false)
+                : foundry.utils.deepClone(system ?? {}),
+        };
+        context.item = this.item;
+        context.owner = this.item.isOwner;
+        context.editable = this.isEditable;
 
-        if (context.data.system.description) {
-            context.data.system.description = await foundry.applications.ux.TextEditor.enrichHTML(
-                context.data.system.description,
-                {
-                    async: true,
-                },
-            );
-        }
+        // Raw HTML stays in data.system for the editor's value; enriched HTML
+        // is what the <prose-mirror> element displays.
+        context.enriched = {
+            description: await foundry.applications.ux.TextEditor.enrichHTML(
+                context.data.system.description ?? "",
+                { relativeTo: this.item, secrets: this.item.isOwner },
+            ),
+        };
 
         return context;
     }

@@ -79,7 +79,7 @@ export class WarlockCombat extends Combat {
                     label: "Act",
                     default: true,
                     callback: (event, button, dialog) => {
-                        const id = dialog.querySelector("select[name='combatantId']")?.value;
+                        const id = button.form.elements.combatantId?.value;
                         return id;
                     },
                 },

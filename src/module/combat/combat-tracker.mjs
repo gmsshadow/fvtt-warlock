@@ -2,17 +2,7 @@
  * The custom WarlockCombatTracker class that extends the base CombatTracker
  * class.
  */
-export class WarlockCombatTracker extends CombatTracker {
-    /**
-     * @override
-     * @inheritdoc
-     */
-    async getData() {
-        // Preserve the Combat turn order which may be system-defined
-        // (e.g. side-based interleaving initiative).
-        return await super.getData();
-    }
-
+export class WarlockCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
     /* ---------------------------------------------------------------------- */
 
     /**

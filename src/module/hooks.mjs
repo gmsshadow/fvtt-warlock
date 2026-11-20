@@ -18,6 +18,7 @@ import { WarlockCombatTracker } from "./combat/combat-tracker.mjs";
 
 import { Migrations } from "./utils/migrations.mjs";
 import { Rolls } from "./utils/rolls.mjs";
+import { ensureSkills } from "./utils/skills.mjs";
 
 /* -------------------------------------------------------------------------- */
 
@@ -270,7 +271,7 @@ function initializeHandlebarsHelpers() {
     Handlebars.registerHelper("getSkill", (careers, skill) => {
         const activeCareer = careers.find(career => career.system.isActive);
         if (activeCareer) {
-            return activeCareer.system.adventuringSkills[skill];
+            return activeCareer.system.adventuringSkills?.[skill] ?? {};
         } else {
             return {};
         }
@@ -338,6 +339,10 @@ Hooks.once("ready", () => {
     initializeTrackedResource();
     initializeMigration();
     applySubsystemBodyClass();
+
+    // Backfill the active subsystem's predefined skills into any characters
+    // and careers that lack some or all of them.
+    ensureSkills().catch((err) => console.error("Warlock | Failed to add missing skills", err));
 });
 
 /* -------------------------------------------------------------------------- */
@@ -347,7 +352,7 @@ Hooks.once("ready", () => {
  * red.
  *
  * @param {ChatMessage} message The message being rendered
- * @param {Function} html The jQuery HTML of the message
+ * @param {HTMLElement} html The HTML element of the message
  * @param {Object} data Additional data associated with the message
  *
  * @private
@@ -401,16 +406,23 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 
 /* -------------------------------------------------------------------------- */
 
-Hooks.on("renderSidebarTab", (app, html) => {
-    if (app.options.id === "settings") {
-        const modules = html.querySelector("#game-details .modules");
-        if (modules) {
-            const text = document.createElement("p");
-            text.innerHTML = game.i18n.localize("WARLOCK.Sidebar.Settings.Blurb");
-            modules.after(text);
-        }
-    } else if (app.options.id === "combat"
-               && game.combat) {
+// v13+ sidebar tabs are ApplicationV2 and fire class-specific render hooks
+// (renderSettings, renderCombatTracker) instead of renderSidebarTab.
+Hooks.on("renderSettings", (app, html) => {
+    const root = (html instanceof HTMLElement) ? html : html?.[0];
+    if (!root || root.querySelector(".warlock-settings-blurb")) return;
+    const modules = root.querySelector("#game-details .modules, .info .modules, section.info");
+    if (modules) {
+        const text = document.createElement("p");
+        text.classList.add("warlock-settings-blurb");
+        text.innerHTML = game.i18n.localize("WARLOCK.Sidebar.Settings.Blurb");
+        modules.after(text);
+    }
+});
+
+Hooks.on("renderCombatTracker", (app, html) => {
+    html = (html instanceof HTMLElement) ? html : html?.[0];
+    if (html && game.combat) {
         // Show which side is up next and which side starts the round.
         const sideTurn = game.combat.getFlag("warlock", "sideTurn");
         const sideWinner = game.combat.getFlag("warlock", "sideInitiativeWinner");
@@ -433,7 +445,7 @@ Hooks.on("renderSidebarTab", (app, html) => {
 
         // Hide the irrelevant combat controls.
         for (const ctrl of ["rollAll", "rollNPC", "resetAll", "previousTurn", "nextTurn"]) {
-            const el = html.querySelector(`.combat-control[data-control="${ctrl}"]`);
+            const el = html.querySelector(`[data-action="${ctrl}"], .combat-control[data-control="${ctrl}"]`);
             if (el) el.style.visibility = "hidden";
         }
         html.querySelectorAll(".token-initiative").forEach(el => el.style.display = "none");
@@ -482,7 +494,7 @@ Hooks.on("renderSidebarTab", (app, html) => {
             }
 
             // Add the class to show the amount of actions left per round.
-            if (combatant.actor.system.resources?.actionsPerRound?.value === 0) {
+            if (combatant.actor?.system.resources?.actionsPerRound?.value === 0) {
                 combatantEl.classList.add("combat-tracker__combatant--greyed-out");
             }
         }

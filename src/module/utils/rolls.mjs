@@ -864,7 +864,7 @@ export class Rolls {
                     label: game.i18n.localize("WARLOCK.Dialogs.AttackSetup.Attack"),
                     default: true,
                     callback: (event, button, dialog) => {
-                        const form = dialog.querySelector("form");
+                        const form = button.form;
                         return {
                             weaponId: form.weaponId?.value ?? selectedWeaponId,
                             targetTokenId: form.targetTokenId?.value ?? targets[0]?.id,
@@ -960,7 +960,7 @@ export class Rolls {
                     action: "opposed",
                     icon: "fas fa-users",
                     label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.OpposedTest"),
-                    callback: (event, button, dialog) => handleSkillTestOptions(dialog.querySelector("form"), false),
+                    callback: (event, button, dialog) => handleSkillTestOptions(button.form, false),
                 },
                 {
                     action: "cancel",
@@ -973,7 +973,7 @@ export class Rolls {
                     icon: "fas fa-user",
                     label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.BasicTest"),
                     default: true,
-                    callback: (event, button, dialog) => handleSkillTestOptions(dialog.querySelector("form"), true),
+                    callback: (event, button, dialog) => handleSkillTestOptions(button.form, true),
                 },
             ],
             close: () => ({ cancelled: true }),

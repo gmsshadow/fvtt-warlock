@@ -1,4 +1,20 @@
 {
+    "TYPES": {
+        "Actor": {
+            "Character": "Character",
+            "Monster": "Monster",
+            "Vehicle": "Vehicle"
+        },
+        "Item": {
+            "Ability": "Ability",
+            "Armour": "Armour",
+            "Career": "Career",
+            "Equipment": "Equipment",
+            "Glyph": "Glyph",
+            "Spell": "Spell",
+            "Weapon": "Weapon"
+        }
+    },
     "WARLOCK": {
         "ActiveEffect": {
             "NewActiveEffect": "New Active Effect",

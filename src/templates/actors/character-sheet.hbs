@@ -1,10 +1,11 @@
-<form
+<div
     class="{{cssClass}} document"
     autocomplete="off">
     <header class="header">
         <img
             class="header__image"
             src="{{actor.img}}"
+            data-action="editImage"
             data-edit="img">
 
         <div class="header__body">
@@ -193,25 +194,33 @@
         class="tabs"
         data-group="primary">
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.skills.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="skills">
             {{localize "WARLOCK.Tabs.Skills"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.combat.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="combat">
             {{localize "WARLOCK.Tabs.Combat"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.gear.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="gear">
             {{localize "WARLOCK.Tabs.Gear"}}
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.spells.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="spells">
             {{#if (eq data.system.activeSystem "warpstar")}}
             {{localize "WARLOCK.Tabs.Glyphs"}}
@@ -221,7 +230,9 @@
         </a>
 
         <a
-            class="tabs__item"
+            class="tabs__item {{tabs.notes.cssClass}}"
+            data-action="tab"
+            data-group="primary"
             data-tab="notes">
             {{localize "WARLOCK.Tabs.Notes"}}
         </a>
@@ -229,7 +240,7 @@
 
     <section class="body">
         <div
-            class="tab skills-tab"
+            class="tab skills-tab {{tabs.skills.cssClass}}"
             data-group="primary"
             data-tab="skills">
             <div class="careers table">
@@ -259,7 +270,7 @@
                 <div class="careers__body table__body">
                     {{#each data.system.careers}}
                     <div
-                        class="careers__entry table__entry"
+                        class="careers__entry table__entry draggable"
                         data-item-id="{{id}}">
                         <span class="careers__entry-field table__entry-field">
                             <a
@@ -386,14 +397,14 @@
         </div>
 
         <div
-            class="tab combat-tab"
+            class="tab combat-tab {{tabs.combat.cssClass}}"
             data-group="primary"
             data-tab="combat">
             {{> "systems/warlock/templates/actors/partials/combat-tab.hbs"}}
         </div>
 
         <div
-            class="tab gear-tab"
+            class="tab gear-tab {{tabs.gear.cssClass}}"
             data-group="primary"
             data-tab="gear">
             <div class="money table">
@@ -478,7 +489,7 @@
         </div>
 
         <div
-            class="tab spells-tab"
+            class="tab spells-tab {{tabs.spells.cssClass}}"
             data-group="primary"
             data-tab="spells">
             {{#if (eq data.system.activeSystem "warpstar")}}
@@ -489,7 +500,7 @@
         </div>
 
         <div
-            class="tab notes-tab"
+            class="tab notes-tab {{tabs.notes.cssClass}}"
             data-group="primary"
             data-tab="notes">
             <div class="grid grid--flow-row grid--two-columns">
@@ -499,12 +510,14 @@
                             {{localize "WARLOCK.Actors.Character.Biography"}}
                         </h1>
 
-                        {{editor
-                            data.system.biography.description
-                            target="system.biography.description"
-                            button=true
-                            owner=owner
-                            editable=editable}}
+                        <prose-mirror
+                            name="system.biography.description"
+                            value="{{data.system.biography.description}}"
+                            data-document-uuid="{{document.uuid}}"
+                            toggled
+                            {{#unless editable}}disabled{{/unless}}>
+                            {{{enriched.biography.description}}}
+                        </prose-mirror>
                     </div>
 
                     {{#if data.system.biography.talent.enabled}}
@@ -522,12 +535,14 @@
                                 placeholder="{{localize "WARLOCK.Actors.Character.Talent"}}"
                                 data-dtype="String">
 
-                            {{editor
-                                data.system.biography.talent.description
-                                target="system.biography.talent.description"
-                                button=true
-                                owner=owner
-                                editable=editable}}
+                            <prose-mirror
+                                name="system.biography.talent.description"
+                                value="{{data.system.biography.talent.description}}"
+                                data-document-uuid="{{document.uuid}}"
+                                toggled
+                                {{#unless editable}}disabled{{/unless}}>
+                                {{{enriched.biography.talent.description}}}
+                            </prose-mirror>
                         </div>
                     </div>
                     {{/if}}
@@ -552,14 +567,16 @@
                         {{localize "WARLOCK.Actors.Character.Notes"}}
                     </h1>
 
-                    {{editor
-                        data.system.biography.notes
-                        target="system.biography.notes"
-                        button=true
-                        owner=owner
-                        editable=editable}}
+                    <prose-mirror
+                        name="system.biography.notes"
+                        value="{{data.system.biography.notes}}"
+                        data-document-uuid="{{document.uuid}}"
+                        toggled
+                        {{#unless editable}}disabled{{/unless}}>
+                        {{{enriched.biography.notes}}}
+                    </prose-mirror>
                 </div>
             </div>
         </div>
     </section>
-</form>
+</div>

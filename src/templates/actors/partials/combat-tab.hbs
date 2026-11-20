@@ -25,7 +25,7 @@
         {{#each data.system.gear.weapons}}
         {{#if system.isEquipped}}
         <div
-            class="weapons__entry table__entry table__entry--tall"
+            class="weapons__entry table__entry table__entry--tall draggable"
             data-skill="{{system.skill.value}}"
             data-item-id="{{id}}">
             <span class="weapons__entry-field table__entry-field">
@@ -126,7 +126,7 @@
         {{#each data.system.gear.armour}}
         {{#if system.isEquipped}}
         <div
-            class="armour__entry table__entry table__entry--tall"
+            class="armour__entry table__entry table__entry--tall draggable"
             data-item-id="{{id}}">
             <span class="armour__entry-field table__entry-field">
                 <img
@@ -199,14 +199,14 @@
     <div class="critical-effects__body table__body">
         {{#each effects}}
         <div
-            class="critical-effects__entry table__entry table__entry--tall"
+            class="critical-effects__entry table__entry table__entry--tall draggable"
             data-effect-id="{{_id}}">
             <span class="critical-effects__entry-field table__entry-field">
                 <img
                     class="table__entry-image"
-                    src="{{icon}}">
+                    src="{{img}}">
                 <a class="toggle-description" data-action="toggleDescription">
-                    {{label}}
+                    {{name}}
                 </a>
             </span>
 

@@ -1,6 +1,7 @@
 import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
 import { Rolls } from "../utils/rolls.mjs";
+import { completeSkillList, DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
 
 /**
  * The custom WarlockCharacterSheet that extends the custom WarlockActorSheet.
@@ -10,7 +11,7 @@ import { Rolls } from "../utils/rolls.mjs";
 export class WarlockCharacterSheet extends WarlockActorSheet {
     /** @override */
     static DEFAULT_OPTIONS = {
-        classes: ["warlock", "character"],
+        classes: ["warlock", "sheet", "actor", "character"],
         position: {
             width: 620,
             height: 745,
@@ -86,15 +87,11 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
 
-        // Sort skills by their localized names.
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        const localizedSkills = game.warlock.skills[activeSystem];
-        context.data.system.adventuringSkills = Object.fromEntries(
-            Object
-                .entries(context.data.system.adventuringSkills)
-                .sort(([a,], [b,]) => {
-                    return localizedSkills[a].localeCompare(localizedSkills[b]);
-                })
+        // Always show the active subsystem's full skill list, sorted by
+        // localized name, using stored levels where present.
+        context.data.system.adventuringSkills = completeSkillList(
+            context.data.system.adventuringSkills,
+            () => DEFAULT_CHARACTER_SKILL_LEVEL,
         );
 
         context.data.system.careers = this.actor.itemTypes["Career"]
@@ -109,44 +106,18 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         context.data.system.biography.talent.enabled = game.settings.get("warlock", "talentEnabled");
         context.data.system.biography.passions.enabled = game.settings.get("warlock", "passionsEnabled");
 
-        context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
-            context.data.system.biography.description,
-            { async: true },
-        );
-        context.data.system.biography.notes = await foundry.applications.ux.TextEditor.enrichHTML(
-            context.data.system.biography.notes,
-            { async: true },
-        );
-        context.data.system.biography.talent.description = await foundry.applications.ux.TextEditor.enrichHTML(
-            context.data.system.biography.talent.description,
-            { async: true },
-        );
-
-        // Provide tab state for templates.
-        context.tabs = this._getTabs();
+        const biography = context.data.system.biography;
+        context.enriched.biography = {
+            description: await this.enrich(biography.description),
+            notes: await this.enrich(biography.notes),
+            talent: {
+                description: await this.enrich(biography.talent?.description),
+            },
+        };
 
         return context;
     }
 
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * Build tab metadata for the template.
-     * @returns {Object}
-     */
-    _getTabs() {
-        const tabs = {};
-        for (const [groupId, groupTabs] of Object.entries(this.constructor.TABS)) {
-            for (const [tabId, tabConfig] of Object.entries(groupTabs)) {
-                tabs[tabId] = {
-                    ...tabConfig,
-                    active: this.tabGroups[groupId] === tabId,
-                    cssClass: this.tabGroups[groupId] === tabId ? "active" : "",
-                };
-            }
-        }
-        return tabs;
-    }
 
     /* ---------------------------------------------------------------------- */
 
@@ -256,7 +227,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         await this.actor.update({
             system: {
                 adventuringSkills: {
-                    [skill]: this.actor.system.adventuringSkills[skill] + 1,
+                    [skill]: (this.actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL) + 1,
                 },
             },
         });
@@ -265,7 +236,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             const currentLevel = career.system.currentLevel;
             await career.updateCareerSkillLevel(
                 skill,
-                this.actor.system.adventuringSkills[skill],
+                this.actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL,
             );
 
             const isAutomaticStaminaGainEnabled = game.settings.get("warlock", "automaticStaminaGain");
@@ -328,7 +299,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
                     label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Submit"),
                     default: true,
                     callback: (event, button, dialog) => {
-                        return dialog.querySelector("form").description.value;
+                        return button.form.elements.description.value;
                     },
                 },
             ],
@@ -469,7 +440,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
 
         const activeSystem = game.settings.get("warlock", "activeSystem");
         const skill = target.closest(".table__entry").dataset.skill;
-        const level = this.actor.system.adventuringSkills[skill];
+        const level = this.actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
 
         await Rolls.rollSkillTest(
             this.actor,
@@ -505,16 +476,16 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         switch (activeSystem) {
             case "warlock":
                 skillName = game.warlock.skills.warlock["Incantation"];
-                skillLevel = this.actor.system.adventuringSkills["Incantation"];
+                skillLevel = this.actor.system.adventuringSkills?.["Incantation"] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
                 break;
             case "warpstar":
                 skillName = game.warlock.skills.warpstar["Warp focus"];
-                skillLevel = this.actor.system.adventuringSkills["Warp focus"];
+                skillLevel = this.actor.system.adventuringSkills?.["Warp focus"] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
                 break;
             case "wetwired":
                 skillName = game.warlock.skills.wetwired["Sorcery"] ?? game.warlock.skills.wetwired["Conjuring"];
-                skillLevel = this.actor.system.adventuringSkills["Sorcery"]
-                    ?? this.actor.system.adventuringSkills["Conjuring"] ?? 0;
+                skillLevel = this.actor.system.adventuringSkills?.["Sorcery"]
+                    ?? this.actor.system.adventuringSkills?.["Conjuring"] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
                 break;
             default:
                 return;
