@@ -7,6 +7,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.6]
+### Fixed
+- Warlock! spells: Armour and Enchant cost 3 stamina, as in the book (p98, p101).
+- Warlock! bestiary: the Ghoul's Hide armour is equipped, so its 1d3 reduction
+  applies in combat.
+- Warlock! critical tables roll at least 1d6+1 (a critical always adds the
+  stamina below 0), and every total of 10 or more lands on the "dead" result.
+- Warlock! critical macros rebuilt for Foundry v14 (DialogV2, no jQuery). They
+  ask for the stamina below 0 (minimum 1), roll 1d6 plus that amount, and draw
+  from a world copy of the table or, failing that, the system compendium.
+
 ## [2.5.5]
 ### Added
 - All actor and item sheets are resizable: drag the bottom-right corner. The
