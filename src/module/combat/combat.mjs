@@ -67,24 +67,27 @@ export class WarlockCombat extends Combat {
             </form>
         `;
 
-        return await new Promise(resolve => {
-            new Dialog({
+        const result = await foundry.applications.api.DialogV2.wait({
+            window: {
                 title: (side === "players") ? "Players Turn" : "GM Turn",
-                content,
-                buttons: {
-                    ok: {
-                        icon: "<i class=\"fas fa-check\"></i>",
-                        label: "Act",
-                        callback: (html) => {
-                            const id = html[0].querySelector("select[name='combatantId']")?.value;
-                            resolve(this.combatants.get(id) ?? null);
-                        },
+            },
+            content,
+            buttons: [
+                {
+                    action: "ok",
+                    icon: "fas fa-check",
+                    label: "Act",
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        const id = dialog.querySelector("select[name='combatantId']")?.value;
+                        return id;
                     },
                 },
-                default: "ok",
-                close: () => resolve(null),
-            }).render(true);
+            ],
+            close: () => null,
         });
+        if (!result) return null;
+        return this.combatants.get(result) ?? null;
     }
 
     /**

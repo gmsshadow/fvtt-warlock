@@ -264,14 +264,14 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
         const effectId = target.closest(".table__entry").dataset.effectId;
         const effect = this.actor.effects.get(effectId);
 
-        await Dialog.confirm({
-            title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
-                item: effect.name,
-            }),
-            yes: async () => {
-                await effect.delete();
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: {
+                title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
+                    item: effect.name,
+                }),
             },
         });
+        if (confirmed) await effect.delete();
     }
 
     /* ---------------------------------------------------------------------- */
@@ -290,23 +290,25 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
         const itemId = target.closest(".table__entry").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
-        await Dialog.confirm({
-            title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
-                item: item.name,
-            }),
-            yes: async () => {
-                await item.delete();
-
-                // Activate the "next" career if the deleted career was the active one.
-                if (item.type === "Career" && item.system.isActive) {
-                    if (this.actor.itemTypes["Career"].length > 0) {
-                        await this.actor.itemTypes["Career"][0].update({
-                            system: { isActive: true },
-                        });
-                    }
-                }
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: {
+                title: game.i18n.format("WARLOCK.Dialogs.DeleteItem.Title", {
+                    item: item.name,
+                }),
             },
         });
+        if (confirmed) {
+            await item.delete();
+
+            // Activate the "next" career if the deleted career was the active one.
+            if (item.type === "Career" && item.system.isActive) {
+                if (this.actor.itemTypes["Career"].length > 0) {
+                    await this.actor.itemTypes["Career"][0].update({
+                        system: { isActive: true },
+                    });
+                }
+            }
+        }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -414,23 +416,27 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
             return;
         }
 
-        await Dialog.prompt({
-            title: game.i18n.localize("WARLOCK.Dialogs.StaminaCost.Title"),
-            label: game.i18n.format("WARLOCK.Dialogs.StaminaCost.PayStaminaCost", {
-                cost: staminaCost,
-            }),
-            callback: async () => {
-                await this.actor.update({
-                    system: {
-                        resources: {
-                            stamina: {
-                                value: currentStamina - staminaCost,
-                            },
-                        },
-                    },
-                });
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: {
+                title: game.i18n.localize("WARLOCK.Dialogs.StaminaCost.Title"),
+            },
+            yes: {
+                label: game.i18n.format("WARLOCK.Dialogs.StaminaCost.PayStaminaCost", {
+                    cost: staminaCost,
+                }),
             },
         });
+        if (confirmed) {
+            await this.actor.update({
+                system: {
+                    resources: {
+                        stamina: {
+                            value: currentStamina - staminaCost,
+                        },
+                    },
+                },
+            });
+        }
     }
 
     /* ---------------------------------------------------------------------- */

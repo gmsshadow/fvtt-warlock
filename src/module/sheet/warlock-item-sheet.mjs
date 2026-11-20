@@ -1,4 +1,5 @@
-const { ItemSheetV2, HandlebarsApplicationMixin } = foundry.applications.sheets;
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ItemSheetV2 } = foundry.applications.sheets;
 
 /**
  * The custom WarlockItemSheet base class using ApplicationV2.

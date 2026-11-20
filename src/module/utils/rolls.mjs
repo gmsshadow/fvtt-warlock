@@ -846,36 +846,38 @@ export class Rolls {
             showDefenderShield: activeSystem === "warlock",
             showFlanking: activeSystem === "warpstar" || activeSystem === "wetwired",
         });
-        return new Promise(resolve => {
-            new Dialog({
+        return foundry.applications.api.DialogV2.wait({
+            window: {
                 title: game.i18n.localize("WARLOCK.Dialogs.AttackSetup.Title"),
-                content,
-                buttons: {
-                    cancel: {
-                        icon: "<i class=\"fas fa-times\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.Cancel"),
-                        callback: () => resolve({ cancelled: true }),
-                    },
-                    attack: {
-                        icon: "<i class=\"fas fa-crosshairs\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.AttackSetup.Attack"),
-                        callback: (html) => {
-                            const form = html[0].querySelector("form");
-                            resolve({
-                                weaponId: form.weaponId?.value ?? selectedWeaponId,
-                                targetTokenId: form.targetTokenId?.value ?? targets[0]?.id,
-                                modifier: parseInt(form.modifier?.value) || 0,
-                                faraway: form.faraway?.checked ?? false,
-                                defenderShield: form.defenderShield?.value ?? "none",
-                                flanking: form.flankingChoice?.value ?? "none",
-                                pinned: form.pinned?.checked ?? false,
-                            });
-                        },
+            },
+            content,
+            buttons: [
+                {
+                    action: "cancel",
+                    icon: "fas fa-times",
+                    label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.Cancel"),
+                    callback: () => ({ cancelled: true }),
+                },
+                {
+                    action: "attack",
+                    icon: "fas fa-crosshairs",
+                    label: game.i18n.localize("WARLOCK.Dialogs.AttackSetup.Attack"),
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        const form = dialog.querySelector("form");
+                        return {
+                            weaponId: form.weaponId?.value ?? selectedWeaponId,
+                            targetTokenId: form.targetTokenId?.value ?? targets[0]?.id,
+                            modifier: parseInt(form.modifier?.value) || 0,
+                            faraway: form.faraway?.checked ?? false,
+                            defenderShield: form.defenderShield?.value ?? "none",
+                            flanking: form.flankingChoice?.value ?? "none",
+                            pinned: form.pinned?.checked ?? false,
+                        };
                     },
                 },
-                default: "attack",
-                close: () => resolve({ cancelled: true }),
-            }).render(true);
+            ],
+            close: () => ({ cancelled: true }),
         });
     }
 
@@ -948,30 +950,33 @@ export class Rolls {
                 "flanked": game.i18n.localize("WARLOCK.Dialogs.SkillTest.FlankingChoices.Flanked"),
             },
         });
-        return new Promise(resolve => {
-            new Dialog({
+        return foundry.applications.api.DialogV2.wait({
+            window: {
                 title: game.i18n.format("WARLOCK.Dialogs.SkillTest.Title", { skill }),
-                content,
-                buttons: {
-                    opposed: {
-                        icon: "<i class=\"fas fa-users\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.OpposedTest"),
-                        callback: (html) => resolve(handleSkillTestOptions(html[0].querySelector("form"), false)),
-                    },
-                    cancel: {
-                        icon: "<i class=\"fas fa-times\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.Cancel"),
-                        callback: () => resolve({ cancelled: true }),
-                    },
-                    basic: {
-                        icon: "<i class=\"fas fa-user\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.BasicTest"),
-                        callback: (html) => resolve(handleSkillTestOptions(html[0].querySelector("form"), true)),
-                    },
+            },
+            content,
+            buttons: [
+                {
+                    action: "opposed",
+                    icon: "fas fa-users",
+                    label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.OpposedTest"),
+                    callback: (event, button, dialog) => handleSkillTestOptions(dialog.querySelector("form"), false),
                 },
-                default: "cancel",
-                close: () => resolve({ cancelled: true }),
-            }).render(true);
+                {
+                    action: "cancel",
+                    icon: "fas fa-times",
+                    label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.Cancel"),
+                    callback: () => ({ cancelled: true }),
+                },
+                {
+                    action: "basic",
+                    icon: "fas fa-user",
+                    label: game.i18n.localize("WARLOCK.Dialogs.SkillTest.BasicTest"),
+                    default: true,
+                    callback: (event, button, dialog) => handleSkillTestOptions(dialog.querySelector("form"), true),
+                },
+            ],
+            close: () => ({ cancelled: true }),
         });
     }
 }

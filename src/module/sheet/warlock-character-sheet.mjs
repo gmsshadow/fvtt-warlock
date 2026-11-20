@@ -313,36 +313,37 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             description: this.actor.system.resources.reputation.description,
         });
 
-        const options = await new Promise(resolve => {
-            new Dialog({
+        const result = await foundry.applications.api.DialogV2.wait({
+            window: {
                 title: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Title"),
-                content: content,
-                buttons: {
-                    cancel: {
-                        icon: "<i class=\"fas fa-times\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Cancel"),
-                        callback: (html) => resolve({ cancelled: true }),
-                    },
-                    submit: {
-                        icon: "<i class=\"fas fa-check\"></i>",
-                        label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Submit"),
-                        callback: (html) => resolve({
-                            description: html[0].querySelector("form").description.value,
-                        }),
+            },
+            content: content,
+            buttons: [
+                {
+                    action: "cancel",
+                    icon: "fas fa-times",
+                    label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Cancel"),
+                },
+                {
+                    action: "submit",
+                    icon: "fas fa-check",
+                    label: game.i18n.localize("WARLOCK.Dialogs.ReputationConfiguration.Submit"),
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        return dialog.querySelector("form").description.value;
                     },
                 },
-                default: "submit",
-                close: () => resolve({ cancelled: true }),
-            }).render(true);
+            ],
+            close: () => null,
         });
 
-        if (options.cancelled) return;
+        if (!result) return;
 
         await this.actor.update({
             system: {
                 resources: {
                     reputation: {
-                        description: options.description,
+                        description: result,
                     },
                 },
             },
