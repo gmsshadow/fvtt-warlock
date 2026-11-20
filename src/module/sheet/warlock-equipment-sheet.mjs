@@ -1,4 +1,4 @@
-import { WarlockItemSheet } from "./warlock-item-sheet.mjs"
+import { WarlockItemSheet } from "./warlock-item-sheet.mjs";
 
 /**
  * The custom WarlockEquipmentSheet that extends the custom WarlockItemSheet.
@@ -6,16 +6,18 @@ import { WarlockItemSheet } from "./warlock-item-sheet.mjs"
  * @extends WarlockItemSheet
  */
 export class WarlockEquipmentSheet extends WarlockItemSheet {
-    /**
-     * @override
-     * @inheritdoc
-     */
-    static get defaultOptions() {
-        return {
-            ...super.defaultOptions,
-            template: "systems/warlock/templates/items/equipment-sheet.hbs",
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        position: {
             width: 300,
             height: 325,
-        }
-    }
+        },
+    };
+
+    /** @override */
+    static PARTS = {
+        sheet: {
+            template: "systems/warlock/templates/items/equipment-sheet.hbs",
+        },
+    };
 }

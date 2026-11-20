@@ -33,7 +33,7 @@
                     class="table__entry-image"
                     src="{{img}}">
 
-                <a class="toggle-description">
+                <a class="toggle-description" data-action="toggleDescription">
                     {{name}}
                 </a>
             </span>
@@ -44,6 +44,7 @@
                 {{else}}
                 <a
                     class="test-skill"
+                    data-action="testSkill"
                     title="{{localize "WARLOCK.Tests.TestSkill"}}">
                     {{lookup system.skill.choices system.skill.value}}
                 </a>
@@ -57,6 +58,7 @@
             <span class="weapons__entry-field table__entry-field">
                 <a
                     class="roll-weapon"
+                    data-action="rollWeapon"
                     title="{{localize "WARLOCK.Tables.RollWeaponDamageTooltip"}}">
                     {{system.damage.roll}} {{lookup system.damage.type.choices system.damage.type.value}}
                 </a>
@@ -65,24 +67,28 @@
             <span class="weapons__entry-field table__entry-field">
                 <a
                     class="weapon-attack"
+                    data-action="weaponAttack"
                     title="{{localize "WARLOCK.Tables.WeaponAttackTooltip"}}">
                     <i class="fas fa-crosshairs"></i>
                 </a>
 
                 <a
                     class="chat-item"
+                    data-action="chatItem"
                     title="{{localize "WARLOCK.Items.ChatItem"}}">
                     <i class="fas fa-comment"></i>
                 </a>
 
                 <a
                     class="edit-item"
+                    data-action="editItem"
                     title="{{localize "WARLOCK.Items.EditItem"}}">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <a
                     class="delete-item"
+                    data-action="deleteItem"
                     title="{{localize "WARLOCK.Items.DeleteItem"}}">
                     <i class="fas fa-trash"></i>
                 </a>
@@ -126,7 +132,7 @@
                 <img
                     class="table__entry-image"
                     src="{{img}}">
-                <a class="toggle-description">
+                <a class="toggle-description" data-action="toggleDescription">
                     {{name}}
                 </a>
             </span>
@@ -138,6 +144,7 @@
             <span class="armour__entry-field table__entry-field">
                 <a
                     class="roll-armour"
+                    data-action="rollArmour"
                     title="{{localize "WARLOCK.Tables.RollArmourReductionTooltip"}}">
                     {{system.reductionRoll}}
                 </a>
@@ -146,18 +153,21 @@
             <span class="armour__entry-field table__entry-field">
                 <a
                     class="chat-item"
+                    data-action="chatItem"
                     title="{{localize "WARLOCK.Items.ChatItem"}}">
                     <i class="fas fa-comment"></i>
                 </a>
 
                 <a
                     class="edit-item"
+                    data-action="editItem"
                     title="{{localize "WARLOCK.Items.EditItem"}}">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <a
                     class="delete-item"
+                    data-action="deleteItem"
                     title="{{localize "WARLOCK.Items.DeleteItem"}}">
                     <i class="fas fa-trash"></i>
                 </a>
@@ -180,7 +190,7 @@
         </span>
 
         <span class="critical-effects__header-field table__header-field">
-            <a class="create-effect">
+            <a class="create-effect" data-action="createEffect">
                 <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
             </a>
         </span>
@@ -195,7 +205,7 @@
                 <img
                     class="table__entry-image"
                     src="{{icon}}">
-                <a class="toggle-description">
+                <a class="toggle-description" data-action="toggleDescription">
                     {{label}}
                 </a>
             </span>
@@ -203,18 +213,21 @@
             <span class="critical-effects__entry-field table__entry-field">
                 <a
                     class="chat-effect"
+                    data-action="chatEffect"
                     title="{{localize "WARLOCK.ActiveEffect.ChatEffect"}}">
                     <i class="fas fa-comment"></i>
                 </a>
 
                 <a
                     class="edit-effect"
+                    data-action="editEffect"
                     title="{{localize "WARLOCK.ActiveEffect.EditEffect"}}">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <a
                     class="delete-effect"
+                    data-action="deleteEffect"
                     title="{{localize "WARLOCK.ActiveEffect.DeleteEffect"}}">
                     <i class="fas fa-trash"></i>
                 </a>

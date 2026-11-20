@@ -79,17 +79,17 @@
                     </div>
 
                     <div class="resource__rest-actions">
-                        <a class="rest-short" title="{{localize "WARLOCK.Resources.ShortRestTooltip"}}">
+                        <a class="rest-short" data-action="restShort" title="{{localize "WARLOCK.Resources.ShortRestTooltip"}}">
                             <i class="fas fa-mug-hot"></i>
                         </a>
-                        <a class="rest-long" title="{{localize "WARLOCK.Resources.LongRestTooltip"}}">
+                        <a class="rest-long" data-action="restLong" title="{{localize "WARLOCK.Resources.LongRestTooltip"}}">
                             <i class="fas fa-bed"></i>
                         </a>
                     </div>
                 </div>
 
                 <div class="resource">
-                    <a class="resource__name test-luck">
+                    <a class="resource__name test-luck" data-action="testLuck">
                         {{localize "WARLOCK.Resources.Luck"}}
                     </a>
 
@@ -120,6 +120,7 @@
                 <div class="resource">
                     <a
                         class="resource__name test-pluck"
+                        data-action="testPluck"
                         title="{{localize "WARLOCK.Resources.PluckTooltip"}}">
                         {{localize "WARLOCK.Resources.Pluck"}}
                     </a>
@@ -137,7 +138,7 @@
 
                 {{#if data.system.resources.reputation.enabled}}
                 <div class="resource">
-                    <a class="resource__name test-reputation">
+                    <a class="resource__name test-reputation" data-action="testReputation">
                         {{localize "WARLOCK.Resources.Reputation"}}
                     </a>
 
@@ -151,7 +152,7 @@
                             data-dtype="Number">
                     </div>
 
-                    <a class="open-reputation-dialog header__reputation-configuration">
+                    <a class="open-reputation-dialog header__reputation-configuration" data-action="openReputationDialog">
                         <i class="fas fa-cog"></i>
                     </a>
                 </div>
@@ -248,6 +249,7 @@
                     <span class="careers__header-field table__header-field">
                         <a
                             class="create-item"
+                            data-action="createItem"
                             data-item-type="Career">
                             <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
                         </a>
@@ -262,6 +264,7 @@
                         <span class="careers__entry-field table__entry-field">
                             <a
                                 class="test-career"
+                                data-action="testCareer"
                                 title="{{localize "WARLOCK.Tests.TestCareer"}}">
                                 {{name}}
                             </a>
@@ -275,7 +278,7 @@
                             {{#if system.isActive}}
                             <i class="fas fa-check-circle"></i>
                             {{else}}
-                            <a class="activate-career">
+                            <a class="activate-career" data-action="activateCareer">
                                 <i class="far fa-circle"></i>
                             </a>
                             {{/if}}
@@ -285,18 +288,21 @@
                             class="careers__entry-field table__entry-field">
                             <a
                                 class="chat-item"
+                                data-action="chatItem"
                                 title="{{localize "WARLOCK.Items.ChatItem"}}">
                                 <i class="fas fa-comment"></i>
                             </a>
 
                             <a
                                 class="edit-item"
+                                data-action="editItem"
                                 title="{{localize "WARLOCK.Items.EditItem"}}">
                                 <i class="fas fa-edit"></i>
                             </a>
 
                             <a
                                 class="delete-item"
+                                data-action="deleteItem"
                                 title="{{localize "WARLOCK.Items.DeleteItem"}}">
                                 <i class="fas fa-trash"></i>
                             </a>
@@ -342,12 +348,13 @@
                         <span class="skills__entry-field table__entry-field">
                             <a
                                 class="test-skill"
+                                data-action="testSkill"
                                 title="{{localize "WARLOCK.Tests.TestSkill"}}">
                                 {{localizeSkill @key}}
                             </a>
 
                             {{#if (gt ../data.system.resources.advances 0)}}
-                            <a class="increment-skill-level skills__increment-button">
+                            <a class="increment-skill-level skills__increment-button" data-action="incrementSkillLevel">
                                 +
                             </a>
                             {{/if}}
@@ -422,6 +429,7 @@
                     <span class="money__header-field table__header-field">
                         <a
                             class="consolidate-money"
+                            data-action="consolidateMoney"
                             title="{{localize "WARLOCK.Items.Money.ConsolidateMoneyHint"}}">
                             <i class="fas fa-coins"></i>
                         </a>

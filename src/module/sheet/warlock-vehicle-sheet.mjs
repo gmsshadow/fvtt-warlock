@@ -8,54 +8,90 @@ import { Rolls } from "../utils/rolls.mjs";
  * @extends WarlockActorSheet
  */
 export class WarlockVehicleSheet extends WarlockActorSheet {
-    /**
-     * @override
-     * @inheritdoc
-     */
-    static get defaultOptions() {
-        return {
-            ...super.defaultOptions,
-            template: "systems/warlock/templates/actors/vehicle-sheet.hbs",
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        position: {
             width: 575,
             height: 550,
-            tabs: [
-                {
-                    navSelector: ".tabs",
-                    contentSelector: ".body",
-                    initial: "combat",
-                },
-            ],
-        }
+        },
+        actions: {
+            ...WarlockActorSheet.DEFAULT_OPTIONS.actions,
+            testVehicleSkill: WarlockVehicleSheet._onTestSkill,
+        },
+    };
+
+    /** @override */
+    static PARTS = {
+        sheet: {
+            template: "systems/warlock/templates/actors/vehicle-sheet.hbs",
+        },
+    };
+
+    /** @override */
+    static TABS = {
+        primary: {
+            combat: { id: "combat", group: "primary", label: "WARLOCK.Tabs.Combat" },
+            gear: { id: "gear", group: "primary", label: "WARLOCK.Tabs.Gear" },
+            description: { id: "description", group: "primary", label: "WARLOCK.Tabs.Description" },
+        },
+    };
+
+    /** @override */
+    tabGroups = {
+        primary: "combat",
+    };
+
+    /* ---------------------------------------------------------------------- */
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options);
+
+        context.data.system.biography ??= {};
+        context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
+            context.data.system.biography?.description ?? "",
+            { async: true },
+        );
+
+        context.tabs = this._getTabs();
+
+        return context;
     }
 
     /* ---------------------------------------------------------------------- */
 
     /**
-     * @override
-     * @inheritdoc
+     * Build tab metadata for the template.
+     * @returns {Object}
      */
-    activateListeners(html) {
-        super.activateListeners(html);
-        const $html = (html instanceof HTMLElement) ? $(html) : html;
-
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        if (activeSystem === "warpstar") {
-            $html.find(".test-skill").click(this._onTestSkill.bind(this));
+    _getTabs() {
+        const tabs = {};
+        for (const [groupId, groupTabs] of Object.entries(this.constructor.TABS)) {
+            for (const [tabId, tabConfig] of Object.entries(groupTabs)) {
+                tabs[tabId] = {
+                    ...tabConfig,
+                    active: this.tabGroups[groupId] === tabId,
+                    cssClass: this.tabGroups[groupId] === tabId ? "active" : "",
+                };
+            }
         }
+        return tabs;
     }
 
     /* ---------------------------------------------------------------------- */
 
     /**
      * Rolls a skill test using the current actor or token's relevant skill.
+     * Only active for Warpstar subsystem.
      *
-     * @param {Event} event The click event to test the actor or token's skill
-     *
-     * @private
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
      */
-    async _onTestSkill(event) {
+    static async _onTestSkill(event, target) {
         event.preventDefault();
+
+        const activeSystem = game.settings.get("warlock", "activeSystem");
+        if (activeSystem !== "warpstar") return;
 
         let actor;
         const speaker = ChatMessage.getSpeaker();
@@ -68,8 +104,10 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
             return;
         }
 
-        const skill = event.currentTarget.dataset.skill ?? event.currentTarget.closest(".table__entry").dataset.skill;
-        const baseModifier = event.currentTarget.dataset.capability ? this.actor.system.capabilities[event.currentTarget.dataset.capability] : 0;
+        const skill = target.dataset.skill ?? target.closest(".table__entry")?.dataset?.skill;
+        const baseModifier = target.dataset.capability
+            ? this.actor.system.capabilities[target.dataset.capability]
+            : 0;
 
         if (actor.type === "Character") {
             await Rolls.rollSkillTest(
@@ -81,7 +119,7 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
                     showCombatOptions: true,
                     skipDialog: event.shiftKey || event.altKey,
                     isBasicTest: event.shiftKey,
-                    showVehicleCombatCapabilities: !event.currentTarget.dataset.capability,
+                    showVehicleCombatCapabilities: !target.dataset.capability,
                     shipGun: this.actor.system.capabilities.shipGun,
                     antiPersonnelGun: this.actor.system.capabilities.antiPersonnelGun,
                 },
@@ -109,7 +147,7 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
                         showCombatOptions: true,
                         skipDialog: event.shiftKey || event.altKey,
                         isBasicTest: event.shiftKey,
-                    }
+                    },
                 );
             }
         }

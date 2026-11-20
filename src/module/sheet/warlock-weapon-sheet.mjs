@@ -6,16 +6,18 @@ import { WarlockItemSheet } from "./warlock-item-sheet.mjs";
  * @extends WarlockItemSheet
  */
 export class WarlockWeaponSheet extends WarlockItemSheet {
-    /**
-     * @override
-     * @inheritdoc
-     */
-    static get defaultOptions() {
-        return {
-            ...super.defaultOptions,
-            template: "systems/warlock/templates/items/weapon-sheet.hbs",
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        position: {
             width: 475,
             height: 275,
-        }
-    }
+        },
+    };
+
+    /** @override */
+    static PARTS = {
+        sheet: {
+            template: "systems/warlock/templates/items/weapon-sheet.hbs",
+        },
+    };
 }

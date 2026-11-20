@@ -8,70 +8,72 @@ import { Rolls } from "../utils/rolls.mjs";
  * @extends WarlockActorSheet
  */
 export class WarlockMonsterSheet extends WarlockActorSheet {
-    /**
-     * @override
-     * @inheritdoc
-     */
-    static get defaultOptions() {
-        return {
-            ...super.defaultOptions,
-            template: "systems/warlock/templates/actors/monster-sheet.hbs",
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        position: {
             width: 640,
             height: 550,
-            tabs: [
-                {
-                    navSelector: ".tabs",
-                    contentSelector: ".body",
-                    initial: "abilities",
-                },
-            ],
-        }
+        },
+        actions: {
+            ...WarlockActorSheet.DEFAULT_OPTIONS.actions,
+            testAdventuringSkills: WarlockMonsterSheet._onTestAdventuringSkills,
+            testWeaponSkill: WarlockMonsterSheet._onTestWeaponSkill,
+        },
+    };
+
+    /** @override */
+    static PARTS = {
+        sheet: {
+            template: "systems/warlock/templates/actors/monster-sheet.hbs",
+        },
+    };
+
+    /** @override */
+    static TABS = {
+        primary: {
+            abilities: { id: "abilities", group: "primary", label: "WARLOCK.Tabs.Abilities" },
+            combat: { id: "combat", group: "primary", label: "WARLOCK.Tabs.Combat" },
+            gear: { id: "gear", group: "primary", label: "WARLOCK.Tabs.Gear" },
+            spells: { id: "spells", group: "primary", label: "WARLOCK.Tabs.Spells" },
+            description: { id: "description", group: "primary", label: "WARLOCK.Tabs.Description" },
+        },
+    };
+
+    /** @override */
+    tabGroups = {
+        primary: "abilities",
+    };
+
+    /* ---------------------------------------------------------------------- */
+
+    /** @override */
+    _onRender(context, options) {
+        super._onRender(context, options);
+
+        // Monster sheets reuse test-skill class from weapon tables for weapon skill tests,
+        // and test-spell class from spell tables for adventuring skill tests.
+        // These are handled via data-action in templates now.
     }
 
     /* ---------------------------------------------------------------------- */
 
-    /**
-     * @override
-     * @inheritdoc
-     */
-    activateListeners(html) {
-        super.activateListeners(html);
-        const $html = (html instanceof HTMLElement) ? $(html) : html;
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options);
 
-        $html.find(".test-adventuring-skills").click(this._onTestAdventuringSkills.bind(this));
-        $html.find(".test-skill").click(this._onTestWeaponSkill.bind(this));
-        $html.find(".test-spell").click(this._onTestAdventuringSkills.bind(this));
-        $html.find(".test-weapon-skill").click(this._onTestWeaponSkill.bind(this));
-    }
-
-    /* ---------------------------------------------------------------------- */
-
-    /**
-     * @override
-     * @inheritdoc
-     */
-    async getData() {
-        const context = await super.getData();
-
-        context.data.system.abilities = context.actor.itemTypes["Ability"]
-            .sort((a, b) => {
-                return a.sort - b.sort;
-            });
-        context.data.system.spells = context.actor.itemTypes["Spell"]
-            .sort((a, b) => {
-                return a.sort - b.sort;
-            });
-        context.data.system.glyphs = context.actor.itemTypes["Glyph"]
-            .sort((a, b) => {
-                return a.sort - b.sort;
-            });
+        context.data.system.abilities = this.actor.itemTypes["Ability"]
+            .sort((a, b) => a.sort - b.sort);
+        context.data.system.spells = this.actor.itemTypes["Spell"]
+            .sort((a, b) => a.sort - b.sort);
+        context.data.system.glyphs = this.actor.itemTypes["Glyph"]
+            .sort((a, b) => a.sort - b.sort);
 
         context.data.system.biography.description = await foundry.applications.ux.TextEditor.enrichHTML(
             context.data.system.biography.description,
-            {
-                async: true,
-            },
+            { async: true },
         );
+
+        context.tabs = this._getTabs();
 
         return context;
     }
@@ -79,13 +81,32 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
+     * Build tab metadata for the template.
+     * @returns {Object}
+     */
+    _getTabs() {
+        const tabs = {};
+        for (const [groupId, groupTabs] of Object.entries(this.constructor.TABS)) {
+            for (const [tabId, tabConfig] of Object.entries(groupTabs)) {
+                tabs[tabId] = {
+                    ...tabConfig,
+                    active: this.tabGroups[groupId] === tabId,
+                    cssClass: this.tabGroups[groupId] === tabId ? "active" : "",
+                };
+            }
+        }
+        return tabs;
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
      * Rolls a skill test using Adventuring Skills.
      *
-     * @param {Event} event The click event to test Adventuring Skills
-     *
-     * @private
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
      */
-    async _onTestAdventuringSkills(event) {
+    static async _onTestAdventuringSkills(event, target) {
         event.preventDefault();
 
         await Rolls.rollSkillTest(
@@ -105,11 +126,10 @@ export class WarlockMonsterSheet extends WarlockActorSheet {
     /**
      * Rolls a skill test using Weapon Skill.
      *
-     * @param {Event} event The click event to test Weapon Skill
-     *
-     * @private
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
      */
-    async _onTestWeaponSkill(event) {
+    static async _onTestWeaponSkill(event, target) {
         event.preventDefault();
 
         await Rolls.rollSkillTest(

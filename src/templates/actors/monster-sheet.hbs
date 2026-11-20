@@ -86,7 +86,7 @@
 
                 <div class="resource">
                     <label class="resource__name">
-                        <a class="test-weapon-skill">
+                        <a class="test-weapon-skill" data-action="testWeaponSkill">
                             {{localize "WARLOCK.Actors.Monster.WeaponSkill"}}
                         </a>
                     </label>
@@ -103,7 +103,7 @@
 
                 <div class="resource">
                     <label class="resource__name">
-                        <a class="test-adventuring-skills">
+                        <a class="test-adventuring-skills" data-action="testAdventuringSkills">
                             {{localize "WARLOCK.Actors.Monster.AdventuringSkills"}}
                         </a>
                     </label>
@@ -173,6 +173,7 @@
                     <span class="abilities__header-field table__header-field">
                         <a
                             class="create-item"
+                            data-action="createItem"
                             data-item-type="Ability">
                             <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
                         </a>
@@ -185,7 +186,7 @@
                         class="abilities__entry table__entry"
                         data-item-id="{{id}}">
                         <span class="abilities__entry-field table__entry-field">
-                            <a class="toggle-description">
+                            <a class="toggle-description" data-action="toggleDescription">
                                 {{name}}
                             </a>
                         </span>
@@ -193,18 +194,21 @@
                         <span class="abilities__entry-field table__entry-field">
                             <a
                                 class="chat-item"
+                                data-action="chatItem"
                                 title="{{localize "WARLOCK.Items.ChatItem"}}">
                                 <i class="fas fa-comment"></i>
                             </a>
 
                             <a
                                 class="edit-item"
+                                data-action="editItem"
                                 title="{{localize "WARLOCK.Items.EditItem"}}">
                                 <i class="fas fa-edit"></i>
                             </a>
 
                             <a
                                 class="delete-item"
+                                data-action="deleteItem"
                                 title="{{localize "WARLOCK.Items.DeleteItem"}}">
                                 <i class="fas fa-trash"></i>
                             </a>

@@ -76,78 +76,66 @@ function initializeCONFIG() {
  * @private
  */
 function initializeSheets() {
-    Actors.unregisterSheet("core", ActorSheet);
-
-    Actors.registerSheet("warlock", WarlockCharacterSheet, {
-        types: [
-            "Character",
-        ],
+    // Actor sheets.
+    DocumentSheetConfig.registerSheet(Actor, "warlock", WarlockCharacterSheet, {
+        types: ["Character"],
         makeDefault: true,
+        label: "WARLOCK.Sheets.CharacterSheet",
     });
 
-    Actors.registerSheet("warlock", WarlockMonsterSheet, {
-        types: [
-            "Monster",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Actor, "warlock", WarlockMonsterSheet, {
+        types: ["Monster"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.MonsterSheet",
     });
 
-    Actors.registerSheet("warlock", WarlockVehicleSheet, {
-        types: [
-            "Vehicle",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Actor, "warlock", WarlockVehicleSheet, {
+        types: ["Vehicle"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.VehicleSheet",
     });
 
-    Items.unregisterSheet("core", ItemSheet);
-
-    Items.registerSheet("warlock", WarlockAbilitySheet, {
-        types: [
-            "Ability",
-        ],
-        makeDefault: false,
+    // Item sheets.
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockAbilitySheet, {
+        types: ["Ability"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.AbilitySheet",
     });
 
-    Items.registerSheet("warlock", WarlockArmourSheet, {
-        types: [
-            "Armour",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockArmourSheet, {
+        types: ["Armour"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.ArmourSheet",
     });
 
-    Items.registerSheet("warlock", WarlockCareerSheet, {
-        types: [
-            "Career",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockCareerSheet, {
+        types: ["Career"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.CareerSheet",
     });
 
-    Items.registerSheet("warlock", WarlockEquipmentSheet, {
-        types: [
-            "Equipment",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockEquipmentSheet, {
+        types: ["Equipment"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.EquipmentSheet",
     });
 
-    Items.registerSheet("warlock", WarlockGlyphSheet, {
-        types: [
-            "Glyph",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockGlyphSheet, {
+        types: ["Glyph"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.GlyphSheet",
     });
 
-    Items.registerSheet("warlock", WarlockSpellSheet, {
-        types: [
-            "Spell",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockSpellSheet, {
+        types: ["Spell"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.SpellSheet",
     });
 
-    Items.registerSheet("warlock", WarlockWeaponSheet, {
-        types: [
-            "Weapon",
-        ],
-        makeDefault: false,
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockWeaponSheet, {
+        types: ["Weapon"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.WeaponSheet",
     });
 }
 
@@ -365,7 +353,6 @@ Hooks.once("ready", () => {
  * @private
  */
 function highlightSuccessOrFailure(message, html, data) {
-    const $html = (html instanceof HTMLElement) ? $(html) : html;
     const isBasicTest = message.flags?.warlock?.isBasicTest;
     const total = message.rolls?.[0]?.total;
 
@@ -373,53 +360,55 @@ function highlightSuccessOrFailure(message, html, data) {
         && message.isContentVisible
         && isBasicTest
         && (typeof total === "number")) {
-        if (total >= 20) {
-            $html.find(".dice-total").addClass("dice-total--success");
-        } else {
-            $html.find(".dice-total").addClass("dice-total--failure");
-        }
+        const cls = (total >= 20) ? "dice-total--success" : "dice-total--failure";
+        html.querySelectorAll(".dice-total").forEach(el => el.classList.add(cls));
     }
 }
 
 /* -------------------------------------------------------------------------- */
 
 Hooks.on("renderChatMessageHTML", (message, html, data) => {
-    const $html = (html instanceof HTMLElement) ? $(html) : html;
     highlightSuccessOrFailure(message, html, data);
 
     // Handle simple attack card "Apply Damage" buttons.
-    $html.find(".chat-card__button--apply-damage").click(async (event) => {
-        event.preventDefault();
-        const button = event.currentTarget;
-        const damageTotal = parseInt(button.dataset.damageTotal);
-        const damageType = button.dataset.damageType;
-        await Rolls.applyDamageToTargets(damageTotal, damageType);
+    html.querySelectorAll(".chat-card__button--apply-damage").forEach(button => {
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const damageTotal = parseInt(button.dataset.damageTotal);
+            const damageType = button.dataset.damageType;
+            await Rolls.applyDamageToTargets(damageTotal, damageType);
+        });
     });
 
-    $html.find(".chat-card__button--apply-half").click(async (event) => {
-        event.preventDefault();
-        const button = event.currentTarget;
-        const damageTotal = parseInt(button.dataset.damageTotal);
-        const damageType = button.dataset.damageType;
-        await Rolls.applyDamageToTargets(damageTotal, damageType, { half: true });
+    html.querySelectorAll(".chat-card__button--apply-half").forEach(button => {
+        button.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const damageTotal = parseInt(button.dataset.damageTotal);
+            const damageType = button.dataset.damageType;
+            await Rolls.applyDamageToTargets(damageTotal, damageType, { half: true });
+        });
     });
 
     // Handle combat result card "Pull Critical" button.
-    $html.find(".chat-card__button--pull-critical").click(async (event) => {
-        event.preventDefault();
-        const btn = event.currentTarget;
-        const actorId = btn.dataset.actorId;
-        await Rolls.pullCritical(actorId);
+    html.querySelectorAll(".chat-card__button--pull-critical").forEach(btn => {
+        btn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const actorId = btn.dataset.actorId;
+            await Rolls.pullCritical(actorId);
+        });
     });
 });
 
 /* -------------------------------------------------------------------------- */
 
 Hooks.on("renderSidebarTab", (app, html) => {
-    const $html = (html instanceof HTMLElement) ? $(html) : html;
     if (app.options.id === "settings") {
-        const text = $(`<p>${game.i18n.localize("WARLOCK.Sidebar.Settings.Blurb")}</p>`);
-        text.insertAfter($html.find("#game-details .modules"));
+        const modules = html.querySelector("#game-details .modules");
+        if (modules) {
+            const text = document.createElement("p");
+            text.innerHTML = game.i18n.localize("WARLOCK.Sidebar.Settings.Blurb");
+            modules.after(text);
+        }
     } else if (app.options.id === "combat"
                && game.combat) {
         // Show which side is up next and which side starts the round.
@@ -430,29 +419,30 @@ Hooks.on("renderSidebarTab", (app, html) => {
         const nextSideText = sideLabel(sideTurn ?? sideWinner);
         const startSideText = sideLabel(sideWinner);
 
-        $html.find(".warlock-combat-side-turn").remove();
+        html.querySelectorAll(".warlock-combat-side-turn").forEach(el => el.remove());
         if (nextSideText || startSideText) {
-            const banner = $(
-                `<div class="warlock-combat-side-turn">
-                    ${nextSideText ? `Next side: <strong>${nextSideText}</strong>` : ""}
-                    ${startSideText ? `<span class="warlock-combat-side-turn__sep">•</span>Round starts with: <strong>${startSideText}</strong>` : ""}
-                </div>`
-            );
-            $html.find(".combat-tracker").prepend(banner);
+            const banner = document.createElement("div");
+            banner.classList.add("warlock-combat-side-turn");
+            banner.innerHTML = `
+                ${nextSideText ? `Next side: <strong>${nextSideText}</strong>` : ""}
+                ${startSideText ? `<span class="warlock-combat-side-turn__sep">•</span>Round starts with: <strong>${startSideText}</strong>` : ""}
+            `.trim();
+            const tracker = html.querySelector(".combat-tracker");
+            if (tracker) tracker.prepend(banner);
         }
 
         // Hide the irrelevant combat controls.
-        $html.find(`.combat-control[data-control="rollAll"]`).css("visibility", "hidden");
-        $html.find(`.combat-control[data-control="rollNPC"]`).css("visibility", "hidden");
-        $html.find(`.combat-control[data-control="resetAll"]`).css("visibility", "hidden");
-        $html.find(`.combat-control[data-control="previousTurn"]`).css("visibility", "hidden");
-        $html.find(`.combat-control[data-control="nextTurn"]`).css("visibility", "hidden");
-        $html.find(".token-initiative").hide();
+        for (const ctrl of ["rollAll", "rollNPC", "resetAll", "previousTurn", "nextTurn"]) {
+            const el = html.querySelector(`.combat-control[data-control="${ctrl}"]`);
+            if (el) el.style.visibility = "hidden";
+        }
+        html.querySelectorAll(".token-initiative").forEach(el => el.style.display = "none");
 
         for (const [_, combatant] of game.combat.combatants.entries()) {
             // Show actions remaining for each combatant, when available.
-            const combatantEl = $html.find(`.combatant[data-combatant-id=${combatant.id}]`);
-            combatantEl.find(".warlock-actions-remaining").remove();
+            const combatantEl = html.querySelector(`.combatant[data-combatant-id="${combatant.id}"]`);
+            if (!combatantEl) continue;
+            combatantEl.querySelectorAll(".warlock-actions-remaining").forEach(el => el.remove());
 
             const current = combatant.actor?.system?.resources?.actionsPerRound?.value;
             const max = combatant.actor?.system?.resources?.actionsPerRound?.max;
@@ -461,39 +451,39 @@ Hooks.on("renderSidebarTab", (app, html) => {
                 if (current <= 0) classes.push("warlock-actions-remaining--empty");
                 if (combatant.id === game.combat.combatant?.id) classes.push("warlock-actions-remaining--active");
 
-                const badge = $(`<span class="${classes.join(" ")}">${current}/${max}</span>`);
+                const badge = document.createElement("span");
+                badge.className = classes.join(" ");
+                badge.textContent = `${current}/${max}`;
 
                 // Prefer to place near the name; fall back to the combatant row.
-                const nameTarget = combatantEl.find(".token-name, .combatant-name, h4").first();
-                if (nameTarget.length) {
+                const nameTarget = combatantEl.querySelector(".token-name, .combatant-name, h4");
+                if (nameTarget) {
                     nameTarget.append(badge);
                 } else {
                     combatantEl.append(badge);
                 }
             }
 
-            // Add the class to turns to show the token's disposition.
+            // Add the class to show the token's disposition.
             if (combatant.token?.disposition) {
-                const element = $html.find(`.combatant[data-combatant-id=${combatant.id}]`);
                 switch (combatant.token.disposition) {
                     case -1: // Hostile
-                        element.addClass("combat-tracker__combatant--hostile");
+                        combatantEl.classList.add("combat-tracker__combatant--hostile");
                         break;
                     case 0: // Neutral
-                        element.addClass("combat-tracker__combatant--neutral");
+                        combatantEl.classList.add("combat-tracker__combatant--neutral");
                         break;
                     case 1: // Friendly
-                        element.addClass("combat-tracker__combatant--friendly");
+                        combatantEl.classList.add("combat-tracker__combatant--friendly");
                         break;
                     default:
                         break;
                 }
             }
 
-            // Add the class to turns to show the amount of actions left per
-            // round.
+            // Add the class to show the amount of actions left per round.
             if (combatant.actor.system.resources?.actionsPerRound?.value === 0) {
-                element.addClass("combat-tracker__combatant--greyed-out");
+                combatantEl.classList.add("combat-tracker__combatant--greyed-out");
             }
         }
     }

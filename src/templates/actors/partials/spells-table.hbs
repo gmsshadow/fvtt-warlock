@@ -15,6 +15,7 @@
         <span class="spells__header-field table__header-field">
             <a
                 class="create-item"
+                data-action="createItem"
                 data-item-type="Spell">
                 <i class="fas fa-plus"></i> {{localize "WARLOCK.Items.AddItem"}}
             </a>
@@ -31,7 +32,7 @@
                     class="table__entry-image"
                     src="{{img}}">
 
-                <a class="toggle-description">
+                <a class="toggle-description" data-action="toggleDescription">
                     {{name}}
                 </a>
             </span>
@@ -39,6 +40,7 @@
             <span class="glyphs__entry-field table__entry-field">
                 <a
                     class="test-spell"
+                    data-action="testSpell"
                     title="{{localize "WARLOCK.Tests.TestSkill"}}">
                     {{localize "WARLOCK.Items.Spell.Test.Basic"}}
                 </a>
@@ -47,6 +49,7 @@
             <span class="spells__entry-field table__entry-field">
                 <a
                     class="pay-stamina-cost"
+                    data-action="payStaminaCost"
                     title="{{localize "WARLOCK.Tables.PayStaminaCostTooltip"}}">
                     {{system.staminaCost}}
                 </a>
@@ -56,18 +59,21 @@
                 class="spells__entry-field table__entry-field">
                 <a
                     class="chat-item"
+                    data-action="chatItem"
                     title="{{localize "WARLOCK.Items.ChatItem"}}">
                     <i class="fas fa-comment"></i>
                 </a>
 
                 <a
                     class="edit-item"
+                    data-action="editItem"
                     title="{{localize "WARLOCK.Items.EditItem"}}">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <a
                     class="delete-item"
+                    data-action="deleteItem"
                     title="{{localize "WARLOCK.Items.DeleteItem"}}">
                     <i class="fas fa-trash"></i>
                 </a>
