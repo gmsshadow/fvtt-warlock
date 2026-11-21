@@ -5,7 +5,6 @@
             "Monster",
             "Vehicle"
         ],
-
         "templates": {
             "Actions per Round": {
                 "resources": {
@@ -15,13 +14,11 @@
                     }
                 }
             },
-
             "Biography": {
                 "biography": {
                     "description": ""
                 }
             },
-
             "Stamina": {
                 "resources": {
                     "stamina": {
@@ -31,7 +28,6 @@
                 }
             }
         },
-
         "Character": {
             "templates": [
                 "Actions per Round",
@@ -48,7 +44,9 @@
                 },
                 "passions": {
                     "description": ""
-                }
+                },
+                "ancestry": "",
+                "allergy": ""
             },
             "resources": {
                 "stamina": {
@@ -66,6 +64,9 @@
                 },
                 "pluck": {
                     "value": 0
+                },
+                "wealth": {
+                    "value": 0
                 }
             },
             "gear": {
@@ -76,7 +77,6 @@
                 }
             }
         },
-
         "Monster": {
             "templates": [
                 "Actions per Round",
@@ -87,7 +87,6 @@
             "weaponSkill": 0,
             "adventuringSkills": 0
         },
-
         "Vehicle": {
             "templates": [
                 "Biography"
@@ -105,7 +104,6 @@
             }
         }
     },
-
     "Item": {
         "types": [
             "Ability",
@@ -114,51 +112,60 @@
             "Equipment",
             "Glyph",
             "Spell",
-            "Weapon"
+            "Weapon",
+            "Contact",
+            "Cyberdeck",
+            "Cyberware",
+            "Program"
         ],
-
         "templates": {
             "Description": {
                 "description": ""
             },
-
             "Stamina Cost": {
                 "staminaCost": 0
+            },
+            "Resource Cost": {
+                "resourceCost": 0
             }
         },
-
         "Ability": {
             "templates": [
                 "Description"
             ]
         },
-
         "Armour": {
             "templates": [
-                "Description"
+                "Description",
+                "Resource Cost"
             ],
             "isEquipped": false,
             "type": {
                 "value": ""
             },
-            "reductionRoll": ""
+            "reductionRoll": "",
+            "layers": "",
+            "penalty": 0,
+            "conceal": "",
+            "stopsConcussive": false
         },
-
         "Career": {
             "templates": [
                 "Description"
             ],
             "isActive": false,
-            "currentLevel": 0
+            "currentLevel": 0,
+            "etiquette": {
+                "value": ""
+            }
         },
-
         "Equipment": {
             "templates": [
-                "Description"
+                "Description",
+                "Resource Cost"
             ],
             "quantity": 1
         },
-
         "Glyph": {
             "templates": [
                 "Description",
@@ -168,17 +175,16 @@
                 "value": "Basic"
             }
         },
-
         "Spell": {
             "templates": [
                 "Description",
                 "Stamina Cost"
             ]
         },
-
         "Weapon": {
             "templates": [
-                "Description"
+                "Description",
+                "Resource Cost"
             ],
             "isEquipped": false,
             "type": {
@@ -192,7 +198,50 @@
             },
             "skill": {
                 "value": "—"
-            }
+            },
+            "ammo": {
+                "value": 0,
+                "max": 0
+            },
+            "modes": "",
+            "conceal": ""
+        },
+        "Contact": {
+            "templates": [
+                "Description"
+            ],
+            "etiquette": {
+                "value": "Street"
+            },
+            "role": ""
+        },
+        "Cyberdeck": {
+            "templates": [
+                "Description",
+                "Resource Cost"
+            ],
+            "quality": 1
+        },
+        "Cyberware": {
+            "templates": [
+                "Description",
+                "Resource Cost"
+            ],
+            "category": {
+                "value": "Bodyware"
+            },
+            "points": 0,
+            "isInstalled": true
+        },
+        "Program": {
+            "templates": [
+                "Description",
+                "Resource Cost"
+            ],
+            "programType": {
+                "value": "Attack"
+            },
+            "rating": 1
         }
     }
 }

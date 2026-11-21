@@ -1,4 +1,5 @@
-import { DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
+import { choices, gameConfig, skillLabelKey } from "../config/systems.mjs";
+import { activeSkillKeys, DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
 
 /**
  * The custom WarlockItem document that extends the base Item document.
@@ -25,11 +26,9 @@ export class WarlockItem extends Item {
     /* ---------------------------------------------------------------------- */
 
     _createCareer() {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
         if (this.system.adventuringSkills === undefined) {
             const skills = {};
-            for (const skill of Object.keys(game.warlock.skills[activeSystem])) {
+            for (const skill of activeSkillKeys()) {
                 skills[skill] = {
                     isCareerSkill: false,
                     maximumLevel: 0,
@@ -60,8 +59,6 @@ export class WarlockItem extends Item {
             case "Armour":
                 this._prepareArmourType();
                 break;
-            case "Career":
-                break;
             case "Equipment":
                 break;
             case "Glyph":
@@ -74,7 +71,34 @@ export class WarlockItem extends Item {
                 this._prepareWeaponSkill();
                 this._prepareWeaponType();
                 break;
+            case "Career":
+            case "Contact":
+                this._prepareEtiquette();
+                break;
+            case "Cyberware":
+                this.system.category.choices = choices(
+                    Object.keys(gameConfig("wetwired").cyberware),
+                    (c) => `WARLOCK.Items.Cyberware.Categories.${c}`,
+                );
+                break;
+            case "Program":
+                this.system.programType.choices = choices(
+                    gameConfig("wetwired").programTypes,
+                    (t) => `WARLOCK.Items.Program.Types.${t}`,
+                );
+                break;
         }
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /** Etiquette choices for careers and contacts (Wetwired p27). */
+    _prepareEtiquette() {
+        this.system.etiquette ??= { value: "" };
+        this.system.etiquette.choices = choices(
+            gameConfig("wetwired").etiquettes,
+            (e) => `WARLOCK.Etiquette.${e}`,
+        );
     }
 
     /* ---------------------------------------------------------------------- */
@@ -100,73 +124,16 @@ export class WarlockItem extends Item {
     /* ---------------------------------------------------------------------- */
 
     _prepareWeaponDamageType() {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        if (activeSystem === "warlock") {
-            this.system.damage.type.choices = {
-                "—": "—",
-                "Crushing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Crushing"),
-                "Piercing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Piercing"),
-                "Slashing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Slashing"),
-                "Blast": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Blast"),
-            };
-        } if (activeSystem === "wetwired") {
-            this.system.damage.type.choices = {
-                "—": "—",
-                "Crushing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Crushing"),
-                "Piercing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Piercing"),
-                "Slashing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Slashing"),
-                "Energy": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Energy"),
-                "Ship": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Ship"),
-            };
-        } else if (activeSystem === "warpstar") {
-            this.system.damage.type.choices = {
-                "—": "—",
-                "Crushing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Crushing"),
-                "Piercing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Piercing"),
-                "Slashing": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Slashing"),
-                "Energy": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Energy"),
-                "Ship": game.i18n.localize("WARLOCK.Items.Weapon.Damage.Ship"),
-            };
-        }
+        this.system.damage.type.choices = choices(
+            gameConfig().weapons.damageTypes,
+            (type) => `WARLOCK.Items.Weapon.Damage.${type}`,
+        );
     }
 
     /* ---------------------------------------------------------------------- */
 
     _prepareWeaponSkill() {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        if (activeSystem === "warlock") {
-            this.system.skill.choices = {
-                "—": "—",
-                "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
-                "Bow": game.i18n.localize("WARLOCK.Skills.Bow"),
-                "Brawling": game.i18n.localize("WARLOCK.Skills.Brawling"),
-                "Crossbow": game.i18n.localize("WARLOCK.Skills.Crossbow"),
-                "Large blade": game.i18n.localize("WARLOCK.Skills.LargeBlade"),
-                "Pole arm": game.i18n.localize("WARLOCK.Skills.PoleArm"),
-                "Small blade": game.i18n.localize("WARLOCK.Skills.SmallBlade"),
-                "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
-            };
-        } if (activeSystem === "wetwired") {
-            this.system.skill.choices = {
-                "—": "—",
-                "Melee": game.i18n.localize("WARLOCK.Skills.Melee"),
-                "Gunnery": game.i18n.localize("WARLOCK.Skills.Gunnery"),
-                "Primitive Ranged": game.i18n.localize("WARLOCK.Skills.PrimitiveRanged"),
-                "Small Arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
-            };
-        } else if (activeSystem === "warpstar") {
-            this.system.skill.choices = {
-                "—": "—",
-                "Blades": game.i18n.localize("WARLOCK.Skills.Blades"),
-                "Blunt": game.i18n.localize("WARLOCK.Skills.Blunt"),
-                "Brawling": game.i18n.localize("WARLOCK.Skills.Brawling"),
-                "Ship gunner": game.i18n.localize("WARLOCK.Skills.ShipGunner"),
-                "Small arms": game.i18n.localize("WARLOCK.Skills.SmallArms"),
-                "Thrown": game.i18n.localize("WARLOCK.Skills.Thrown"),
-            };
-        }
+        this.system.skill.choices = choices(gameConfig().weapons.skills, skillLabelKey);
 
         if (this.actor?.system) {
             if (this.actor?.type === "Monster") {
@@ -186,29 +153,10 @@ export class WarlockItem extends Item {
     /* ---------------------------------------------------------------------- */
 
     _prepareWeaponType() {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
-        if (activeSystem === "warlock") {
-            this.system.type.choices = {
-                "—": "—",
-                "Casual": game.i18n.localize("WARLOCK.Items.Weapon.Types.Casual"),
-                "Martial": game.i18n.localize("WARLOCK.Items.Weapon.Types.Martial"),
-            };
-        } if (activeSystem === "wetwired") {
-            this.system.type.choices = {
-                "—": "—",
-                "Small": game.i18n.localize("WARLOCK.Items.Weapon.Types.Small"),
-                "Medium": game.i18n.localize("WARLOCK.Items.Weapon.Types.Medium"),
-                "Large": game.i18n.localize("WARLOCK.Items.Weapon.Types.Large"),
-            };
-        } else if (activeSystem === "warpstar") {
-            this.system.type.choices = {
-                "—": "—",
-                "Small": game.i18n.localize("WARLOCK.Items.Weapon.Types.Small"),
-                "Medium": game.i18n.localize("WARLOCK.Items.Weapon.Types.Medium"),
-                "Large": game.i18n.localize("WARLOCK.Items.Weapon.Types.Large"),
-            };
-        }
+        this.system.type.choices = choices(
+            gameConfig().weapons.types,
+            (type) => `WARLOCK.Items.Weapon.Types.${type}`,
+        );
     }
 
     /* ---------------------------------------------------------------------- */
@@ -270,6 +218,27 @@ export class WarlockItem extends Item {
                     `Damage: ${this.system.damage.roll} ${(this.system.damage.type.value).toLowerCase()}`,
                     `Skill: ${this.system.skill.value}`,
                 );
+                if (this.system.modes) details.push(`Modes: ${this.system.modes}`);
+                if (this.system.ammo?.max) details.push(`Ammo: ${this.system.ammo.value}/${this.system.ammo.max}`);
+                break;
+            case "Cyberware":
+                details.push(
+                    `Category: ${this.system.category.value}`,
+                    `Points: ${this.system.points}`,
+                );
+                break;
+            case "Cyberdeck":
+                details.push(`Quality: ${this.system.quality}`);
+                break;
+            case "Program":
+                details.push(
+                    `Type: ${this.system.programType.value}`,
+                    `Rating: ${this.system.rating}`,
+                );
+                break;
+            case "Contact":
+                details.push(`Etiquette: ${this.system.etiquette.value}`);
+                if (this.system.role) details.push(`Role: ${this.system.role}`);
                 break;
             default:
                 // TODO(jcd) Log this.

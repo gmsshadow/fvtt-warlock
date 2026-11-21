@@ -67,10 +67,10 @@
         <div class="combat-result__critical-section">
             <p class="combat-result__critical-header">
                 ⚠ <strong>{{localize "WARLOCK.Chat.Combat.CriticalHit"}}</strong>
-                (1d6+{{critModifier}} = {{critTotal}})
+                ({{critFormula}}+{{critModifier}} = {{critTotal}})
             </p>
             <p class="combat-result__critical-type">{{critTableKey}} {{localize "WARLOCK.Chat.Combat.Critical"}}:</p>
-            <p class="combat-result__critical-text"><em>{{criticalText}}</em></p>
+            <p class="combat-result__critical-text"><em>{{{criticalText}}}</em></p>
             {{#if isDead}}
             <p class="combat-result__dead">💀 <strong>{{localize "WARLOCK.Chat.Combat.Dead"}}</strong></p>
             {{/if}}

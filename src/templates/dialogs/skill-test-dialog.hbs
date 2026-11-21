@@ -71,7 +71,7 @@
         </p>
     </div>
 
-    {{#if (eq activeSystem "warlock")}}
+    {{#if showShields}}
     {{!-- Dodging with Shield --}}
     <div class="form-group">
         <label>
@@ -86,7 +86,9 @@
             {{localize "WARLOCK.Dialogs.SkillTest.DodgingRangedAttackWithShieldHint"}}
         </p>
     </div>
-    {{else}}
+    {{/if}}
+
+    {{#if showPinAndFlank}}
     {{!-- Pinned --}}
     <div class="form-group">
         <label>

@@ -1,3 +1,4 @@
+import { gameConfig } from "../config/systems.mjs";
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
@@ -60,6 +61,7 @@ export class WarlockItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
                 : foundry.utils.deepClone(system ?? {}),
         };
         context.item = this.item;
+        context.gameConfig = gameConfig();
         context.owner = this.item.isOwner;
         context.editable = this.isEditable;
 

@@ -1,6 +1,7 @@
 import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
 import { Rolls } from "../utils/rolls.mjs";
+import { gameConfig } from "../config/systems.mjs";
 import { DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
 
 /**
@@ -66,8 +67,7 @@ export class WarlockVehicleSheet extends WarlockActorSheet {
     static async _onTestSkill(event, target) {
         event.preventDefault();
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        if (activeSystem !== "warpstar") return;
+        if (!gameConfig().vehicles.skillTests) return;
 
         let actor;
         const speaker = ChatMessage.getSpeaker();

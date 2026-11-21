@@ -1,3 +1,5 @@
+import { activeGameId } from "../config/systems.mjs";
+
 /**
  * Helpers for the predefined adventuring skill lists of each subsystem
  * (Warlock!, Warpstar!, Wetwired). The lists themselves are built in the
@@ -19,8 +21,7 @@ export const DEFAULT_CAREER_SKILL = Object.freeze({
  * @returns {string[]}
  */
 export function activeSkillKeys() {
-    const activeSystem = game.settings.get("warlock", "activeSystem");
-    return Object.keys(game.warlock?.skills?.[activeSystem] ?? {});
+    return Object.keys(game.warlock?.skills?.[activeGameId()] ?? {});
 }
 
 /**
@@ -32,8 +33,7 @@ export function activeSkillKeys() {
  * @returns {object}
  */
 export function completeSkillList(stored, makeDefault) {
-    const activeSystem = game.settings.get("warlock", "activeSystem");
-    const names = game.warlock?.skills?.[activeSystem] ?? {};
+    const names = game.warlock?.skills?.[activeGameId()] ?? {};
     const source = (stored && (typeof stored === "object")) ? stored : {};
 
     return Object.fromEntries(
@@ -108,4 +108,21 @@ export async function ensureSkills() {
     if (updatedActors || updatedCareers) {
         console.log(`Warlock | Added missing skills to ${updatedActors} character(s) and ${updatedCareers} career(s).`);
     }
+}
+
+/**
+ * The highest level advances can raise a character's skill to. Only skills of
+ * the active career can be advanced, up to that career's maximum; any other
+ * skill returns null (Warlock! p60-61). Skills already above the maximum keep
+ * their level but can't be raised further (p62).
+ *
+ * @param {Actor} actor The character
+ * @param {string} skill The skill key
+ * @returns {number|null}
+ */
+export function skillAdvanceCap(actor, skill) {
+    const activeCareer = actor.itemTypes?.["Career"]?.find((career) => career.system.isActive);
+    const entry = activeCareer?.system.adventuringSkills?.[skill];
+    if (entry?.isCareerSkill) return Number(entry.maximumLevel) || 0;
+    return null;
 }

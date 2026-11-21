@@ -12,7 +12,11 @@
             "Equipment": "Equipment",
             "Glyph": "Glyph",
             "Spell": "Spell",
-            "Weapon": "Weapon"
+            "Weapon": "Weapon",
+            "Contact": "Contact",
+            "Cyberdeck": "Cyberdeck",
+            "Cyberware": "Cyberware",
+            "Program": "Program"
         }
     },
     "WARLOCK": {
@@ -78,12 +82,15 @@
                 "Success": "Spell succeeds!",
                 "Failure": "Spell fails.",
                 "WrathTriggered": "Wrath of the Otherworld!",
-                "WrathDetail": "A natural 1! The caster has mispronounced the strict wording and must make a second Incantation test to avoid a miscast.",
+                "WrathDetail": "A natural 1! The casting fails, and the caster must make a second {skill} test to avoid disaster.",
                 "SaveTest": "Saving test",
-                "SaveSuccess": "All is well — the miscast is averted.",
-                "SaveFailure": "The saving test fails — MISCAST!",
+                "SaveSuccess": "All is well — the casting still fails, but disaster is averted.",
+                "SaveFailure": "The saving test fails!",
                 "Miscast": "MISCAST!",
-                "MiscastRoll": "1d20"
+                "MiscastRoll": "1d20",
+                "WarpBleed": "WARP BLEED!",
+                "CostPaidAgain": "Natural 1: the stamina cost ({cost}) is paid again.",
+                "CyberwarePenalty": "Cyberware: {penalty}"
             },
             "Luck": {
                 "Success": "Lucky! The test succeeds.",
@@ -94,6 +101,14 @@
                 "ShortRest": "Short Rest (half an hour)",
                 "LongRest": "Long Rest (good night's sleep)",
                 "Recovered": "Stamina: {old} → {new} (+{recovered} recovered, max {max})"
+            },
+            "Resource": {
+                "Flavor": "Resource roll: {cost} against Wealth {wealth}",
+                "Affordable": "Wealth {wealth} already covers a cost of {cost}; no roll needed.",
+                "Success": "Success! The item is affordable.",
+                "Failure": "Short by {diff}. Spend {diff} more Wealth Points to get it anyway?",
+                "Spent": "Wealth Points: {old} to {new}.",
+                "PayDifference": "Pay {diff} Wealth Points"
             }
         },
         "CombatTracker": {
@@ -186,7 +201,16 @@
                 "Target": "Target",
                 "ModifierHint": "Additional situational modifier to the attacker's roll.",
                 "DefenderShield": "Defender's Shield",
-                "DefenderShieldHint": "If the defender has a shield, it adds to their Dodge vs. ranged attacks."
+                "DefenderShieldHint": "If the defender has a shield, it adds to their Dodge vs. ranged attacks.",
+                "FireMode": "Fire mode",
+                "CloseRange": "Target at close range (-5)"
+            },
+            "ResourceRoll": {
+                "Title": "Resource Roll",
+                "Cost": "Resource cost",
+                "Roll": "Roll",
+                "Cancel": "Cancel",
+                "Hint": "d20 + Wealth Points must reach the cost. The attempt costs 1 Wealth Point either way."
             }
         },
         "Items": {
@@ -202,13 +226,19 @@
                     "Light": "Light",
                     "Modest": "Modest",
                     "Heavy": "Heavy"
-                }
+                },
+                "Layers": "Layers",
+                "LayersHint": "Layers worn, e.g. 2,3 or All",
+                "Penalty": "Penalty",
+                "Conceal": "Conceal",
+                "StopsConcussive": "Stops concussive damage"
             },
             "Career": {
                 "Name": "Career",
                 "Skill": "Skill",
                 "Current": "Current",
-                "Max": "Max"
+                "Max": "Max",
+                "Etiquette": "Etiquette"
             },
             "CriticalEffect": {
                 "Name": "Critical Effect"
@@ -258,7 +288,10 @@
                     "Energy": "Energy",
                     "Piercing": "Piercing",
                     "Ship": "Ship",
-                    "Slashing": "Slashing"
+                    "Slashing": "Slashing",
+                    "Blunt": "Blunt",
+                    "Concussive": "Concussive",
+                    "Matrix": "Matrix"
                 },
                 "Types": {
                     "Casual": "Casual",
@@ -267,14 +300,57 @@
                     "Medium": "Medium",
                     "Large": "Large"
                 },
-                "Unarmed": "Unarmed"
+                "Unarmed": "Unarmed",
+                "Ammo": "Ammo",
+                "Modes": "Modes",
+                "ModesHint": "Fire modes, e.g. SA/BF/FA",
+                "Conceal": "Conceal",
+                "AmmoMax": "Magazine"
             },
             "AddItem": "Add",
             "ChatItem": "Chat Item",
             "DeleteItem": "Delete Item",
             "EditItem": "Edit Item",
             "EquipItem": "Equip Item",
-            "NewItem": "New {item}"
+            "NewItem": "New {item}",
+            "ResourceCost": "Resource Cost",
+            "Cyberware": {
+                "Name": "Cyberware",
+                "Category": "Category",
+                "Points": "Points",
+                "Installed": "Installed",
+                "Description": "Description",
+                "Categories": {
+                    "Headware": "Headware",
+                    "Bodyware": "Bodyware"
+                },
+                "Budget": "{category}: {used} of {available} points"
+            },
+            "Cyberdeck": {
+                "Name": "Cyberdeck",
+                "Quality": "Quality",
+                "Description": "Description"
+            },
+            "Program": {
+                "Name": "Program",
+                "Type": "Type",
+                "Rating": "Rating",
+                "Description": "Description",
+                "Types": {
+                    "Move": "Move",
+                    "Attack": "Attack",
+                    "Stealth": "Stealth",
+                    "Retrieve": "Retrieve",
+                    "Obfuscate": "Obfuscate",
+                    "Compromise": "Compromise"
+                }
+            },
+            "Contact": {
+                "Name": "Contact",
+                "Etiquette": "Etiquette",
+                "Role": "Role",
+                "Description": "Description"
+            }
         },
         "Notifications": {
             "MigratingWorld": "Migrating your world for version {version} — Please do not close your game or shut down your server.",
@@ -283,7 +359,11 @@
             "WeaponNoSkill": "This weapon has no linked skill. Set a skill on the weapon item first.",
             "NoTargetsSelected": "No target selected. Target a token first, then click attack.",
             "NoEquippedWeapons": "No equipped weapons with a linked skill. Equip a weapon first.",
-            "NoStaminaToRecover": "No stamina to recover — already at maximum."
+            "NoStaminaToRecover": "No stamina to recover — already at maximum.",
+            "SkillAtMaximum": "{skill} is already at its maximum of {max}.",
+            "NoAdvances": "No advances left to spend.",
+            "NotCareerSkill": "{skill} isn't a skill of your active career, so advances can't raise it.",
+            "NotEnoughWealth": "Not enough Wealth Points."
         },
         "Resources": {
             "ActionsPerRound": "Actions Per Round",
@@ -301,7 +381,10 @@
             "ReputationTest": "Reputation ({description})",
             "PluckTooltip": "Click to test your Pluck or shift-click to roll for an event.",
             "ShortRestTooltip": "Short Rest — recover half lost Stamina",
-            "LongRestTooltip": "Long Rest — recover all Stamina"
+            "LongRestTooltip": "Long Rest — recover all Stamina",
+            "Wealth": "Wealth Points",
+            "ResourceRoll": "Resource roll",
+            "ResourceRollTooltip": "Roll to afford something costing more than your Wealth Points"
         },
         "Settings": {
             "SystemMigrationVersion": "System Migration Version",
@@ -407,7 +490,15 @@
             "PayStaminaCostTooltip": "Pay Stamina Cost",
             "RollArmourReductionTooltip": "Roll Armour Reduction",
             "RollWeaponDamageTooltip": "Roll Weapon Damage",
-            "WeaponAttackTooltip": "Attack with this weapon (target a token first)"
+            "WeaponAttackTooltip": "Attack with this weapon (target a token first)",
+            "Points": "Points",
+            "Category": "Category",
+            "Quality": "Quality",
+            "Rating": "Rating",
+            "Etiquette": "Etiquette",
+            "Role": "Role",
+            "Layers": "Layers",
+            "Ammo": "Ammo"
         },
         "Tabs": {
             "Abilities": "Abilities",
@@ -417,11 +508,57 @@
             "Glyphs": "Glyphs",
             "Notes": "Notes",
             "Skills": "Skills",
-            "Spells": "Spells"
+            "Spells": "Spells",
+            "Contacts": "Contacts",
+            "Matrix": "Matrix",
+            "Cyberware": "Cyberware"
         },
         "Tests": {
             "TestCareer": "Test Career",
-            "TestSkill": "Test Skill"
+            "TestSkill": "Test Skill",
+            "IncrementSkillTooltip": "Spend an advance: raise to {next} (maximum {max})"
+        },
+        "Etiquette": {
+            "Corporate": "Corporate",
+            "Matrix": "Matrix",
+            "Media": "Media",
+            "Street": "Street",
+            "Tribal": "Tribal"
+        },
+        "Ancestry": {
+            "Label": "Ancestry",
+            "Allergy": "Allergy",
+            "Roll": "Roll ancestry (2d6)",
+            "Types": {
+                "Human": "Human",
+                "Elf": "Elf",
+                "Dwarf": "Dwarf",
+                "Ork": "Ork",
+                "Troll": "Troll"
+            },
+            "Notes": {
+                "Elf": "Low-light vision. Choose an allergy.",
+                "Dwarf": "+1 Dodge (applied). -2 to jumping and climbing tests, +1 to tech skills.",
+                "Ork": "Low-light vision. +1 melee, -1 ranged attacks (applied). Allergic to sunlight.",
+                "Troll": "-2 Dodge, +2 melee attacks (applied). +2 Stamina, -2 Luck at creation. -2 social tests, +2 Intimidation."
+            },
+            "AllergyHint": "Exposure: -1 to all skill and combat rolls; prolonged exposure costs 1 Stamina an hour."
+        },
+        "Sheets": {
+            "AbilitySheet": "Ability Sheet",
+            "ArmourSheet": "Armour Sheet",
+            "CareerSheet": "Career Sheet",
+            "CharacterSheet": "Character Sheet",
+            "ContactSheet": "Contact Sheet",
+            "CyberdeckSheet": "Cyberdeck Sheet",
+            "CyberwareSheet": "Cyberware Sheet",
+            "EquipmentSheet": "Equipment Sheet",
+            "GlyphSheet": "Glyph Sheet",
+            "MonsterSheet": "Monster Sheet",
+            "ProgramSheet": "Program Sheet",
+            "SpellSheet": "Spell Sheet",
+            "VehicleSheet": "Vehicle Sheet",
+            "WeaponSheet": "Weapon Sheet"
         }
     }
 }

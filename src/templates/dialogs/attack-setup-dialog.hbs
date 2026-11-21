@@ -35,6 +35,24 @@
     </div>
     {{/if}}
 
+    {{#if showCloseRange}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.AttackSetup.CloseRange"}}</label>
+        <input type="checkbox" name="close" data-dtype="Boolean">
+    </div>
+    {{/if}}
+
+    {{#if fireModes.length}}
+    <div class="form-group">
+        <label>{{localize "WARLOCK.Dialogs.AttackSetup.FireMode"}}</label>
+        <select name="fireMode">
+            {{#each fireModes}}
+            <option value="{{this.value}}">{{this.label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{/if}}
+
     {{#if showDefenderShield}}
     <div class="form-group">
         <label>{{localize "WARLOCK.Dialogs.AttackSetup.DefenderShield"}}</label>

@@ -1,7 +1,9 @@
 import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
 import { Rolls } from "../utils/rolls.mjs";
-import { completeSkillList, DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
+import { activeGameId, gameConfig, skillName } from "../config/systems.mjs";
+import { cyberwareBudget, cyberwareCastingPenalty, resourceRoll, rollAncestry } from "../utils/wetwired.mjs";
+import { completeSkillList, DEFAULT_CHARACTER_SKILL_LEVEL, skillAdvanceCap } from "../utils/skills.mjs";
 
 /**
  * The custom WarlockCharacterSheet that extends the custom WarlockActorSheet.
@@ -30,6 +32,8 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             openReputationDialog: WarlockCharacterSheet._onOpenReputationDialog,
             restShort: WarlockCharacterSheet._onShortRest,
             restLong: WarlockCharacterSheet._onLongRest,
+            rollAncestry: WarlockCharacterSheet._onRollAncestry,
+            resourceRoll: WarlockCharacterSheet._onResourceRoll,
         },
     };
 
@@ -93,6 +97,32 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             context.data.system.adventuringSkills,
             () => DEFAULT_CHARACTER_SKILL_LEVEL,
         );
+
+        // Wetwired: ancestry choices and notes, cyberware budget and penalty.
+        const config = gameConfig();
+        if (config.features.ancestry) {
+            context.ancestryChoices = { "": game.i18n.localize("WARLOCK.Ancestry.Label") };
+            for (const type of Object.keys(config.ancestry.types)) {
+                context.ancestryChoices[type] = game.i18n.localize(`WARLOCK.Ancestry.Types.${type}`);
+            }
+            const notesKey = config.ancestry.types[context.data.system.biography?.ancestry]?.notes;
+            context.ancestryNotes = notesKey ? game.i18n.localize(notesKey) : "";
+        }
+        context.cyberwareBudget = cyberwareBudget(this.actor);
+        context.cyberwarePenalty = cyberwareCastingPenalty(this.actor);
+
+        // Which skills an advance can raise: skills of the active career that
+        // are below that career's maximum.
+        const advances = Number(context.data.system.resources?.advances) || 0;
+        context.skillAdvance = {};
+        for (const [skill, level] of Object.entries(context.data.system.adventuringSkills)) {
+            const max = skillAdvanceCap(this.actor, skill);
+            context.skillAdvance[skill] = {
+                can: (advances > 0) && (max !== null) && (level < max),
+                max,
+                next: level + 1,
+            };
+        }
 
         context.data.system.careers = this.actor.itemTypes["Career"]
             .sort((a, b) => a.sort - b.sort);
@@ -223,11 +253,27 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         if (!this.isEditable) return;
 
         const skill = target.closest(".table__entry").dataset.skill;
+        const level = this.actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
+        const max = skillAdvanceCap(this.actor, skill);
+
+        if ((Number(this.actor.system.resources?.advances) || 0) <= 0) {
+            ui.notifications.warn(game.i18n.localize("WARLOCK.Notifications.NoAdvances"));
+            return;
+        }
+        const displayName = skillName(skill);
+        if (max === null) {
+            ui.notifications.warn(game.i18n.format("WARLOCK.Notifications.NotCareerSkill", { skill: displayName }));
+            return;
+        }
+        if (level >= max) {
+            ui.notifications.warn(game.i18n.format("WARLOCK.Notifications.SkillAtMaximum", { skill: displayName, max }));
+            return;
+        }
 
         await this.actor.update({
             system: {
                 adventuringSkills: {
-                    [skill]: (this.actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL) + 1,
+                    [skill]: level + 1,
                 },
             },
         });
@@ -357,6 +403,34 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
+     * Rolls 2d6 for the character's ancestry (Wetwired).
+     *
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
+     */
+    static async _onRollAncestry(event, target) {
+        event.preventDefault();
+        if (!this.isEditable) return;
+        await rollAncestry(this.actor);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Makes a Resource roll against the character's Wealth Points (Wetwired).
+     *
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
+     */
+    static async _onResourceRoll(event, target) {
+        event.preventDefault();
+        if (!this.isEditable) return;
+        await resourceRoll(this.actor);
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
      * Short rest: recover half lost stamina.
      *
      * @param {Event} event The click event
@@ -438,13 +512,12 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     static async _onTestSkill(event, target) {
         event.preventDefault();
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
         const skill = target.closest(".table__entry").dataset.skill;
         const level = this.actor.system.adventuringSkills?.[skill] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
 
         await Rolls.rollSkillTest(
             this.actor,
-            game.warlock.skills[activeSystem][skill],
+            skillName(skill),
             level,
             {
                 showCombatOptions: true,
@@ -465,37 +538,25 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
     static async _onTestSpell(event, target) {
         event.preventDefault();
 
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
         const itemId = target.closest(".table__entry")?.dataset?.itemId;
         const spellItem = itemId ? this.actor.items.get(itemId) : null;
 
-        let skillName;
-        let skillLevel;
-
-        switch (activeSystem) {
-            case "warlock":
-                skillName = game.warlock.skills.warlock["Incantation"];
-                skillLevel = this.actor.system.adventuringSkills?.["Incantation"] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
-                break;
-            case "warpstar":
-                skillName = game.warlock.skills.warpstar["Warp focus"];
-                skillLevel = this.actor.system.adventuringSkills?.["Warp focus"] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
-                break;
-            case "wetwired":
-                skillName = game.warlock.skills.wetwired["Sorcery"] ?? game.warlock.skills.wetwired["Conjuring"];
-                skillLevel = this.actor.system.adventuringSkills?.["Sorcery"]
-                    ?? this.actor.system.adventuringSkills?.["Conjuring"] ?? DEFAULT_CHARACTER_SKILL_LEVEL;
-                break;
-            default:
-                return;
-        }
+        // The game's casting skill: the first configured skill the game has
+        // for the name, and the first the character has a level in.
+        const castingSkills = gameConfig().magic.skills;
+        const names = game.warlock.skills[activeGameId()] ?? {};
+        const nameKey = castingSkills.find((key) => names[key] !== undefined) ?? castingSkills[0];
+        const stored = this.actor.system.adventuringSkills ?? {};
+        const levelKey = castingSkills.find((key) => stored[key] !== undefined);
+        const castingSkillLevel = levelKey ? stored[levelKey] : DEFAULT_CHARACTER_SKILL_LEVEL;
 
         await Rolls.rollSpellTest(
             this.actor,
-            skillName,
-            skillLevel,
+            names[nameKey] ?? nameKey,
+            castingSkillLevel,
             {
+                // Wetwired: -2 per full point of installed cyberware.
+                baseModifier: cyberwareCastingPenalty(this.actor),
                 spellName: spellItem?.name ?? "",
                 staminaCost: spellItem?.system?.staminaCost ?? 0,
             },

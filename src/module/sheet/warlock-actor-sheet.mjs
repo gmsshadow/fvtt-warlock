@@ -1,3 +1,4 @@
+import { activeGameId, gameConfig } from "../config/systems.mjs";
 import { Rolls } from "../utils/rolls.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -82,7 +83,9 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
         context.data = { system: WarlockActorSheet.cloneSystemData(this.actor.system) };
         context.enriched = {};
 
-        context.data.system.activeSystem = game.settings.get("warlock", "activeSystem");
+        context.data.system.activeSystem = activeGameId();
+        // The active game's rules config, for templates.
+        context.gameConfig = gameConfig();
 
         if (!context.data.system.gear) {
             context.data.system.gear = {};
@@ -94,6 +97,12 @@ export class WarlockActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) 
             .sort((a, b) => a.sort - b.sort);
         context.data.system.gear.equipment = this.actor.itemTypes["Equipment"]
             .sort((a, b) => a.sort - b.sort);
+        // Wetwired item types (empty lists in the other games).
+        const sorted = (type) => (this.actor.itemTypes[type] ?? []).sort((a, b) => a.sort - b.sort);
+        context.data.system.gear.cyberware = sorted("Cyberware");
+        context.data.system.gear.cyberdecks = sorted("Cyberdeck");
+        context.data.system.gear.programs = sorted("Program");
+        context.data.system.contacts = sorted("Contact");
 
         // Provide actor and other properties templates expect.
         context.actor = this.actor;

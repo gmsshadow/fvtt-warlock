@@ -7,6 +7,87 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.11]
+### Added (Wetwired)
+- Item types: Cyberware (headware or bodyware, points, installed), Cyberdeck
+  (quality), Program (type, rating) and Contact (etiquette, role), each with
+  its own sheet. Characters list cyberware and matrix gear on the Gear tab and
+  contacts on the Notes tab.
+- Weapons: ammo, magazine, fire modes, concealment and Resource cost. Armour:
+  layers, penalty, concealment, Resource cost and "stops concussive damage".
+  Equipment: Resource cost. Careers: etiquette.
+- Characters: ancestry (choose or roll 2d6) with allergy, and Wealth Points
+  replacing coins. Resource roll button: d20 + Wealth against the cost, 1
+  Wealth spent for trying, with the option to pay the shortfall (p155-156).
+- Cyberware budget: each Cybertech level above 4 buys a point in its
+  category (p148); the Gear tab shows used and available points.
+
+### Changed (Wetwired rules, via the per-game config)
+- Ranged attackers get +5; close range is -5 as well as faraway (p107).
+- Fire modes: burst -3, full auto -6 to hit (p165).
+- Armour layers: every equipped piece rolls its reduction and they add
+  (p112). Concussive damage ignores armour unless it stops concussive (power
+  armour, p109).
+- Ancestry: Dwarf +1 Dodge, Ork +1 melee and -1 ranged, Troll -2 Dodge and
+  +2 melee are applied in combat (p18).
+- Casting: -2 per full point of installed cyberware (p133, p149); a natural 1
+  costs the stamina again (p134).
+
+### Fixed
+- Sheet names in Foundry's sheet picker were showing raw keys.
+
+Warlock! and Warpstar! are unchanged: combat results and item choices were
+checked against 2.5.10.
+
+## [2.5.10]
+### Fixed
+- Criticals use each game's dice: 1d6 in Warlock!, 2d6 in Warpstar! and
+  Wetwired, plus the stamina below 0. The result text comes from the game's
+  compendium tables (exact book wording, clickable rolls); totals above 10
+  take the 10+ result. Wetwired uses the Warlock! text until it has tables.
+- Warpstar! miscasts roll on the Warp Bleed table, adding the glyph's stamina
+  cost to the d20 (p152); results above 20 take result 20. Results 18 and 19
+  roll on the Lesser or Greater Mutations table.
+- Wetwired damage types are its own: slashing, piercing, blunt, concussive,
+  energy and matrix (p109). Its "Small Arms" weapon skill is now "Small arms",
+  matching the skill list, so Wetwired guns use the character's skill and
+  count as ranged. Existing Wetwired weapons are updated on world load
+  (Small Arms to Small arms, Crushing to Blunt).
+- Warpstar! critical tables: every total of 10 or more lands on the 10+
+  result (11 and 12 drew nothing before).
+- Warpstar! critical macros rebuilt for v14 and roll 2d6 (they rolled 1d6).
+
+### Added
+- Warpstar! "Critical - Ship" (p126) and "Critical - Vehicle" (p148) tables,
+  with macros. Ship-damage weapons use the ship table.
+
+## [2.5.9]
+### Changed
+- New per-game rules config (`module/config/systems.mjs`) for Warlock!,
+  Warpstar! and Wetwired: weapon types, damage types, weapon skills, ranged
+  skills, the unarmed weapon, shield and pin/flank options, casting skills and
+  vehicle skill tests. The items, actors, sheets, rolls and skill-test dialog
+  read it instead of branching on the game's name. No change in behaviour:
+  item choices, ranged detection, skill lookups, casting skill and the dialog
+  were checked against 2.5.8 for all three games.
+
+## [2.5.8]
+### Changed
+- The skill "+" button (shown only while advances remain) now appears only
+  for skills of the active career that are below that career's maximum
+  (Warlock! p60-61); the cap of 6 for other skills is gone. Skills already
+  above the maximum keep their level. The tooltip shows the next level and the
+  maximum, and the action itself refuses any other advance.
+
+## [2.5.7]
+### Fixed
+- A natural 1 on a casting test now always fails the spell, whatever the
+  total (Warlock! p92; same rule in Warpstar! and Wetwired). The second test
+  only decides whether it miscasts.
+- The skill "+" button only appears when an advance is available and the skill
+  is below its cap: the active career's maximum for that career's skills, or 6
+  for any other skill.
+
 ## [2.5.6]
 ### Fixed
 - Warlock! spells: Armour and Enchant cost 3 stamina, as in the book (p98, p101).

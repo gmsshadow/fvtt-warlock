@@ -34,6 +34,30 @@
             </div>
 
             <div class="header__row">
+                {{#if gameConfig.features.ancestry}}
+                <select
+                    class="header__community field field--no-decoration field--center"
+                    name="system.biography.ancestry"
+                    title="{{ancestryNotes}}">
+                    {{selectOptions ancestryChoices selected=data.system.biography.ancestry}}
+                </select>
+
+                <a
+                    class="header__ancestry-roll"
+                    data-action="rollAncestry"
+                    title="{{localize "WARLOCK.Ancestry.Roll"}}">
+                    <i class="fas fa-dice"></i>
+                </a>
+
+                <input
+                    class="header__community field field--no-decoration field--center"
+                    type="text"
+                    name="system.biography.allergy"
+                    value="{{data.system.biography.allergy}}"
+                    placeholder="{{localize "WARLOCK.Ancestry.Allergy"}}"
+                    title="{{localize "WARLOCK.Ancestry.AllergyHint"}}"
+                    data-dtype="String">
+                {{else}}
                 <input
                     class="header__community field field--no-decoration field--center"
                     type="text"
@@ -41,6 +65,7 @@
                     value="{{data.system.biography.community}}"
                     placeholder="{{localize "WARLOCK.Details.Community"}}"
                     data-dtype="String">
+                {{/if}}
 
                 <input
                     class="header__traits field field--no-decoration field--center field--wide"
@@ -364,11 +389,16 @@
                                 {{localizeSkill @key}}
                             </a>
 
-                            {{#if (gt ../data.system.resources.advances 0)}}
-                            <a class="increment-skill-level skills__increment-button" data-action="incrementSkillLevel">
+                            {{#with (lookup ../skillAdvance @key)}}
+                            {{#if can}}
+                            <a
+                                class="increment-skill-level skills__increment-button"
+                                data-action="incrementSkillLevel"
+                                title="{{localize "WARLOCK.Tests.IncrementSkillTooltip" next=next max=max}}">
                                 +
                             </a>
                             {{/if}}
+                            {{/with}}
                         </span>
 
                         <input
@@ -407,6 +437,37 @@
             class="tab gear-tab {{tabs.gear.cssClass}}"
             data-group="primary"
             data-tab="gear">
+            {{#if gameConfig.features.wealth}}
+            <div class="wealth table">
+                <div class="wealth__header table__header">
+                    <span class="wealth__header-field table__header-field">
+                        {{localize "WARLOCK.Resources.Wealth"}}
+                    </span>
+
+                    <span class="wealth__header-field table__header-field">
+                        <a
+                            class="resource-roll"
+                            data-action="resourceRoll"
+                            title="{{localize "WARLOCK.Resources.ResourceRollTooltip"}}">
+                            <i class="fas fa-dice-d20"></i> {{localize "WARLOCK.Resources.ResourceRoll"}}
+                        </a>
+                    </span>
+                </div>
+
+                <div class="wealth__body table__body">
+                    <div class="wealth__entry table__entry">
+                        <input
+                            class="wealth__entry-field table__entry-field field field--no-decoration"
+                            type="number"
+                            step="0.01"
+                            name="system.resources.wealth.value"
+                            value="{{data.system.resources.wealth.value}}"
+                            data-dtype="Number">
+                        <span class="wealth__entry-field table__entry-field"></span>
+                    </div>
+                </div>
+            </div>
+            {{else}}
             <div class="money table">
                 <div class="money__header table__header">
                     <span class="money__header-field table__header-field">
@@ -480,12 +541,23 @@
                     </div>
                 </div>
             </div>
+            {{/if}}
 
             {{> "systems/warlock/templates/actors/partials/weapons-table.hbs"}}
 
             {{> "systems/warlock/templates/actors/partials/armour-table.hbs"}}
 
             {{> "systems/warlock/templates/actors/partials/equipment-table.hbs"}}
+
+            {{#if gameConfig.features.cyberware}}
+            {{> "systems/warlock/templates/actors/partials/cyberware-table.hbs"}}
+            {{/if}}
+
+            {{#if gameConfig.features.matrix}}
+            {{> "systems/warlock/templates/actors/partials/cyberdecks-table.hbs"}}
+
+            {{> "systems/warlock/templates/actors/partials/programs-table.hbs"}}
+            {{/if}}
         </div>
 
         <div
@@ -503,6 +575,10 @@
             class="tab notes-tab {{tabs.notes.cssClass}}"
             data-group="primary"
             data-tab="notes">
+            {{#if gameConfig.features.contacts}}
+            {{> "systems/warlock/templates/actors/partials/contacts-table.hbs"}}
+            {{/if}}
+
             <div class="grid grid--flow-row grid--two-columns">
                 <div class="flex flex--column">
                     <div class="biography flex flex--column flex--no-gap">

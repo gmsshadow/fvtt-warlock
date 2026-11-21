@@ -1,0 +1,98 @@
+<div
+    class="{{cssClass}} document"
+    autocomplete="off">
+    <header class="header">
+        <img
+            class="header__image header__image--small"
+            src="{{item.img}}"
+            data-action="editImage"
+            data-edit="img">
+
+        <div class="header__body">
+            <div class="header__row">
+                <input
+                    class="header__name header__name--small field field--no-decoration field--center"
+                    type="text"
+                    name="name"
+                    value="{{item.name}}"
+                    data-dtype="String">
+            </div>
+
+            <div class="header__row">
+                <div class="resource">
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Items.Cyberware.Category"}}
+                    </label>
+
+                    <div class="resource__body">
+                        <select
+                            class="field field--no-decoration"
+                            name="system.category.value">
+                            {{selectOptions
+                                data.system.category.choices
+                                selected=data.system.category.value}}
+                        </select>
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Items.Cyberware.Points"}}
+                    </label>
+
+                    <div class="resource__body">
+                        <input
+                            class="field field--center field--no-decoration"
+                            type="number"
+                            name="system.points"
+                            value="{{data.system.points}}"
+                            step="0.25"
+                            data-dtype="Number">
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Items.Cyberware.Installed"}}
+                    </label>
+
+                    <div class="resource__body">
+                        <input
+                            type="checkbox"
+                            name="system.isInstalled"
+                            {{checked data.system.isInstalled}}>
+                    </div>
+                </div>
+                <div class="resource">
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Items.ResourceCost"}}
+                    </label>
+
+                    <div class="resource__body">
+                        <input
+                            class="field field--center field--no-decoration"
+                            type="number"
+                            name="system.resourceCost"
+                            value="{{data.system.resourceCost}}"
+                            data-dtype="Number">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="body">
+        <div class="flex flex--column flex--no-gap">
+            <h1>
+                {{localize "WARLOCK.Items.Cyberware.Description"}}
+            </h1>
+
+            <prose-mirror
+                name="system.description"
+                value="{{data.system.description}}"
+                data-document-uuid="{{document.uuid}}"
+                toggled
+                {{#unless editable}}disabled{{/unless}}>
+                {{{enriched.description}}}
+            </prose-mirror>
+        </div>
+    </section>
+</div>

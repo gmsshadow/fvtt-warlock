@@ -11,6 +11,25 @@
                     value="{{item.name}}"
                     data-dtype="String">
             </div>
+            {{#if gameConfig.features.contacts}}
+            <div class="header__row">
+                <div class="resource">
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Items.Career.Etiquette"}}
+                    </label>
+
+                    <div class="resource__body">
+                        <select
+                            class="field field--no-decoration"
+                            name="system.etiquette.value">
+                            {{selectOptions
+                                data.system.etiquette.choices
+                                selected=data.system.etiquette.value}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
         </div>
     </header>
 

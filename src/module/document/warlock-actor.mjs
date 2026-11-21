@@ -1,3 +1,5 @@
+import { gameConfig } from "../config/systems.mjs";
+import { activeSkillKeys } from "../utils/skills.mjs";
 /**
  * The custom WarlockActor document that extends the base Actor document.
  *
@@ -69,10 +71,8 @@ export class WarlockActor extends Actor {
      */
     async _createCharacter() {
         // Add system-appropriate skills.
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-
         const skills = {};
-        for (const skill of Object.keys(game.warlock.skills[activeSystem])) {
+        for (const skill of activeSkillKeys()) {
             // Start all skills off at level 4.
             skills[skill] = 4;
         }
@@ -84,20 +84,8 @@ export class WarlockActor extends Actor {
         });
 
         // Add an unarmed weapon.
-        let weaponsPack;
-        let unarmedWeaponId;
-        if (activeSystem === "warlock") {
-            weaponsPack = game.packs.get("warlock.weapons-warlock");
-            unarmedWeaponId = "yeHpzUBivahsQLOE";
-        }
-        if (activeSystem == "wetwired") {
-            weaponsPack = game.packs.get("warlock.weapons-warpstar");
-            unarmedWeaponId = "qoU38GyqIbB5i38w";            
-        }
-        else if (activeSystem === "warpstar") {
-            weaponsPack = game.packs.get("warlock.weapons-warpstar");
-            unarmedWeaponId = "qoU38GyqIbB5i38w";
-        }
+        const { pack: unarmedPack, id: unarmedWeaponId } = gameConfig().weapons.unarmed;
+        const weaponsPack = game.packs.get(unarmedPack);
 
         const wasLocked = weaponsPack.locked;
         if (wasLocked) {

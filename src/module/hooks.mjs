@@ -12,6 +12,12 @@ import { WarlockEquipmentSheet } from "./sheet/warlock-equipment-sheet.mjs";
 import { WarlockGlyphSheet } from "./sheet/warlock-glyph-sheet.mjs";
 import { WarlockSpellSheet } from "./sheet/warlock-spell-sheet.mjs";
 import { WarlockWeaponSheet } from "./sheet/warlock-weapon-sheet.mjs";
+import {
+    WarlockContactSheet,
+    WarlockCyberdeckSheet,
+    WarlockCyberwareSheet,
+    WarlockProgramSheet,
+} from "./sheet/warlock-wetwired-item-sheets.mjs";
 
 import { WarlockCombat } from "./combat/combat.mjs";
 import { WarlockCombatTracker } from "./combat/combat-tracker.mjs";
@@ -19,6 +25,7 @@ import { WarlockCombatTracker } from "./combat/combat-tracker.mjs";
 import { Migrations } from "./utils/migrations.mjs";
 import { Rolls } from "./utils/rolls.mjs";
 import { ensureSkills } from "./utils/skills.mjs";
+import { fixWetwiredWeapons } from "./utils/data-fixes.mjs";
 
 /* -------------------------------------------------------------------------- */
 
@@ -140,6 +147,30 @@ function initializeSheets() {
         makeDefault: true,
         label: "WARLOCK.Sheets.WeaponSheet",
     });
+
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockContactSheet, {
+        types: ["Contact"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.ContactSheet",
+    });
+
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockCyberdeckSheet, {
+        types: ["Cyberdeck"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.CyberdeckSheet",
+    });
+
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockCyberwareSheet, {
+        types: ["Cyberware"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.CyberwareSheet",
+    });
+
+    DocumentSheetConfig.registerSheet(Item, "warlock", WarlockProgramSheet, {
+        types: ["Program"],
+        makeDefault: true,
+        label: "WARLOCK.Sheets.ProgramSheet",
+    });
 }
 
 /* -------------------------------------------------------------------------- */
@@ -250,6 +281,10 @@ function initializeSettings() {
 function initializeHandlebarsTemplates() {
     foundry.applications.handlebars.loadTemplates([
         "systems/warlock/templates/actors/partials/armour-table.hbs",
+        "systems/warlock/templates/actors/partials/contacts-table.hbs",
+        "systems/warlock/templates/actors/partials/cyberdecks-table.hbs",
+        "systems/warlock/templates/actors/partials/cyberware-table.hbs",
+        "systems/warlock/templates/actors/partials/programs-table.hbs",
         "systems/warlock/templates/actors/partials/equipment-table.hbs",
         "systems/warlock/templates/actors/partials/glyphs-table.hbs",
         "systems/warlock/templates/actors/partials/spells-table.hbs",
@@ -345,6 +380,7 @@ Hooks.once("ready", () => {
     // Backfill the active subsystem's predefined skills into any characters
     // and careers that lack some or all of them.
     ensureSkills().catch((err) => console.error("Warlock | Failed to add missing skills", err));
+    fixWetwiredWeapons().catch((err) => console.error("Warlock | Failed to update Wetwired weapons", err));
 });
 
 /* -------------------------------------------------------------------------- */

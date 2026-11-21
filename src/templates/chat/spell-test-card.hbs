@@ -39,8 +39,11 @@
             ⚡ <strong>{{localize "WARLOCK.Chat.Spell.WrathTriggered"}}</strong>
         </p>
         <p class="spell-test__wrath-detail">
-            {{localize "WARLOCK.Chat.Spell.WrathDetail"}}
+            {{localize "WARLOCK.Chat.Spell.WrathDetail" skill=skillName}}
         </p>
+        {{#if costPaidAgain}}
+        <p class="spell-test__wrath-detail">{{costPaidAgain}}</p>
+        {{/if}}
 
         {{!-- Saving test --}}
         <div class="spell-test__save-section">
@@ -62,12 +65,17 @@
         <hr>
         <div class="spell-test__miscast-section">
             <p class="spell-test__miscast-header">
-                💀 <strong>{{localize "WARLOCK.Chat.Spell.Miscast"}}</strong>
-                ({{localize "WARLOCK.Chat.Spell.MiscastRoll"}}: {{miscastRoll}})
+                💀 <strong>{{miscastLabel}}</strong>
+                ({{miscastFormula}}: {{miscastRoll}})
             </p>
             <p class="spell-test__miscast-text">
-                <em>{{miscastText}}</em>
+                <em>{{{miscastText}}}</em>
             </p>
+            {{#if mutationTable}}
+            <p class="spell-test__miscast-text">
+                <strong>{{mutationTable}}</strong> (1d20: {{mutationRoll}}): <em>{{{mutationText}}}</em>
+            </p>
+            {{/if}}
         </div>
         {{/if}}
     </div>

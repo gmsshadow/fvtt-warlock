@@ -1031,6 +1031,46 @@ body.warlock-subsystem--wetwired .warlock {
     grid-template-columns: 5fr repeat(2, 100px);
 }
 
+/* Wetwired tables */
+.warlock .wealth__header,
+.warlock .wealth__entry {
+    grid-template-columns: 1fr 200px;
+}
+
+.warlock .cyberware__header,
+.warlock .cyberware__entry,
+.warlock .programs__header,
+.warlock .programs__entry {
+    grid-template-columns: 5fr repeat(3, 100px);
+}
+
+.warlock .cyberdecks__header,
+.warlock .cyberdecks__entry {
+    grid-template-columns: 5fr repeat(2, 100px);
+}
+
+.warlock .contacts__header,
+.warlock .contacts__entry {
+    grid-template-columns: 3fr 120px 2fr 100px;
+}
+
+.warlock .cyberware__budget {
+    display: flex;
+    gap: 16px;
+    margin: 2px 0 4px;
+    font-size: var(--font-size-12);
+}
+
+.warlock .cyberware__budget-entry--over {
+    color: var(--warlock-failure, #a00);
+    font-weight: bold;
+}
+
+.warlock .header__ancestry-roll {
+    align-self: center;
+    padding: 0 4px;
+}
+
 .warlock .spells__header,
 .warlock .spells__entry {
     grid-template-columns: 5fr repeat(3, 100px);

@@ -10,7 +10,7 @@
     }
   ],
 
-  "version": "2.5.6",
+  "version": "2.5.11",
   "compatibility": {
     "minimum": 14,
     "verified": 14.360
@@ -18,7 +18,7 @@
 
   "url": "https://github.com/gmsshadow/fvtt-warlock/tree/main/src",
   "manifest": "https://raw.githubusercontent.com/gmsshadow/fvtt-warlock/refs/heads/main/src/system.json",
-  "download": "https://github.com/gmsshadow/fvtt-warlock/raw/refs/heads/main/package/warlock-v2.5.6.zip",
+  "download": "https://github.com/gmsshadow/fvtt-warlock/raw/refs/heads/main/package/warlock-v2.5.11.zip",
 
   "esmodules": [
     "module/warlock.mjs"

@@ -1,12 +1,10 @@
+import { activeGameId, gameConfig, skillName } from "../config/systems.mjs";
+import { enrichTableText, getCompendiumTable, tableResultFor } from "./tables.mjs";
+import { ancestryModifiers } from "./wetwired.mjs";
+
 /* -------------------------------------------------------------------------- */
 /* Constants                                                                   */
 /* -------------------------------------------------------------------------- */
-
-const RANGED_SKILLS = {
-    warlock: ["Bow", "Crossbow", "Thrown"],
-    warpstar: ["Small arms", "Ship gunner", "Thrown"],
-    wetwired: ["Gunnery", "Primitive Ranged", "Small arms"],
-};
 
 const CRITICAL_TABLES = {
     Slashing: {
@@ -58,8 +56,7 @@ const CRITICAL_TABLES = {
 function getCriticalEntry(damageType, total) {
     let tableKey = damageType;
     if (!CRITICAL_TABLES[tableKey]) {
-        if (tableKey === "Energy") tableKey = "Blast";
-        else if (tableKey === "Ship") tableKey = "Blast";
+        if (["Energy", "Ship", "Matrix"].includes(tableKey)) tableKey = "Blast";
         else tableKey = "Crushing";
     }
     const table = CRITICAL_TABLES[tableKey];
@@ -335,11 +332,14 @@ export class Rolls {
      * @param {number}       [options.staminaCost] Stamina cost (auto-deducted)
      */
     static async rollSpellTest(actor, skillName, skillLevel, options = {}) {
-        // Optional modifier dialog.
-        let modifier = 0;
+        // Optional modifier dialog. A base modifier (Wetwired's cyberware
+        // penalty) is shown in the dialog and included in its result.
+        const baseModifier = options.baseModifier ?? 0;
+        let modifier = baseModifier;
         if (!options.skipDialog) {
             const dialogOpts = await Rolls._getSkillTestOptions(skillName, {
                 showCombatOptions: false,
+                baseModifier,
             });
             if (dialogOpts.cancelled) return;
             modifier = dialogOpts.modifier ?? 0;
@@ -374,10 +374,14 @@ export class Rolls {
         const allRolls = [castRoll];
 
         // Extract the natural d20 result.
-        const naturalD20 = castRoll.dice[0]?.total ?? castRoll.total;
+        const naturalD20 = castRoll.dice[0]?.results?.find((r) => r.active)?.result
+            ?? castRoll.dice[0]?.total ?? castRoll.total;
         const castTotal = castRoll.total;
-        const castSuccess = castTotal >= 20;
         const isNatural1 = naturalD20 === 1;
+        // A natural 1 always fails the spell, whatever the total (Warlock! p92,
+        // Warpstar! warp bleed, Wetwired miscast); the second test then only
+        // decides whether it miscasts.
+        const castSuccess = !isNatural1 && castTotal >= 20;
 
         // --- Build result data ---
         const result = {
@@ -404,6 +408,15 @@ export class Rolls {
         if (isNatural1) {
             result.wrathTriggered = true;
 
+            // Wetwired: the stamina cost is paid again (p134).
+            if (gameConfig().magic.natural1PaysCostAgain && staminaCost > 0) {
+                const now = actor.system.resources?.stamina?.value ?? 0;
+                await actor.update({
+                    system: { resources: { stamina: { value: now - staminaCost } } },
+                });
+                result.costPaidAgain = game.i18n.format("WARLOCK.Chat.Spell.CostPaidAgain", { cost: staminaCost });
+            }
+
             // Second Incantation test — the saving throw.
             const saveRoll = new Roll("1d20 + @level", { level: skillLevel });
             await saveRoll.evaluate();
@@ -413,15 +426,9 @@ export class Rolls {
             result.saveSuccess = saveRoll.total >= 20;
 
             if (!result.saveSuccess) {
-                // MISCAST — roll 1d20 on the miscast table.
+                // MISCAST: roll on the game's miscast (or warp bleed) table.
                 result.miscast = true;
-                const miscastRoll = new Roll("1d20");
-                await miscastRoll.evaluate();
-                allRolls.push(miscastRoll);
-
-                result.miscastRoll = miscastRoll.total;
-                result.miscastText = MISCAST_TABLE[miscastRoll.total]
-                    ?? MISCAST_TABLE[20];
+                Object.assign(result, await Rolls._rollMiscast(staminaCost, allRolls));
             }
         }
 
@@ -460,15 +467,122 @@ export class Rolls {
 
     /* ---------------------------------------------------------------------- */
 
+    /**
+     * Rolls on the game's miscast table: 1d20, plus the stamina cost where the
+     * game adds it (Warpstar! warp bleed). Totals above the table's top take
+     * the top result. Some results roll a further table (warp mutations).
+     *
+     * @private
+     * @param {number} staminaCost The spell or glyph's stamina cost
+     * @param {Roll[]} allRolls Rolls shown on the card
+     * @returns {Promise<object>} Fields for the spell test card
+     */
+    static async _rollMiscast(staminaCost, allRolls) {
+        const miscast = gameConfig().magic.miscast;
+        const addCost = miscast.addCostToRoll && (staminaCost > 0);
+        const miscastRoll = new Roll(addCost ? "1d20 + @cost" : "1d20", { cost: staminaCost });
+        await miscastRoll.evaluate();
+        allRolls.push(miscastRoll);
+
+        const out = {
+            miscastLabel: game.i18n.localize(miscast.label),
+            miscastRoll: miscastRoll.total,
+            miscastFormula: addCost ? `1d20 + ${staminaCost}` : "1d20",
+            miscastText: "",
+            mutationTable: "",
+            mutationRoll: null,
+            mutationText: "",
+        };
+
+        const table = await getCompendiumTable(miscast.pack, miscast.table);
+        const found = table ? tableResultFor(table, miscastRoll.total) : null;
+        let landed;
+        if (found) {
+            out.miscastText = await enrichTableText(found.text);
+            landed = found.total;
+        } else {
+            landed = Math.min(Math.max(1, miscastRoll.total), 20);
+            out.miscastText = MISCAST_TABLE[landed];
+        }
+
+        const followUp = miscast.followUps?.[landed];
+        if (followUp) {
+            const followTable = await getCompendiumTable(miscast.pack, followUp);
+            if (followTable) {
+                const followRoll = new Roll("1d20");
+                await followRoll.evaluate();
+                allRolls.push(followRoll);
+                const followFound = tableResultFor(followTable, followRoll.total);
+                out.mutationTable = followUp;
+                out.mutationRoll = followRoll.total;
+                out.mutationText = followFound ? await enrichTableText(followFound.text) : "";
+            }
+        }
+
+        return out;
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Rolls the target's armour reduction. Warlock! and Warpstar! use the
+     * first equipped armour. Where the game has armour layers (Wetwired), every
+     * equipped piece rolls and the results add. Damage types the game lists as
+     * bypassing armour (Wetwired concussive) only meet armour marked as
+     * stopping it (power armour).
+     *
+     * @param {Actor} actor The target
+     * @param {string} damageType The incoming damage type
+     * @param {Roll[]} allRolls Rolls shown on the card
+     * @returns {Promise<{ reduction: number, names: string }>}
+     */
+    static async rollArmour(actor, damageType, allRolls) {
+        const combat = gameConfig().combat;
+        const equipped = actor.items.filter((i) => i.type === "Armour" && i.system.isEquipped);
+        let worn = combat.armourLayers ? equipped : equipped.slice(0, 1);
+        if (combat.armourIgnoredBy.includes(damageType)) {
+            worn = worn.filter((a) => a.system.stopsConcussive);
+        }
+
+        let reduction = 0;
+        for (const armour of worn) {
+            if (!armour.system.reductionRoll) continue;
+            const roll = new Roll(armour.system.reductionRoll, {});
+            await roll.evaluate();
+            reduction += roll.total;
+            allRolls.push(roll);
+        }
+        return { reduction, names: worn.map((a) => a.name).join(", ") };
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * A weapon's fire modes that the game gives a to-hit modifier (Wetwired
+     * SA/BF/FA), as select options; empty when the game has none.
+     *
+     * @param {Item} weapon
+     * @returns {Array<{ value: string, label: string }>}
+     */
+    static weaponFireModes(weapon) {
+        const modes = gameConfig().combat.fireModes;
+        if (!modes || !weapon?.system?.modes) return [];
+        return weapon.system.modes
+            .split(/[\/,\s]+/)
+            .map((m) => m.trim().toUpperCase())
+            .filter((m) => m in modes)
+            .map((m) => ({ value: m, label: modes[m] ? `${m} (${modes[m]})` : m }));
+    }
+
+    /* ---------------------------------------------------------------------- */
+
     static isRangedWeapon(weapon) {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
-        return (RANGED_SKILLS[activeSystem] || []).includes(weapon.system.skill.value);
+        return gameConfig().weapons.rangedSkills.includes(weapon.system.skill.value);
     }
 
     /* ---------------------------------------------------------------------- */
 
     static getActorWeaponSkill(actor, weapon) {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
         const skillKey = weapon.system.skill.value;
         if (actor.type === "Monster") {
             return {
@@ -477,7 +591,7 @@ export class Rolls {
             };
         }
         return {
-            skillName: game.warlock.skills[activeSystem]?.[skillKey] ?? skillKey,
+            skillName: skillName(skillKey),
             skillLevel: actor.system.adventuringSkills?.[skillKey] ?? 0,
         };
     }
@@ -485,7 +599,6 @@ export class Rolls {
     /* ---------------------------------------------------------------------- */
 
     static getDefenderCombatInfo(defenderActor, isRanged) {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
         if (isRanged) {
             if (defenderActor.type === "Monster") {
                 return {
@@ -495,7 +608,7 @@ export class Rolls {
                 };
             }
             return {
-                skillName: game.warlock.skills[activeSystem]?.["Dodge"] ?? "Dodge",
+                skillName: skillName("Dodge"),
                 skillLevel: defenderActor.system.adventuringSkills?.["Dodge"] ?? 0,
                 weapon: null, damageFormula: "", damageType: "",
             };
@@ -517,7 +630,7 @@ export class Rolls {
         if (defWeapon) {
             const sk = defWeapon.system.skill.value;
             return {
-                skillName: game.warlock.skills[activeSystem]?.[sk] ?? sk,
+                skillName: skillName(sk),
                 skillLevel: defenderActor.system.adventuringSkills?.[sk] ?? 0,
                 weapon: defWeapon,
                 damageFormula: defWeapon.system.damage.roll,
@@ -525,7 +638,7 @@ export class Rolls {
             };
         }
         return {
-            skillName: game.warlock.skills[activeSystem]?.["Brawling"] ?? "Brawling",
+            skillName: skillName("Brawling"),
             skillLevel: defenderActor.system.adventuringSkills?.["Brawling"] ?? 0,
             weapon: null, damageFormula: "1d6-2", damageType: "Crushing",
         };
@@ -539,7 +652,7 @@ export class Rolls {
      * buttons when no tokens are targeted.
      */
     static async rollCombatAttack(attacker, options = {}) {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
+        const config = gameConfig();
         const targets = [...game.user.targets];
 
         if (!targets.length) {
@@ -572,9 +685,13 @@ export class Rolls {
         const atkInfo = Rolls.getActorWeaponSkill(attacker, weapon);
 
         // Attacker modifiers.
+        const atkAncestry = ancestryModifiers(attacker);
         let atkMod = setup.modifier ?? 0;
-        if (!isRanged) atkMod += 5;
+        if (!isRanged) atkMod += 5 + atkAncestry.melee;
+        if (isRanged) atkMod += config.combat.rangedAttackerBonus + atkAncestry.ranged;
         if (isRanged && setup.faraway) atkMod -= 5;
+        if (isRanged && setup.close) atkMod -= 5;
+        if (isRanged) atkMod += config.combat.fireModes?.[setup.fireMode] ?? 0;
         if (setup.flanking === "flanking") atkMod += 5;
         if (setup.flanking === "flanked") atkMod -= 5;
         if (setup.pinned) atkMod -= 5;
@@ -584,8 +701,9 @@ export class Rolls {
 
         // Defender modifiers.
         const defInfo = Rolls.getDefenderCombatInfo(defenderActor, isRanged);
-        let defMod = 0;
-        if (isRanged && activeSystem === "warlock") {
+        const defAncestry = ancestryModifiers(defenderActor);
+        let defMod = isRanged ? defAncestry.dodge : defAncestry.melee;
+        if (isRanged && config.combat.shields) {
             if (setup.defenderShield === "small") defMod += 3;
             if (setup.defenderShield === "large") defMod += 5;
         }
@@ -655,14 +773,8 @@ export class Rolls {
         let grossDamage = damageRoll.total;
         if (isMightyStrike) grossDamage *= 2;
 
-        const armour = defenderActor.items.find(i => i.type === "Armour" && i.system.isEquipped);
-        let armourReduction = 0;
-        if (armour?.system.reductionRoll) {
-            const aRoll = new Roll(armour.system.reductionRoll, {});
-            await aRoll.evaluate();
-            armourReduction = aRoll.total;
-            allRolls.push(aRoll);
-        }
+        const { reduction: armourReduction, names: armourNames } =
+            await Rolls.rollArmour(defenderActor, damageType, allRolls);
 
         const netDamage = Math.max(1, grossDamage - armourReduction);
         const oldStamina = defenderActor.system.resources?.stamina?.value ?? 0;
@@ -677,20 +789,12 @@ export class Rolls {
             damageRollFormula: weapon.system.damage.roll,
             rawDamage: damageRoll.total, damageTypeName, damageType,
             isMightyStrike, finalDamage: grossDamage,
-            hasArmour: !!armour, armourName: armour?.name ?? "", armourReduction,
+            hasArmour: !!armourNames, armourName: armourNames, armourReduction,
             netDamage, oldStamina, newStamina,
         });
 
         if (newStamina < 0) {
-            const critMod = Math.abs(newStamina);
-            const critRoll = new Roll("1d6 + @mod", { mod: critMod });
-            await critRoll.evaluate();
-            allRolls.push(critRoll);
-            const crit = getCriticalEntry(damageType, critRoll.total);
-            Object.assign(result, {
-                isCritical: true, critModifier: critMod, critTotal: critRoll.total,
-                criticalText: crit.text, critTableKey: crit.tableKey, isDead: crit.isDead,
-            });
+            Object.assign(result, await Rolls._rollCritical(damageType, Math.abs(newStamina), allRolls));
         }
     }
 
@@ -708,14 +812,8 @@ export class Rolls {
         let grossDamage = damageRoll.total;
         if (isMightyStrike) grossDamage *= 2;
 
-        const armour = attackerActor.items.find(i => i.type === "Armour" && i.system.isEquipped);
-        let armourReduction = 0;
-        if (armour?.system.reductionRoll) {
-            const aRoll = new Roll(armour.system.reductionRoll, {});
-            await aRoll.evaluate();
-            armourReduction = aRoll.total;
-            allRolls.push(aRoll);
-        }
+        const { reduction: armourReduction, names: armourNames } =
+            await Rolls.rollArmour(attackerActor, damageType, allRolls);
 
         const netDamage = Math.max(1, grossDamage - armourReduction);
         const oldStamina = attackerActor.system.resources?.stamina?.value ?? 0;
@@ -730,21 +828,59 @@ export class Rolls {
             damageRollFormula: formula,
             rawDamage: damageRoll.total, damageTypeName, damageType,
             isMightyStrike, finalDamage: grossDamage,
-            hasArmour: !!armour, armourName: armour?.name ?? "", armourReduction,
+            hasArmour: !!armourNames, armourName: armourNames, armourReduction,
             netDamage, oldStamina, newStamina,
         });
 
         if (newStamina < 0) {
-            const critMod = Math.abs(newStamina);
-            const critRoll = new Roll("1d6 + @mod", { mod: critMod });
-            await critRoll.evaluate();
-            allRolls.push(critRoll);
-            const crit = getCriticalEntry(damageType, critRoll.total);
-            Object.assign(result, {
-                isCritical: true, critModifier: critMod, critTotal: critRoll.total,
-                criticalText: crit.text, critTableKey: crit.tableKey, isDead: crit.isDead,
-            });
+            Object.assign(result, await Rolls._rollCritical(damageType, Math.abs(newStamina), allRolls));
         }
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Rolls a critical hit: the game's critical dice plus the stamina below 0,
+     * read from the game's compendium table for the damage type, or the
+     * built-in Warlock! text when the game has none.
+     *
+     * @private
+     * @param {string} damageType The weapon's damage type
+     * @param {number} negative Stamina below 0 (cumulative)
+     * @param {Roll[]} allRolls Rolls shown on the card
+     * @returns {Promise<object>} Fields for the combat result card
+     */
+    static async _rollCritical(damageType, negative, allRolls) {
+        const criticals = gameConfig().combat.criticals;
+        const critRoll = new Roll(`${criticals.dice} + @mod`, { mod: negative });
+        await critRoll.evaluate();
+        allRolls.push(critRoll);
+
+        const tableName = criticals.tables[damageType];
+        const table = await getCompendiumTable(criticals.pack, tableName);
+        const found = table ? tableResultFor(table, critRoll.total) : null;
+
+        let text, tableKey, cappedTotal;
+        if (found) {
+            text = await enrichTableText(found.text);
+            tableKey = tableName.replace(/^Critical - /, "");
+            cappedTotal = found.total;
+        } else {
+            const crit = getCriticalEntry(damageType, critRoll.total);
+            text = crit.text;
+            tableKey = crit.tableKey;
+            cappedTotal = Math.min(Math.max(2, critRoll.total), 10);
+        }
+
+        return {
+            isCritical: true,
+            critFormula: criticals.dice,
+            critModifier: negative,
+            critTotal: critRoll.total,
+            criticalText: text,
+            critTableKey: tableKey,
+            isDead: cappedTotal >= 10,
+        };
     }
 
     /* ---------------------------------------------------------------------- */
@@ -796,20 +932,15 @@ export class Rolls {
         for (const token of targets) {
             const actor = token.actor;
             if (!actor) continue;
-            const armour = actor.items.find(i => i.type === "Armour" && i.system.isEquipped);
-            let armourReduction = 0;
-            if (armour?.system.reductionRoll) {
-                const r = new Roll(armour.system.reductionRoll, {});
-                await r.evaluate();
-                armourReduction = r.total;
-            }
+            const { reduction: armourReduction, names: armourNames } =
+                await Rolls.rollArmour(actor, damageType, []);
             const netDamage = Math.max(1, grossDamage - armourReduction);
             const cur = actor.system.resources?.stamina?.value ?? 0;
             const nw = cur - netDamage;
             await actor.update({ system: { resources: { stamina: { value: nw } } } });
             const parts = [];
             parts.push(game.i18n.format("WARLOCK.Chat.Attack.DamageAppliedGross", { damage: grossDamage, target: token.name }));
-            if (armour) parts.push(game.i18n.format("WARLOCK.Chat.Attack.ArmourReduced", { armour: armour.name, reduction: armourReduction }));
+            if (armourNames) parts.push(game.i18n.format("WARLOCK.Chat.Attack.ArmourReduced", { armour: armourNames, reduction: armourReduction }));
             parts.push(game.i18n.format("WARLOCK.Chat.Attack.NetStaminaLoss", { net: netDamage, newStamina: nw }));
             if (nw < 0) parts.push(game.i18n.format("WARLOCK.Chat.Attack.CriticalWarning", { negative: Math.abs(nw) }));
             await ChatMessage.create({
@@ -824,7 +955,8 @@ export class Rolls {
 
     /** @private */
     static async _getAttackSetupOptions(attacker, equippedWeapons, targets, options = {}) {
-        const activeSystem = game.settings.get("warlock", "activeSystem");
+        const activeSystem = activeGameId();
+        const config = gameConfig(activeSystem);
         const selectedWeaponId = options.selectedWeaponId ?? equippedWeapons[0]?.id;
         const selectedWeapon = equippedWeapons.find(w => w.id === selectedWeaponId) ?? equippedWeapons[0];
         const isRanged = selectedWeapon ? Rolls.isRangedWeapon(selectedWeapon) : false;
@@ -843,8 +975,10 @@ export class Rolls {
             showWeaponChoice: equippedWeapons.length > 1,
             showTargetChoice: targets.length > 1,
             isRanged, activeSystem,
-            showDefenderShield: activeSystem === "warlock",
-            showFlanking: activeSystem === "warpstar" || activeSystem === "wetwired",
+            showDefenderShield: config.combat.shields,
+            showFlanking: config.combat.pinAndFlank,
+            showCloseRange: isRanged && config.combat.closeRangePenalty,
+            fireModes: isRanged ? Rolls.weaponFireModes(selectedWeapon) : [],
         });
         return foundry.applications.api.DialogV2.wait({
             window: {
@@ -873,6 +1007,8 @@ export class Rolls {
                             defenderShield: form.defenderShield?.value ?? "none",
                             flanking: form.flankingChoice?.value ?? "none",
                             pinned: form.pinned?.checked ?? false,
+                            close: form.close?.checked ?? false,
+                            fireMode: form.fireMode?.value ?? "",
                         };
                     },
                 },
@@ -896,8 +1032,8 @@ export class Rolls {
     /* ---------------------------------------------------------------------- */
 
     static async _getSkillTestOptions(skill, options) {
+        const config = gameConfig();
         function handleSkillTestOptions(form, isBasicTest) {
-            const activeSystem = game.settings.get("warlock", "activeSystem");
             let modifier = parseInt(form.modifier.value);
             if (options.showVehicleCombatCapabilities) {
                 switch (form.vehicleCombatCapabilityChoice.value) {
@@ -908,18 +1044,13 @@ export class Rolls {
             if (options.showCombatOptions) {
                 if (form.initiatedMeleeAttack.checked) modifier += 5;
                 if (form.rangedTargetFaraway.checked) modifier -= 5;
-                if (activeSystem === "warlock") {
+                if (config.combat.shields) {
                     switch (form.shieldChoice.value) {
                         case "small": modifier += 3; break;
                         case "large": modifier += 5; break;
                     }
-                } if (activeSystem === "wetwired") {
-                    if (form.pinned.checked) modifier -= 5;
-                    switch (form.flankingChoice.value) {
-                        case "flanking": modifier += 5; break;
-                        case "flanked": modifier -= 5; break;
-                    }
-                } else if (activeSystem === "warpstar") {
+                }
+                if (config.combat.pinAndFlank) {
                     if (form.pinned.checked) modifier -= 5;
                     switch (form.flankingChoice.value) {
                         case "flanking": modifier += 5; break;
@@ -930,7 +1061,9 @@ export class Rolls {
             return { modifier, isBasicTest };
         }
         const content = await Rolls._renderTemplate("systems/warlock/templates/dialogs/skill-test-dialog.hbs", {
-            activeSystem: game.settings.get("warlock", "activeSystem"),
+            activeSystem: activeGameId(),
+            showShields: config.combat.shields,
+            showPinAndFlank: config.combat.pinAndFlank,
             baseModifier: options.baseModifier ?? 0,
             showVehicleCombatCapabilities: options.showVehicleCombatCapabilities,
             vehicleCombatCapabilityChoices: {
