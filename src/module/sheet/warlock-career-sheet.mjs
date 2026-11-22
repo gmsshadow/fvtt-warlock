@@ -81,6 +81,9 @@ export class WarlockCareerSheet extends WarlockItemSheet {
             () => ({ ...DEFAULT_CAREER_SKILL }),
         );
 
+        // Rows per skill column, so both columns are even.
+        context.skillRows = Math.ceil(Object.keys(context.data.system.adventuringSkills).length / 2);
+
         return context;
     }
 

@@ -2,24 +2,20 @@
   "id": "warlock",
   "title": "Warlock!, Warpstar & Wetwired",
   "description": "A system for playing Warlock!, Warpstar and Wetwired in Foundry VTT.",
-
   "authors": [
     {
       "name": "GMsShadow",
       "discord": "gmsshadow"
     }
   ],
-
-  "version": "2.5.11",
+  "version": "2.5.12",
   "compatibility": {
     "minimum": 14,
-    "verified": 14.360
+    "verified": 14.36
   },
-
   "url": "https://github.com/gmsshadow/fvtt-warlock/tree/main/src",
   "manifest": "https://raw.githubusercontent.com/gmsshadow/fvtt-warlock/refs/heads/main/src/system.json",
-  "download": "https://github.com/gmsshadow/fvtt-warlock/raw/refs/heads/main/package/warlock-v2.5.11.zip",
-
+  "download": "https://github.com/gmsshadow/fvtt-warlock/raw/refs/heads/main/package/warlock-v2.5.12.zip",
   "esmodules": [
     "module/warlock.mjs"
   ],
@@ -164,6 +160,97 @@
       "label": "Macros (Warpstar!)",
       "name": "macros-warpstar",
       "path": "packs/macros-warpstar.db",
+      "system": "warlock",
+      "type": "Macro"
+    },
+    {
+      "label": "Weapons (Wetwired)",
+      "name": "weapons-wetwired",
+      "path": "packs/weapons-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Armour (Wetwired)",
+      "name": "armour-wetwired",
+      "path": "packs/armour-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Equipment (Wetwired)",
+      "name": "equipment-wetwired",
+      "path": "packs/equipment-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Cyberware (Wetwired)",
+      "name": "cyberware-wetwired",
+      "path": "packs/cyberware-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Cyberdecks and Programs (Wetwired)",
+      "name": "matrix-wetwired",
+      "path": "packs/matrix-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Spells (Wetwired)",
+      "name": "spells-wetwired",
+      "path": "packs/spells-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Contacts (Wetwired)",
+      "name": "contacts-wetwired",
+      "path": "packs/contacts-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Creature Abilities (Wetwired)",
+      "name": "abilities-wetwired",
+      "path": "packs/abilities-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Careers - Basic (Wetwired)",
+      "name": "careers-basic-wetwired",
+      "path": "packs/careers-basic-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Careers - Advanced (Wetwired)",
+      "name": "careers-advanced-wetwired",
+      "path": "packs/careers-advanced-wetwired.db",
+      "system": "warlock",
+      "type": "Item"
+    },
+    {
+      "label": "Bestiary (Wetwired)",
+      "name": "bestiary-wetwired",
+      "path": "packs/bestiary-wetwired.db",
+      "system": "warlock",
+      "type": "Actor"
+    },
+    {
+      "label": "Rollable Tables (Wetwired)",
+      "name": "rollable-tables-wetwired",
+      "path": "packs/rollable-tables-wetwired.db",
+      "system": "warlock",
+      "type": "RollTable"
+    },
+    {
+      "label": "Macros (Wetwired)",
+      "name": "macros-wetwired",
+      "path": "packs/macros-wetwired.db",
       "system": "warlock",
       "type": "Macro"
     }

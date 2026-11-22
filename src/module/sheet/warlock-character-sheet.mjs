@@ -111,6 +111,9 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
         context.cyberwareBudget = cyberwareBudget(this.actor);
         context.cyberwarePenalty = cyberwareCastingPenalty(this.actor);
 
+        // Rows per skill column, so both columns are even.
+        context.skillRows = Math.ceil(Object.keys(context.data.system.adventuringSkills).length / 2);
+
         // Which skills an advance can raise: skills of the active career that
         // are below that career's maximum.
         const advances = Number(context.data.system.resources?.advances) || 0;

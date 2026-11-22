@@ -978,7 +978,9 @@ body.warlock-subsystem--wetwired .warlock {
 .warlock .career-skills__body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(16, 1fr);
+    /* Half the skills (rounded up) per column, set by the sheet: 16 for
+       Warlock! and Warpstar!, 14 for Wetwired. */
+    grid-template-rows: repeat(var(--skill-rows, 16), 1fr);
     grid-auto-flow: column;
 }
 
@@ -987,8 +989,8 @@ body.warlock-subsystem--wetwired .warlock {
     grid-template-columns: 3fr repeat(2, 50px);
 }
 
-.warlock .skills__entry:nth-child(17),
-.warlock .career-skills__entry:nth-child(17) {
+.warlock .skills__entry.table__entry--column-start,
+.warlock .career-skills__entry.table__entry--column-start {
     border-top: none;
 }
 

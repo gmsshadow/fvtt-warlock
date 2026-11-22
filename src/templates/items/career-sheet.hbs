@@ -86,10 +86,10 @@
                     </span>
                 </div>
 
-                <div class="career-skills__body table__body">
+                <div class="career-skills__body table__body" style="--skill-rows: {{skillRows}}">
                     {{#each data.system.adventuringSkills}}
                     <div
-                        class="career-skills__entry table__entry"
+                        class="career-skills__entry table__entry {{#if (eq @index ../skillRows)}}table__entry--column-start{{/if}}"
                         data-skill="{{@key}}">
                         <span class="career-skills__entry-field table__entry-field">
                             {{localizeSkill @key}}

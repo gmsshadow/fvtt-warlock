@@ -172,8 +172,7 @@ export const SYSTEMS = Object.freeze({
             damageTypes: ["Slashing", "Piercing", "Blunt", "Concussive", "Energy", "Matrix"],
             skills: ["Melee", "Gunnery", "Primitive Ranged", "Small arms"],
             rangedSkills: ["Gunnery", "Primitive Ranged", "Small arms"],
-            // Wetwired has no weapons compendium yet, so it borrows Warpstar!'s.
-            unarmed: { pack: "warlock.weapons-warpstar", id: "qoU38GyqIbB5i38w" },
+            unarmed: { pack: "warlock.weapons-wetwired", id: "12DBByUTnIMbTXOj" },
         },
 
         combat: {
@@ -189,12 +188,18 @@ export const SYSTEMS = Object.freeze({
             armourIgnoredBy: ["Concussive"],
             /** Fire modes and their to-hit modifier (p165). */
             fireModes: { SA: 0, SS: 0, BF: -3, FA: -6 },
-            // 2d6 + negative stamina (p113). Wetwired has no tables in a
-            // compendium yet, so criticals use the built-in Warlock! text.
+            // 2d6 + negative stamina (p113), six tables (p116-122).
             criticals: {
                 dice: "2d6",
-                pack: null,
-                tables: {},
+                pack: "warlock.rollable-tables-wetwired",
+                tables: {
+                    Slashing: "Critical - Slashing",
+                    Piercing: "Critical - Piercing",
+                    Blunt: "Critical - Blunt",
+                    Concussive: "Critical - Concussive",
+                    Energy: "Critical - Energy",
+                    Matrix: "Critical - Matrix",
+                },
             },
         },
 
@@ -204,10 +209,10 @@ export const SYSTEMS = Object.freeze({
             // cyberware to Sorcery and Conjuration (p133, p149).
             natural1PaysCostAgain: true,
             cyberwarePenaltyPerPoint: 2,
-            // No compendium yet: uses the built-in miscast text (same table, p136).
+            // Miscast table (p136).
             miscast: {
-                pack: null,
-                table: null,
+                pack: "warlock.rollable-tables-wetwired",
+                table: "Miscast",
                 label: "WARLOCK.Chat.Spell.Miscast",
                 addCostToRoll: false,
                 followUps: {},

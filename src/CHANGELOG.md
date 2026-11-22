@@ -7,6 +7,38 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.12]
+### Added (Wetwired compendia, from the book)
+- Weapons (29): melee, pistols, SMGs, rifles, shotguns, assault rifles, heavy
+  weapons and explosives, with damage, critical type, ammo, fire modes,
+  concealment and Resource cost (p161-165).
+- Armour (7) with layers, penalty and concealment (p167); Equipment (6):
+  weapon accessories and ammo (p161, p166).
+- Cyberware (43 headware and bodyware, p150-154), Cyberdecks (6) and
+  Programs (6) (p143-144, p169).
+- Careers: 24 basic (p30-77) and 16 advanced (p87-102), with skill maximums,
+  etiquette, equipment or requirement, and background tables.
+- Spells (28, p137-142), Contacts (54, p194-198), Creature Abilities (13,
+  p174-177) and Bestiary (14, p178-193).
+- Rollable tables: six critical tables (p116-122), Miscast (p136), Ancestry
+  (2d6, p17) and the four basic career columns (p28), linked to the careers.
+- Critical macros for the six Wetwired damage types.
+- Wetwired criticals and miscasts now use these tables, and new Wetwired
+  characters get the Wetwired unarmed weapon.
+
+### Fixed
+- Skill columns on character and career sheets are balanced for any number
+  of skills (Wetwired's 27 split 14/13 instead of 16/11).
+- Warpstar! critical tables roll at least 2d6+1, as a critical always adds
+  at least 1.
+
+### Notes
+- Book misprints corrected: misnumbered background tables (Bodyguard, Thief,
+  Former Salaryman) are numbered by position; "tAncestry"/"disgAncestry"
+  read as "trace"/"disgrace".
+- The book gives no critical letter for the Heavy Machine Gun, Rocket
+  Launcher or C5 Plastic Explosives; their damage type is left blank.
+
 ## [2.5.11]
 ### Added (Wetwired)
 - Item types: Cyberware (headware or bodyware, points, installed), Cyberdeck
