@@ -2,7 +2,7 @@ import { WarlockActorSheet } from "./warlock-actor-sheet.mjs";
 
 import { Rolls } from "../utils/rolls.mjs";
 import { activeGameId, gameConfig, skillName } from "../config/systems.mjs";
-import { cyberwareBudget, cyberwareCastingPenalty, resourceRoll, rollAncestry } from "../utils/wetwired.mjs";
+import { characterEtiquettes, cyberwareBudget, cyberwareCastingPenalty, resourceRoll, rollAncestry } from "../utils/wetwired.mjs";
 import { completeSkillList, DEFAULT_CHARACTER_SKILL_LEVEL, skillAdvanceCap } from "../utils/skills.mjs";
 
 /**
@@ -24,6 +24,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             consolidateMoney: WarlockCharacterSheet._onConsolidateMoney,
             incrementSkillLevel: WarlockCharacterSheet._onIncrementSkillLevel,
             testCareer: WarlockCharacterSheet._onTestCareer,
+            testEtiquette: WarlockCharacterSheet._onTestEtiquette,
             testLuck: WarlockCharacterSheet._onTestLuck,
             testPluck: WarlockCharacterSheet._onTestPluck,
             testReputation: WarlockCharacterSheet._onTestReputation,
@@ -108,6 +109,7 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             const notesKey = config.ancestry.types[context.data.system.biography?.ancestry]?.notes;
             context.ancestryNotes = notesKey ? game.i18n.localize(notesKey) : "";
         }
+        context.etiquettes = characterEtiquettes(this.actor);
         context.cyberwareBudget = cyberwareBudget(this.actor);
         context.cyberwarePenalty = cyberwareCastingPenalty(this.actor);
 
@@ -386,6 +388,30 @@ export class WarlockCharacterSheet extends WarlockActorSheet {
             this.actor,
             career.name,
             career.system.currentLevel,
+            { showCombatOptions: false },
+        );
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Roll an etiquette test at its career skill level (Wetwired p27).
+     *
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
+     */
+    static async _onTestEtiquette(event, target) {
+        event.preventDefault();
+
+        const entry = target.closest(".table__entry");
+        const name = entry.dataset.etiquette;
+        const etiquette = characterEtiquettes(this.actor).find((e) => e.name === name);
+        if (!etiquette) return;
+
+        await Rolls.rollSkillTest(
+            this.actor,
+            game.i18n.format("WARLOCK.Etiquette.TestName", { name: etiquette.label }),
+            etiquette.level,
             { showCombatOptions: false },
         );
     }

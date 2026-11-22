@@ -238,7 +238,9 @@
                 "Skill": "Skill",
                 "Current": "Current",
                 "Max": "Max",
-                "Etiquette": "Etiquette"
+                "Etiquette": "Etiquette",
+                "EtiquetteAlso": "Also grants",
+                "EtiquetteChoose": "Choose one"
             },
             "CriticalEffect": {
                 "Name": "Critical Effect"
@@ -515,6 +517,7 @@
         },
         "Tests": {
             "TestCareer": "Test Career",
+            "TestEtiquette": "Test Etiquette",
             "TestSkill": "Test Skill",
             "IncrementSkillTooltip": "Spend an advance: raise to {next} (maximum {max})"
         },
@@ -523,7 +526,12 @@
             "Matrix": "Matrix",
             "Media": "Media",
             "Street": "Street",
-            "Tribal": "Tribal"
+            "Tribal": "Tribal",
+            "Skills": "Etiquette",
+            "Level": "Level",
+            "From": "From career",
+            "None": "No etiquette yet: add a career with an etiquette.",
+            "TestName": "Etiquette: {name}"
         },
         "Ancestry": {
             "Label": "Ancestry",

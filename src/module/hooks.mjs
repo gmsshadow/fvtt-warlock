@@ -25,7 +25,7 @@ import { WarlockCombatTracker } from "./combat/combat-tracker.mjs";
 import { Migrations } from "./utils/migrations.mjs";
 import { Rolls } from "./utils/rolls.mjs";
 import { ensureSkills } from "./utils/skills.mjs";
-import { fixWetwiredWeapons } from "./utils/data-fixes.mjs";
+import { fixWetwiredCareerEtiquettes, fixWetwiredWeapons } from "./utils/data-fixes.mjs";
 
 /* -------------------------------------------------------------------------- */
 
@@ -381,6 +381,7 @@ Hooks.once("ready", () => {
     // and careers that lack some or all of them.
     ensureSkills().catch((err) => console.error("Warlock | Failed to add missing skills", err));
     fixWetwiredWeapons().catch((err) => console.error("Warlock | Failed to update Wetwired weapons", err));
+    fixWetwiredCareerEtiquettes().catch((err) => console.error("Warlock | Failed to update Wetwired career etiquettes", err));
 });
 
 /* -------------------------------------------------------------------------- */

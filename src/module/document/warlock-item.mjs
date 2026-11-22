@@ -1,4 +1,5 @@
 import { choices, gameConfig, skillLabelKey } from "../config/systems.mjs";
+import { careerEtiquettes } from "../utils/wetwired.mjs";
 import { activeSkillKeys, DEFAULT_CHARACTER_SKILL_LEVEL } from "../utils/skills.mjs";
 
 /**
@@ -94,11 +95,29 @@ export class WarlockItem extends Item {
 
     /** Etiquette choices for careers and contacts (Wetwired p27). */
     _prepareEtiquette() {
-        this.system.etiquette ??= { value: "" };
-        this.system.etiquette.choices = choices(
-            gameConfig("wetwired").etiquettes,
-            (e) => `WARLOCK.Etiquette.${e}`,
-        );
+        const etiquette = this.system.etiquette ??= { value: "" };
+        const all = gameConfig("wetwired").etiquettes;
+        etiquette.choices = choices(all, (e) => `WARLOCK.Etiquette.${e}`);
+        if (this.type !== "Career") return;
+
+        // A career can grant more than one etiquette ("Street and Tribal"),
+        // or let the player pick one of a few ("Street or Corporate").
+        if (!Array.isArray(etiquette.additional)) etiquette.additional = [];
+        if (!Array.isArray(etiquette.options)) etiquette.options = [];
+        if (etiquette.options.length) {
+            etiquette.choices = choices(
+                all.filter((e) => etiquette.options.includes(e)),
+                (e) => `WARLOCK.Etiquette.${e}`,
+            );
+        }
+        etiquette.additionalChoices = all
+            .filter((e) => e !== etiquette.value)
+            .map((e) => ({
+                value: e,
+                label: game.i18n.localize(`WARLOCK.Etiquette.${e}`),
+                checked: etiquette.additional.includes(e),
+            }));
+        etiquette.list = careerEtiquettes(this);
     }
 
     /* ---------------------------------------------------------------------- */
@@ -195,6 +214,11 @@ export class WarlockItem extends Item {
                     `Level: ${this.system.currentLevel}`,
                     `Adventuring Skills: ${careerSkills === "" ? "None" : careerSkills}`,
                 );
+                if (gameConfig().features.etiquette) {
+                    const options = this.system.etiquette?.options ?? [];
+                    const list = options.length ? options.join(" or ") : careerEtiquettes(this).join(", ");
+                    if (list) details.push(`Etiquette: ${list}`);
+                }
                 break;
             case "Equipment":
                 details.push(

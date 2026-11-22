@@ -26,9 +26,33 @@
                                 data.system.etiquette.choices
                                 selected=data.system.etiquette.value}}
                         </select>
+                        {{#if data.system.etiquette.options.length}}
+                        <span class="etiquette-hint">{{localize "WARLOCK.Items.Career.EtiquetteChoose"}}</span>
+                        {{/if}}
                     </div>
                 </div>
             </div>
+            {{#unless data.system.etiquette.options.length}}
+            <div class="header__row">
+                <div class="resource">
+                    <label class="resource__name">
+                        {{localize "WARLOCK.Items.Career.EtiquetteAlso"}}
+                    </label>
+
+                    <div class="resource__body etiquette-extra">
+                        {{#each data.system.etiquette.additionalChoices}}
+                        <a
+                            class="toggle-etiquette"
+                            data-action="toggleEtiquette"
+                            data-etiquette="{{value}}">
+                            <i class="{{#if checked}}fas fa-check-square{{else}}far fa-square{{/if}}"></i>
+                            {{label}}
+                        </a>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            {{/unless}}
             {{/if}}
         </div>
     </header>

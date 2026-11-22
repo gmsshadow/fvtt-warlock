@@ -156,7 +156,9 @@
             "isActive": false,
             "currentLevel": 0,
             "etiquette": {
-                "value": ""
+                "value": "",
+                "additional": [],
+                "options": []
             }
         },
         "Equipment": {

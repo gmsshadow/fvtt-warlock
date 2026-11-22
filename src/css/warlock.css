@@ -954,6 +954,31 @@ body.warlock-subsystem--wetwired .warlock {
     grid-template-columns: 3fr repeat(3, 100px);
 }
 
+.warlock .etiquettes__header,
+.warlock .etiquettes__entry {
+    grid-template-columns: 2fr 100px 3fr;
+}
+
+.warlock .etiquettes__entry--empty {
+    grid-template-columns: 1fr;
+}
+
+.warlock .etiquettes__entry-field:nth-child(3) {
+    color: var(--color-text-dark-6);
+}
+
+.warlock .etiquette-extra {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+}
+
+.warlock .etiquette-hint {
+    margin-left: 0.5rem;
+    color: var(--color-text-dark-6);
+    font-style: italic;
+}
+
 .warlock .careers__entry-field:nth-child(3),
 .warlock .career-skills__entry-field:nth-child(2)
 {

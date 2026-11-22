@@ -7,6 +7,28 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.14]
+### Added (Wetwired etiquette, p27)
+- Wetwired character sheets have an Etiquette table on the Skills tab,
+  between Careers and Adventuring Skills. It lists each etiquette the
+  character's careers grant, rated at that career's career skill. When two
+  careers grant the same etiquette, the higher career skill counts. Click an
+  etiquette to roll a test (the dialog takes modifiers such as a contact's
+  +4). Warlock! and Warpstar! sheets are unchanged.
+- Careers can grant more than one etiquette: the career sheet has "Also
+  grants" toggles under the main etiquette. A career that offers a choice
+  shows only those etiquettes in its dropdown, marked "Choose one".
+- Career chat cards list the career's etiquette(s) in Wetwired.
+
+### Fixed
+- Four Wetwired careers had lost an etiquette because a career could hold
+  only one: Detective (Street and Corporate), Dilettante (Corporate and
+  Media), Tribal Blockser (Street and Tribal), and Physical Adept (Street or
+  Corporate, player's choice). The compendium entries are fixed. On world
+  load, copies already in the world or on characters get the missing
+  etiquette once. Careers a GM has already given extra etiquettes are left
+  alone.
+
 ## [2.5.13]
 ### Added
 - Warpstar!: Talent Table 1 and Talent Table 2 as d20 rollable tables, one

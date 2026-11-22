@@ -94,6 +94,7 @@ export const SYSTEMS = Object.freeze({
             cyberware: false,
             matrix: false,
             contacts: false,
+            etiquette: false,
             firearms: false,
         },
     },
@@ -159,6 +160,7 @@ export const SYSTEMS = Object.freeze({
             cyberware: false,
             matrix: false,
             contacts: false,
+            etiquette: false,
             firearms: false,
         },
     },
@@ -229,6 +231,8 @@ export const SYSTEMS = Object.freeze({
             cyberware: true,
             matrix: true,
             contacts: true,
+            /** Etiquette skills from careers, at the career skill level (p27). */
+            etiquette: true,
             firearms: true,
         },
 

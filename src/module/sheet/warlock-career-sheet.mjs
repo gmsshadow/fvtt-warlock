@@ -15,6 +15,7 @@ export class WarlockCareerSheet extends WarlockItemSheet {
         },
         actions: {
             toggleCareerSkill: WarlockCareerSheet._onToggleCareerSkill,
+            toggleEtiquette: WarlockCareerSheet._onToggleEtiquette,
         },
     };
 
@@ -120,7 +121,27 @@ export class WarlockCareerSheet extends WarlockItemSheet {
     /* ---------------------------------------------------------------------- */
 
     /**
-     * Toggles a career skill.
+     * Toggles an extra etiquette the career grants (Wetwired p27).
+     *
+     * @param {Event} event The click event
+     * @param {HTMLElement} target The element with data-action
+     */
+    static async _onToggleEtiquette(event, target) {
+        event.preventDefault();
+        if (!this.isEditable) return;
+
+        const name = target.dataset.etiquette;
+        const current = this.item.system.etiquette?.additional ?? [];
+        const additional = current.includes(name)
+            ? current.filter((e) => e !== name)
+            : [...current, name];
+        await this.item.update({ "system.etiquette.additional": additional });
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    /**
+     * Toggles whether a skill is a career skill.
      *
      * @param {Event} event The click event
      * @param {HTMLElement} target The element with data-action

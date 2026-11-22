@@ -183,3 +183,52 @@ export async function resourceRoll(actor) {
         }
     }
 }
+
+/* -------------------------------------------------------------------------- */
+/* Etiquette                                                                  */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The etiquettes a career grants (p27): its main one plus any extras. A
+ * career that offers a choice ("Street or Corporate") grants only the one
+ * picked. Placeholder values ("", "—") are ignored.
+ *
+ * @param {Item} career
+ * @returns {string[]}
+ */
+export function careerEtiquettes(career) {
+    const known = gameConfig("wetwired").etiquettes;
+    const etiquette = career?.system?.etiquette ?? {};
+    const list = [etiquette.value, ...(Array.isArray(etiquette.additional) ? etiquette.additional : [])];
+    return [...new Set(list)].filter((e) => known.includes(e));
+}
+
+/**
+ * The character's etiquette skills (p27). Each is rated at the career skill
+ * of the career that grants it; when several careers grant the same one,
+ * the highest career skill counts.
+ *
+ * @param {Actor} actor
+ * @returns {{ name: string, label: string, level: number, careers: string }[]}
+ */
+export function characterEtiquettes(actor) {
+    if (!gameConfig().features.etiquette) return [];
+    const byName = new Map();
+    for (const career of actor?.itemTypes?.Career ?? []) {
+        const level = Number(career.system.currentLevel) || 0;
+        for (const name of careerEtiquettes(career)) {
+            const entry = byName.get(name) ?? { name, level: 0, careers: [] };
+            entry.level = Math.max(entry.level, level);
+            entry.careers.push(career.name);
+            byName.set(name, entry);
+        }
+    }
+    const order = gameConfig("wetwired").etiquettes;
+    return [...byName.values()]
+        .sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name))
+        .map((e) => ({
+            ...e,
+            label: game.i18n.localize(`WARLOCK.Etiquette.${e.name}`),
+            careers: e.careers.join(", "),
+        }));
+}

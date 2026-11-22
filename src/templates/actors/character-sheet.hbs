@@ -348,6 +348,56 @@
                 </div>
             </div>
 
+            {{#if gameConfig.features.etiquette}}
+            <div class="etiquettes table">
+                <div class="etiquettes__header table__header">
+                    <span class="etiquettes__header-field table__header-field">
+                        {{localize "WARLOCK.Etiquette.Skills"}}
+                    </span>
+
+                    <span class="etiquettes__header-field table__header-field">
+                        {{localize "WARLOCK.Etiquette.Level"}}
+                    </span>
+
+                    <span class="etiquettes__header-field table__header-field">
+                        {{localize "WARLOCK.Etiquette.From"}}
+                    </span>
+                </div>
+
+                <div class="etiquettes__body table__body">
+                    {{#each etiquettes}}
+                    <div
+                        class="etiquettes__entry table__entry"
+                        data-etiquette="{{name}}"
+                        data-level="{{level}}">
+                        <span class="etiquettes__entry-field table__entry-field">
+                            <a
+                                class="test-etiquette"
+                                data-action="testEtiquette"
+                                title="{{localize "WARLOCK.Tests.TestEtiquette"}}">
+                                {{label}}
+                            </a>
+                        </span>
+
+                        <span class="etiquettes__entry-field table__entry-field">
+                            {{level}}
+                        </span>
+
+                        <span class="etiquettes__entry-field table__entry-field">
+                            {{careers}}
+                        </span>
+                    </div>
+                    {{else}}
+                    <div class="etiquettes__entry etiquettes__entry--empty table__entry">
+                        <span class="etiquettes__entry-field table__entry-field">
+                            {{localize "WARLOCK.Etiquette.None"}}
+                        </span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+
             <div class="skills table">
                 <div class="skills__header table__header">
                     <span class="skills__header-field table__header-field">
