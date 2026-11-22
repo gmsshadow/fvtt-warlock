@@ -7,6 +7,30 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.5.13]
+### Added
+- Warpstar!: Talent Table 1 and Talent Table 2 as d20 rollable tables, one
+  result per talent with its full rules text (p16-24).
+- Warpstar!: the four Basic Careers d6 columns, each result linking to its
+  career in the compendium; the sixth result of column 4 is "You choose!"
+  (p33).
+- Warlock!: the four Basic Careers d6 columns, linked to the careers
+  compendium (p20-21).
+- Warlock!: Starting Spell table for Wizard's Apprentices and Initiates. It
+  rolls (1d6-1)*6+1d6, which gives the same odds as the book's two d6, and
+  each result shows the die pair and links to the spell (p96-97).
+
+### Fixed (Warpstar! compendia checked against the book)
+- Slug pistol damage 1d6 -> 1d6+1 (S1d6+1P, p109).
+- Bounty Hunter: Stealth 12 -> Streetwise 12 (p38).
+- Investigator: Sleight of hand 10 -> Streetwise 10 (p50).
+- Stessel Nightwing: heavy prod gun 2d6+2 -> 2d6+1 (S2d6+1S, p137).
+- Checked with no changes needed: the other 15 weapons, 3 armours, the
+  other 21 basic and all 13 advanced careers (skills, maximums and equipment
+  damage codes), all 36 glyphs (cost, standard/opposed and text), all 18
+  denizens, 11 abilities, the other 20 vehicles, and the Warp Bleed and both
+  mutation tables.
+
 ## [2.5.12]
 ### Added (Wetwired compendia, from the book)
 - Weapons (29): melee, pistols, SMGs, rifles, shotguns, assault rifles, heavy
